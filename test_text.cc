@@ -1,10 +1,15 @@
 #include <math.h>
 #define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
+#include <GL/glut.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "test_text.h"
 
+#if defined(WIN32) || defined(__WIN32__)
+#define GL_BGRA                           0x80E1
+typedef void (*foopointer)(const float*);
+foopointer glLoadTransposeMatrixf;
+#endif
 
 class Matrix4x4 {
 public:
@@ -44,6 +49,17 @@ static float text_size = 1.0;
 static Color text_color;
 static Font *act_fnt;
 
+#if !defined(GLIBC) && !defined(__GLIBC__)
+float log2(float x) {
+	float res = 0.0;
+	while(x > 1.0) {
+		x /= 2.0;
+		res += 1.0;
+	}
+	return res;
+}
+#endif	// _MSC_VER
+
 
 static inline int NextPow2(int x)
 {
@@ -54,6 +70,10 @@ static inline int NextPow2(int x)
 
 unsigned int CreateFont(const char *fname, int font_size)
 {
+#if defined(WIN32) || defined(__WIN32__)
+	glLoadTransposeMatrixf = (foopointer)wglGetProcAddress("glLoadTransposeMatrixf");
+#endif
+
 	if(!ft) {
 		if(FT_Init_FreeType(&ft) != 0) {
 			fprintf(stderr, "failed to initialize freetype\n");

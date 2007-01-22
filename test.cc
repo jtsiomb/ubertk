@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glut.h>
+#include <GL/glext.h>
 #include <ubertk.h>
 #include "test_text.h"
 
 #define TEXT_PT_SIZE	18
 
 void redraw(void);
+void idle_handler(void);
 void draw_grid(float spacing, float sz);
 void reshape(int x, int y);
 void keyb(unsigned char key, int x, int y);
@@ -44,7 +46,7 @@ int main(int argc, char **argv)
 	ysz = glutGet(GLUT_WINDOW_HEIGHT);
 
 	glutDisplayFunc(redraw);
-	glutIdleFunc(glutPostRedisplay);
+	glutIdleFunc(idle_handler);
 	glutKeyboardFunc(keyb);
 	glutKeyboardUpFunc(keyb_up);
 	glutMouseFunc(mouse_button);
@@ -172,6 +174,11 @@ void draw_grid(float spacing, float sz)
 	glEnd();
 	glLineWidth(1.0);
 	glEnable(GL_LIGHTING);
+}
+
+void idle_handler(void)
+{
+	glutPostRedisplay();
 }
 
 void reshape(int x, int y)
