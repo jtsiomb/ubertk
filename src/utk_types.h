@@ -1,0 +1,23 @@
+#ifndef UBERTK_TYPES_H_
+#define UBERTK_TYPES_H_
+
+namespace utk {
+
+class IVec2 {
+public:
+	int x, y;
+
+	IVec2(int x = 0, int y = 0);
+	IVec2 operator+(const IVec2 &v) const;
+};
+
+class Color {
+public:
+	int r, g, b, a;
+
+	Color(int r = 0, int g = 0, int b = 0, int a = 255);
+};
+
+}
+
+#endif	// UBERTK_TYPES_H_
