@@ -32,6 +32,7 @@ int xsz, ysz;
 
 utk::Container *utkroot;
 utk::Window *win;
+utk::ScrollBar scr;
 float max_descent;
 
 void foo_handler(utk::Event *event)
@@ -108,6 +109,8 @@ int main(int argc, char **argv)
 	vbox->add_child(new utk::Label("a label"));
 
 	vbox->add_child(new utk::Button("press me", foo_handler));
+
+	vbox->add_child(new utk::ScrollBar());
 
 	glutMainLoop();
 	return 0;

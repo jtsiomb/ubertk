@@ -11,6 +11,8 @@ public:
 	IVec2 operator+(const IVec2 &v) const;
 };
 
+bool RectTest(const IVec2 &tl, const IVec2 &br, const IVec2 &pos);
+
 class Color {
 public:
 	int r, g, b, a;

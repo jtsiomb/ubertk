@@ -184,6 +184,12 @@
 				RelativePath=".\src\utk_label.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_scrollbar.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_scrollbar.h">
+			</File>
+			<File
 				RelativePath=".\src\utk_types.cc">
 			</File>
 			<File
