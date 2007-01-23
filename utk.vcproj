@@ -148,6 +148,9 @@
 				RelativePath=".\src\ubertk.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_button.cc">
+			</File>
+			<File
 				RelativePath=".\src\utk_button.h">
 			</File>
 			<File
