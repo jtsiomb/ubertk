@@ -22,7 +22,7 @@ Container::~Container()
 	}
 }
 
-bool Container::handle_event(const Event *event)
+bool Container::handle_event(Event *event)
 {
 	const MouseEvent *mev;
 	if((mev = dynamic_cast<const MouseEvent*>(event))) {
@@ -37,15 +37,14 @@ bool Container::handle_event(const Event *event)
 	return false;
 }
 
-bool Container::add(Widget *w)
+void Container::add_child(Widget *w)
 {
 	cont.push_back(w);
 	w->set_parent(this);
 	layout();
-	return true;
 }
 
-bool Container::remove(Widget *w)
+bool Container::remove_child(Widget *w)
 {
 	std::list<Widget*>::iterator iter = std::find(cont.begin(), cont.end(), w);
 	if(iter == cont.end()) {

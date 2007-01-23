@@ -26,10 +26,10 @@ public:
 	Container();
 	virtual ~Container();
 
-	virtual bool handle_event(const Event *event);
+	virtual bool handle_event(Event *event);
 
-	virtual bool add(Widget *w);
-	virtual bool remove(Widget *w);
+	virtual void add_child(Widget *w);
+	virtual bool remove_child(Widget *w);
 
 	virtual void raise_child(Widget *w);
 	virtual void sink_child(Widget *w);

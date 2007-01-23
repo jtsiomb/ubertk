@@ -2,6 +2,7 @@
 #define UBERTK_WIDGET_H_
 
 #include <utk_types.h>
+#include <utk_events.h>
 
 namespace utk {
 
@@ -16,11 +17,13 @@ protected:
 
 	bool herod_mode;
 
+	Callback callbacks[EVENT_COUNT];
+
 public:
 	Widget();
 	virtual ~Widget();
 
-	virtual bool handle_event(const Event *event);
+	virtual bool handle_event(Event *event);
 
 	virtual void destroy_children(bool enable);
 
@@ -36,7 +39,7 @@ public:
 	virtual void set_visible(bool vis);
 	virtual bool get_visible() const;
 
-	virtual void set_child(Widget *w);
+	virtual void add_child(Widget *w);
 	virtual Widget *get_child();
 	virtual const Widget *get_child() const;
 
@@ -51,8 +54,11 @@ public:
 
 	virtual void draw() const;
 
-	virtual void on_click(const Event *event);
-	virtual void on_focus(const Event *event);
+	virtual void set_callback(int event_type, Callback cbfunc);
+	virtual Callback get_callback(int event_type) const;
+
+	virtual void on_click(Event *event);
+	virtual void on_focus(Event *event);
 };
 
 }

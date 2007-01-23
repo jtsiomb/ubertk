@@ -8,6 +8,8 @@ Widget::Widget()
 	visible = true;
 	child = parent = 0;
 	herod_mode = true;
+
+	memset(callbacks, 0, EVENT_COUNT * sizeof *callbacks);
 }
 
 Widget::~Widget()
@@ -17,7 +19,7 @@ Widget::~Widget()
 	}
 }
 
-bool Widget::handle_event(const Event *event)
+bool Widget::handle_event(Event *event)
 {
 	if(child) {
 		return child->handle_event(event);
@@ -80,7 +82,7 @@ bool Widget::get_visible() const
 	return visible;
 }
 
-void Widget::set_child(Widget *w)
+void Widget::add_child(Widget *w)
 {
 	child = w;
 	w->set_parent(this);
@@ -139,7 +141,23 @@ void Widget::draw() const
 	if(child) child->draw();
 }
 
-void Widget::on_click(const Event *event) {}
-void Widget::on_focus(const Event *event) {}
+void Widget::set_callback(int event_type, Callback cbfunc)
+{
+	if(event_type >= 0 && event_type < EVENT_COUNT) {
+		callbacks[event_type] = cbfunc;
+	}
+}
+
+Callback Widget::get_callback(int event_type) const
+{
+	if(event_type < 0 || event_type > EVENT_COUNT) {
+		return 0;
+	}
+	return callbacks[event_type];
+}
+
+void Widget::on_click(Event *event) {}
+void Widget::on_focus(Event *event) {}
+
 
 }	// end of namespace utk

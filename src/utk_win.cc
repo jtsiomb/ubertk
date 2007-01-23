@@ -16,15 +16,15 @@ Window::Window()
 
 Window::~Window() {}
 
-bool Window::handle_event(const Event *event)
+bool Window::handle_event(Event *event)
 {
 	if(child && child->handle_event(event)) {
 		return true;
 	}
 
 	// no child handled the event, either we do or return false
-	const MMotionEvent *mmev;
-	if((mmev = dynamic_cast<const MMotionEvent*>(event))) {
+	MMotionEvent *mmev;
+	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
 		if(get_button_state() == MOUSE_LEFT) {
 			int dx = mmev->x - get_last_drag_pos().x;
 			int dy = mmev->y - get_last_drag_pos().y;

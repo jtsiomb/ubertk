@@ -8,6 +8,7 @@
 #include <utk_win.h>
 #include <utk_container.h>
 #include <utk_label.h>
+#include <utk_button.h>
 
 namespace utk {
 
@@ -16,6 +17,8 @@ void close(Container *root = 0);
 void draw(Container *root = 0);
 
 Container *get_root_widget();
+
+unsigned int get_msec();
 	
 }
 

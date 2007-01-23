@@ -34,6 +34,11 @@ utk::Container *utkroot;
 utk::Window *win;
 float max_descent;
 
+void foo_handler(utk::Event *event)
+{
+	printf("a button was just pressed!\n");
+}
+
 int main(int argc, char **argv)
 {
 	float lpos[] = {-60, 50, 100, 1};
@@ -92,15 +97,17 @@ int main(int argc, char **argv)
 	win->set_alpha(220);
 	win->set_text("test window g");
 	win->set_visible(true);
-	utkroot->add(win);
+	utkroot->add_child(win);
 
 	utk::Container *vbox = new utk::VBox;
-	win->set_child(vbox);
+	win->add_child(vbox);
 
-	vbox->add(new utk::Label("a label"));
-	vbox->add(new utk::Label("a label"));
-	vbox->add(new utk::Label("a label"));
-	vbox->add(new utk::Label("a label"));
+	vbox->add_child(new utk::Label("a label"));
+	vbox->add_child(new utk::Label("a label"));
+	vbox->add_child(new utk::Label("a label"));
+	vbox->add_child(new utk::Label("a label"));
+
+	vbox->add_child(new utk::Button("press me", foo_handler));
 
 	glutMainLoop();
 	return 0;

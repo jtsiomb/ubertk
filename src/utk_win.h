@@ -14,7 +14,7 @@ public:
 	Window();
 	virtual ~Window();
 
-	virtual bool handle_event(const Event *event);
+	virtual bool handle_event(Event *event);
 
 	virtual bool hit_test(int x, int y) const;
 

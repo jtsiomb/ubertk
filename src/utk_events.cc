@@ -4,14 +4,20 @@
 namespace utk {
 
 static int mouse_button_state = -1;
+static int last_press_x, last_press_y;
 static IVec2 last_drag;
 
-Event::Event() {}
+Event::Event()
+{
+	event_id = EVENT_NULL;
+	widget = 0;
+}
+
 Event::~Event() {}
 
-MouseEvent::MouseEvent()
+int Event::get_event_id() const
 {
-	x = y = 0;
+	return event_id;
 }
 
 MouseEvent::MouseEvent(int x, int y)
@@ -20,38 +26,57 @@ MouseEvent::MouseEvent(int x, int y)
 	this->y = y;
 }
 
-MMotionEvent::MMotionEvent() {}
-MMotionEvent::MMotionEvent(int x, int y) : MouseEvent(x, y) {}
-
-MButtonEvent::MButtonEvent()
+MMotionEvent::MMotionEvent(int x, int y)
+	: MouseEvent(x, y)
 {
-	x = y = button = 0;
+	event_id = EVENT_MMOTION;
 }
+
 
 MButtonEvent::MButtonEvent(int bn, int x, int y)
 	: MouseEvent(x, y)
 {
+	event_id = EVENT_MBUTTON;
 	button = bn;
 }
 
 KeyboardEvent::KeyboardEvent(int key)
 {
+	event_id = EVENT_KEYBOARD;
 	this->key = key;
 }
 
+// --- high level events ---
+ClickEvent::ClickEvent()
+{
+	button = x = y = 0;
+	time = 0;
+}
 
-void event(const Event *e)
+ClickEvent::~ClickEvent() {}
+
+FocusEvent::FocusEvent()
+{
+	focus = false;
+}
+
+FocusEvent::~FocusEvent() {}
+
+
+// ------ low level event handling ------
+
+void event(Event *e)
 {
 	Widget *root = get_root_widget();
 
-	const KeyboardEvent *kev;
-	if((kev = dynamic_cast<const KeyboardEvent*>(e))) {
+	KeyboardEvent *kev;
+	if((kev = dynamic_cast<KeyboardEvent*>(e))) {
 		// send to focused window
 		return;
 	}
 
-	const MMotionEvent *mev;
-	if((mev = dynamic_cast<const MMotionEvent*>(e))) {
+	MMotionEvent *mev;
+	if((mev = dynamic_cast<MMotionEvent*>(e))) {
 		root->handle_event(e);
 
 		if(mouse_button_state >= 0) {
@@ -61,14 +86,29 @@ void event(const Event *e)
 		return;
 	}
 
-	const MButtonEvent *bev;
-	if((bev = dynamic_cast<const MButtonEvent*>(e))) {
+	MButtonEvent *bev;
+	if((bev = dynamic_cast<MButtonEvent*>(e))) {
 		if(bev->pressed) {
 			mouse_button_state = bev->button;
 			last_drag.x = bev->x;
 			last_drag.y = bev->y;
+			last_press_x = bev->x;
+			last_press_y = bev->y;
 		} else {
 			mouse_button_state = -1;
+			bev->press_x = last_press_x;
+			bev->press_y = last_press_y;
+
+			// houston, we have a click!
+			if(bev->button >= MOUSE_LEFT && bev->button < MOUSE_RIGHT && bev->x == last_press_x && bev->y == last_press_y) {
+				ClickEvent cev;
+				cev.button = bev->button;
+				cev.x = bev->x;
+				cev.y = bev->y;
+				cev.time = get_msec();
+				root->handle_event(&cev);
+				return;	// don't generate both a click and a mouse-button event(?)
+			}
 		}
 
 		root->handle_event(e);
