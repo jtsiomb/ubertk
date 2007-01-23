@@ -18,6 +18,7 @@ IVec2 ScrollBar::GetCursorBR() const
 
 ScrollBar::ScrollBar(int cursor_width, utk::Callback cb)
 {
+	dragging = false;
 	this->cursor_width = cursor_width;
 	cursor_height = 20;
 	cursor_pos = 0;
@@ -37,18 +38,34 @@ bool ScrollBar::handle_event(Event *event)
 		return true;
 	}
 
+	MButtonEvent *mb;
+	if (mb = dynamic_cast<MButtonEvent*>(event))
+	{
+		dragging = false;
+		if (mb->pressed)
+		{
+			if (mb->button == MOUSE_LEFT)
+			{
+				if (RectTest(GetCursorTL(), GetCursorBR(), IVec2(mb->x, mb->y)))
+					dragging = true;
+			}
+		}
+		return true;
+	}
+
 	// no child handled the event, either we do or return false
 	MMotionEvent *mmev;
-	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
-		if(get_button_state() == MOUSE_LEFT) {
-			if (RectTest(GetCursorTL(), GetCursorBR(), IVec2(mmev->x, mmev->y)))
-			{
-				int dx = mmev->x - get_last_drag_pos().x;
-				cursor_pos += dx;
-				if (cursor_pos > 100) cursor_pos = 100;
-				if (cursor_pos < 0) cursor_pos = 0;
-				return true;
-			}
+	if((mmev = dynamic_cast<MMotionEvent*>(event))) 
+	{
+		if (dragging)
+		{
+			int dx = mmev->x - get_last_drag_pos().x;
+			if (dx < 0 && mmev->x > GetCursorBR().x) dx = 0;
+			if (dx > 0 && mmev->x < GetCursorTL().x) dx = 0;
+			cursor_pos += dx;
+			if (cursor_pos < 0) cursor_pos = 0;
+			if (cursor_pos > 100) cursor_pos = 100;
+			return true;
 		}
 	}
 
@@ -68,7 +85,7 @@ void ScrollBar::draw() const
 		gpos.x + size.x - 4, gpos.y + size.y / 2 + 2);
 
 	// draw cursor
-	gfx::color(0, 0, 255, 255);
+	gfx::color(0, 0, dragging ? 255 : 127, 255);
 	IVec2 tl, br;
 	tl = GetCursorTL();
 	br = GetCursorBR();

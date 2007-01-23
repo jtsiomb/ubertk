@@ -14,6 +14,8 @@ protected:
 	int cursor_height;
 	int cursor_pos;
 
+	bool dragging;
+
 	IVec2 GetCursorTL() const;
 	IVec2 GetCursorBR() const;
 public:

@@ -163,6 +163,17 @@ void Container::draw() const
 	}
 }
 
+int Container::get_width() const
+{
+	unsigned int w = 0;
+	for (unsigned int i=0; i<cont.size(); i++)
+	{
+		w += (*this)[i]->get_width() + spacing;
+	}
+	w += 2 * border;
+	return w;
+}
+
 // TODO: also change the size of the container to fit the children
 
 /* ---- layout function for the horizontal box container ---- */

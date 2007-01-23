@@ -32,12 +32,18 @@ int xsz, ysz;
 
 utk::Container *utkroot;
 utk::Window *win;
-utk::ScrollBar scr;
+utk::ScrollBar *r, *g, *b;
 float max_descent;
+
 
 void foo_handler(utk::Event *event)
 {
 	printf("a button was just pressed!\n");
+}
+
+void exit_bn_handler(utk::Event *event)
+{
+	exit(0);
 }
 
 int main(int argc, char **argv)
@@ -104,13 +110,27 @@ int main(int argc, char **argv)
 	win->add_child(vbox);
 
 	vbox->add_child(new utk::Label("a label"));
-	vbox->add_child(new utk::Label("a label"));
-	vbox->add_child(new utk::Label("a label"));
-	vbox->add_child(new utk::Label("a label"));
+	vbox->add_child(new utk::Label("another label"));
 
 	vbox->add_child(new utk::Button("press me", foo_handler));
 
-	vbox->add_child(new utk::ScrollBar());
+	r = new utk::ScrollBar();
+	g = new utk::ScrollBar();
+	b = new utk::ScrollBar();
+
+	/*
+	utk::Container *hbox = new utk::HBox;
+	vbox->add_child(hbox);
+	hbox->add_child(r);
+	hbox->add_child(g);
+	hbox->add_child(b);
+	*/
+
+	
+	vbox->add_child(r);
+	vbox->add_child(g);
+	vbox->add_child(b);
+	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
 
 	glutMainLoop();
 	return 0;
@@ -119,6 +139,7 @@ int main(int argc, char **argv)
 void redraw(void)
 {
 	float t = (float)get_msec() / 1000.0;
+	glClearColor(r->GetPercent() / 100.0f, g->GetPercent() / 100.0f, b->GetPercent() / 100.0f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
