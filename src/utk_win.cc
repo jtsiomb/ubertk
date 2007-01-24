@@ -36,6 +36,11 @@ Widget *Window::handle_event(Event *event)
 		}
 	}
 
+	MButtonEvent *bev;
+	if((bev = dynamic_cast<MButtonEvent*>(event))) {
+		return this;
+	}
+
 	return 0;
 }
 
