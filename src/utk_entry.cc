@@ -13,9 +13,25 @@ Entry::Entry(const char *txt, utk::Callback cb)
 	set_size(100, gfx::text_spacing() + 4);
 
 	set_color(115, 156, 156);
+
+	vfirst = text;
+	//vsize = calc_num_view_chars();
 }
 
 Entry::~Entry() {}
+
+
+int Entry::calc_num_view_chars(const char *ptr, bool backwards) const
+{
+	/*
+	if(!ptr) return 0;
+
+	char *vf = ptr;
+	char *vl = ptr;
+	*/
+	return 0;
+
+}
 
 Widget *Entry::handle_event(Event *event)
 {
@@ -28,12 +44,17 @@ Widget *Entry::handle_event(Event *event)
 			cursor++;
 
 			/*
-			char *first_ptr = text + cursor;
-			while(first_ptr > text && gfx::text_width(first_ptr, 18) < get_width() - border * 2) {
-				first_ptr--;
-			}
-			if(first_ptr > text) {
-				first_ptr++;
+			if(text) {
+				vfirst = vlast = text + cursor;
+				while(vfirst > text && gfx::text_width(vfirst, 18) < get_width() - border * 2) {
+					vfirst--;
+				}
+				if(vfirst > text) {
+					vfirst++;
+				}
+
+			} else {
+				vfirst = vlast = 0;
 			}
 			*/
 
