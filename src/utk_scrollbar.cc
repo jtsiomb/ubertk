@@ -32,10 +32,11 @@ ScrollBar::~ScrollBar()
 
 }
 
-bool ScrollBar::handle_event(Event *event)
+Widget *ScrollBar::handle_event(Event *event)
 {
-	if(child && child->handle_event(event)) {
-		return true;
+	Widget *w;
+	if(child && (w = child->handle_event(event))) {
+		return w;
 	}
 
 	MButtonEvent *mb;
@@ -50,7 +51,7 @@ bool ScrollBar::handle_event(Event *event)
 					dragging = true;
 			}
 		}
-		return true;
+		return this;
 	}
 
 	// no child handled the event, either we do or return false
@@ -65,11 +66,11 @@ bool ScrollBar::handle_event(Event *event)
 			cursor_pos += dx;
 			if (cursor_pos < 0) cursor_pos = 0;
 			if (cursor_pos > 100) cursor_pos = 100;
-			return true;
+			return this;
 		}
 	}
 
-	return false;
+	return 0;
 }
 
 void ScrollBar::draw() const

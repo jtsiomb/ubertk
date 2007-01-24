@@ -16,10 +16,11 @@ Window::Window()
 
 Window::~Window() {}
 
-bool Window::handle_event(Event *event)
+Widget *Window::handle_event(Event *event)
 {
-	if(child && child->handle_event(event)) {
-		return true;
+	Widget *w;
+	if(child && (w = child->handle_event(event))) {
+		return w;
 	}
 
 	// no child handled the event, either we do or return false
@@ -31,11 +32,11 @@ bool Window::handle_event(Event *event)
 
 			pos.x += dx;
 			pos.y += dy;
-			return true;
+			return this;
 		}
 	}
 
-	return false;
+	return 0;
 }
 
 bool Window::hit_test(int x, int y) const

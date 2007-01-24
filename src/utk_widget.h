@@ -23,7 +23,7 @@ public:
 	Widget();
 	virtual ~Widget();
 
-	virtual bool handle_event(Event *event);
+	virtual Widget *handle_event(Event *event);
 
 	virtual void destroy_children(bool enable);
 

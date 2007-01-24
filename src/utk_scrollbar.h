@@ -22,7 +22,7 @@ public:
 	ScrollBar(int cursor_width = 20, utk::Callback cb = 0);
 	virtual ~ScrollBar();
 
-	virtual bool handle_event(Event *event);
+	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
 

@@ -22,7 +22,7 @@ Container::~Container()
 	}
 }
 
-bool Container::handle_event(Event *event)
+Widget *Container::handle_event(Event *event)
 {
 	const MouseEvent *mev;
 	if((mev = dynamic_cast<const MouseEvent*>(event))) {
@@ -34,7 +34,7 @@ bool Container::handle_event(Event *event)
 			}
 		}
 	}
-	return false;
+	return 0;
 }
 
 void Container::add_child(Widget *w)

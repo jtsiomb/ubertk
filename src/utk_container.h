@@ -26,7 +26,7 @@ public:
 	Container();
 	virtual ~Container();
 
-	virtual bool handle_event(Event *event);
+	virtual Widget *handle_event(Event *event);
 
 	virtual void add_child(Widget *w);
 	virtual bool remove_child(Widget *w);

@@ -14,7 +14,7 @@ public:
 	Button(const char *txt = 0, utk::Callback cb = 0);
 	virtual ~Button();
 
-	virtual bool handle_event(Event *event);
+	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
 };

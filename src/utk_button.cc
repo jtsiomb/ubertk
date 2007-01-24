@@ -20,7 +20,7 @@ Button::~Button()
 {
 }
 
-bool Button::handle_event(Event *event)
+Widget *Button::handle_event(Event *event)
 {
 	ClickEvent *cev;
 	if((cev = dynamic_cast<ClickEvent*>(event))) {
@@ -33,16 +33,16 @@ bool Button::handle_event(Event *event)
 			callbacks[EVENT_CLICK](cev);
 		}
 
-		return true;
+		return this;
 	}
 
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(event))) {
 		pressed = bev->pressed;
-		return true;
+		return this;
 	}
 
-	return false;
+	return 0;
 }
 
 void Button::draw() const

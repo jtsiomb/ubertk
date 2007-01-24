@@ -19,12 +19,12 @@ Widget::~Widget()
 	}
 }
 
-bool Widget::handle_event(Event *event)
+Widget *Widget::handle_event(Event *event)
 {
 	if(child) {
 		return child->handle_event(event);
 	}
-	return false;
+	return 0;
 }
 
 void Widget::destroy_children(bool enable)
