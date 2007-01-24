@@ -16,8 +16,8 @@ protected:
 
 	bool dragging;
 
-	IVec2 GetCursorTL() const;
-	IVec2 GetCursorBR() const;
+	IVec2 get_cursor_tl() const;
+	IVec2 get_cursor_br() const;
 public:
 	ScrollBar(int cursor_width = 20, utk::Callback cb = 0);
 	virtual ~ScrollBar();
@@ -26,7 +26,7 @@ public:
 
 	virtual void draw() const;
 
-	int GetPercent();
+	int get_percent() const;
 };
 
 }

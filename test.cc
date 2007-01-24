@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 void redraw(void)
 {
 	float t = (float)get_msec() / 1000.0;
-	glClearColor(r->GetPercent() / 100.0f, g->GetPercent() / 100.0f, b->GetPercent() / 100.0f, 1);
+	glClearColor(r->get_percent() / 100.0f, g->get_percent() / 100.0f, b->get_percent() / 100.0f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);

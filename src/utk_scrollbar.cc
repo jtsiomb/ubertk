@@ -5,12 +5,12 @@
 
 namespace utk {
 
-IVec2 ScrollBar::GetCursorTL() const
+IVec2 ScrollBar::get_cursor_tl() const
 {
 	IVec2 rel(cursor_pos + 2, 2);
 	return rel + get_global_pos();
 }
-IVec2 ScrollBar::GetCursorBR() const
+IVec2 ScrollBar::get_cursor_br() const
 {
 	IVec2 rel(cursor_pos + cursor_width, 2 + cursor_height);
 	return rel + get_global_pos();
@@ -46,7 +46,7 @@ bool ScrollBar::handle_event(Event *event)
 		{
 			if (mb->button == MOUSE_LEFT)
 			{
-				if (RectTest(GetCursorTL(), GetCursorBR(), IVec2(mb->x, mb->y)))
+				if (RectTest(get_cursor_tl(), get_cursor_br(), IVec2(mb->x, mb->y)))
 					dragging = true;
 			}
 		}
@@ -60,8 +60,8 @@ bool ScrollBar::handle_event(Event *event)
 		if (dragging)
 		{
 			int dx = mmev->x - get_last_drag_pos().x;
-			if (dx < 0 && mmev->x > GetCursorBR().x) dx = 0;
-			if (dx > 0 && mmev->x < GetCursorTL().x) dx = 0;
+			if (dx < 0 && mmev->x > get_cursor_br().x) dx = 0;
+			if (dx > 0 && mmev->x < get_cursor_tl().x) dx = 0;
 			cursor_pos += dx;
 			if (cursor_pos < 0) cursor_pos = 0;
 			if (cursor_pos > 100) cursor_pos = 100;
@@ -87,8 +87,8 @@ void ScrollBar::draw() const
 	// draw cursor
 	gfx::color(0, 0, dragging ? 255 : 127, 255);
 	IVec2 tl, br;
-	tl = GetCursorTL();
-	br = GetCursorBR();
+	tl = get_cursor_tl();
+	br = get_cursor_br();
 	gfx::rect(tl.x, tl.y, br.x, br.y);
 
 	if(border) {
@@ -103,7 +103,7 @@ void ScrollBar::draw() const
 	Widget::draw();
 }
 
-int ScrollBar::GetPercent()
+int ScrollBar::get_percent() const
 {
 	return cursor_pos;
 }

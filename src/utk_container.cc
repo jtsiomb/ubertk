@@ -165,13 +165,13 @@ void Container::draw() const
 
 int Container::get_width() const
 {
-	unsigned int w = 0;
-	for (unsigned int i=0; i<cont.size(); i++)
+	size_t w = 0;
+	for (size_t i=0; i<cont.size(); i++)
 	{
 		w += (*this)[i]->get_width() + spacing;
 	}
 	w += 2 * border;
-	return w;
+	return (int)w;
 }
 
 // TODO: also change the size of the container to fit the children
