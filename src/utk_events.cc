@@ -6,6 +6,7 @@ namespace utk {
 static int mouse_button_state = -1;
 static int last_press_x, last_press_y;
 static Widget *mouse_press_widget;
+static Widget *focused_widget;
 static IVec2 last_drag;
 
 Event::Event()
@@ -72,7 +73,9 @@ void event(Event *e)
 
 	KeyboardEvent *kev;
 	if((kev = dynamic_cast<KeyboardEvent*>(e))) {
-		// send to focused window
+		if(focused_widget) {
+			focused_widget->handle_event(e);
+		}
 		return;
 	}
 
@@ -134,5 +137,9 @@ IVec2 get_last_drag_pos()
 	return last_drag;
 }
 
+void grab_focus(Widget *w)
+{
+	focused_widget = w;
+}
 
 }	// namespace utk end

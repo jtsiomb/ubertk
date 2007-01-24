@@ -17,8 +17,13 @@ Drawable::~Drawable()
 void Drawable::set_text(const char *text)
 {
 	if(this->text) delete [] this->text;
-	this->text = new char[strlen(text) + 1];
-	strcpy(this->text, text);
+
+	if(text) {
+		this->text = new char[strlen(text) + 1];
+		strcpy(this->text, text);
+	} else {
+		this->text = 0;
+	}
 }
 
 const char *Drawable::get_text() const

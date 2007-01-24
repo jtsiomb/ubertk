@@ -22,7 +22,7 @@ void utk_clip(int x1, int y1, int x2, int y2);
 void utk_image(void *pix, int xsz, int ysz);
 
 void utk_rect(int x1, int y1, int x2, int y2);
-void utk_line(int x1, int y1, int x2, int y2);
+void utk_line(int x1, int y1, int x2, int y2, int width);
 void utk_text(int x, int y, const char *txt, int sz);
 int utk_text_spacing();
 
@@ -130,6 +130,9 @@ int main(int argc, char **argv)
 	vbox->add_child(r);
 	vbox->add_child(g);
 	vbox->add_child(b);
+
+	vbox->add_child(new utk::Entry);
+	
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
 
 	glutMainLoop();
@@ -294,9 +297,9 @@ void utk_rect(int x1, int y1, int x2, int y2)
 	glRectf(CONVX(x1), CONVY(y1), CONVX(x2), CONVY(y2));
 }
 
-void utk_line(int x1, int y1, int x2, int y2)
+void utk_line(int x1, int y1, int x2, int y2, int width)
 {
-	glLineWidth(2.0);
+	glLineWidth((float)width);
 	glBegin(GL_LINES);
 	glVertex2f(CONVX(x1), CONVY(y1));
 	glVertex2f(CONVX(x2), CONVY(y2));

@@ -69,10 +69,10 @@ void Window::draw() const
 
 	int sy = text ? gpos.y - tbar_height : gpos.y;
 	
-	gfx::line(gpos.x, sy, gpos.x + size.x, sy);
-	gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y);
-	gfx::line(gpos.x, sy, gpos.x, gpos.y + size.y);
-	gfx::line(gpos.x + size.x, sy, gpos.x + size.x, gpos.y + size.y);
+	gfx::line(gpos.x, sy, gpos.x + size.x, sy, border);
+	gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
+	gfx::line(gpos.x, sy, gpos.x, gpos.y + size.y, border);
+	gfx::line(gpos.x + size.x, sy, gpos.x + size.x, gpos.y + size.y, border);
 
 	if(text) {
 		gfx::rect(gpos.x, gpos.y - tbar_height, gpos.x + size.x, gpos.y);

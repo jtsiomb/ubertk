@@ -24,6 +24,7 @@ enum {
 
 	EVENT_CLICK = 100,
 	EVENT_FOCUS,
+	EVENT_MODIFY,
 
 	EVENT_COUNT		// not an event :)
 };
@@ -99,6 +100,8 @@ void event(Event *e);
 int get_button_state();
 Widget *get_button_press_widget();
 IVec2 get_last_drag_pos();
+
+void grab_focus(Widget *w);
 
 typedef void (*Callback)(Event*);
 

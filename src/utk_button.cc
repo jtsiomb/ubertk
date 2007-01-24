@@ -59,10 +59,10 @@ void Button::draw() const
 	if(border) {
 		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
 
-		gfx::line(gpos.x, gpos.y, gpos.x + size.x, gpos.y);
-		gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y);
-		gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y);
-		gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
+		gfx::line(gpos.x, gpos.y, gpos.x + size.x, gpos.y, border);
+		gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
+		gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y, border);
+		gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);
 	}
 
 	if(text) {

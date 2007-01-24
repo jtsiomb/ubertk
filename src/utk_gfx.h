@@ -12,7 +12,7 @@ namespace utk {
 		
 		// drawing calls
 		extern void (*rect)(int x1, int y1, int x2, int y2);
-		extern void (*line)(int x1, int y1, int x2, int y2);
+		extern void (*line)(int x1, int y1, int x2, int y2, int width);
 
 		// text
 		extern void (*text)(int x, int y, const char *txt, int sz);

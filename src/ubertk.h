@@ -10,6 +10,7 @@
 #include <utk_label.h>
 #include <utk_button.h>
 #include <utk_scrollbar.h>
+#include <utk_entry.h>
 
 namespace utk {
 
