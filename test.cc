@@ -150,7 +150,7 @@ void redraw(void)
 
 	draw_grid(2.0, 100.0);
 	glTranslatef(0, 0.8, 0);
-	glutSolidTeapot(1.0);
+	glutWireTeapot(1.0);
 	
 	glPushMatrix();
 	glLoadIdentity();

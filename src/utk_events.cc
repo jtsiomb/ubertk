@@ -5,6 +5,7 @@ namespace utk {
 
 static int mouse_button_state = -1;
 static int last_press_x, last_press_y;
+static Widget *mouse_press_widget;
 static IVec2 last_drag;
 
 Event::Event()
@@ -94,6 +95,8 @@ void event(Event *e)
 			last_drag.y = bev->y;
 			last_press_x = bev->x;
 			last_press_y = bev->y;
+			mouse_press_widget = root->handle_event(e);
+			return;
 		} else {
 			mouse_button_state = -1;
 			bev->press_x = last_press_x;
@@ -119,6 +122,11 @@ void event(Event *e)
 int get_button_state()
 {
 	return mouse_button_state;
+}
+
+Widget *get_button_press_widget()
+{
+	return mouse_press_widget;
 }
 
 IVec2 get_last_drag_pos()

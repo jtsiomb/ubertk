@@ -26,7 +26,7 @@ Widget *Window::handle_event(Event *event)
 	// no child handled the event, either we do or return false
 	MMotionEvent *mmev;
 	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
-		if(get_button_state() == MOUSE_LEFT) {
+		if(get_button_state() == MOUSE_LEFT && get_button_press_widget() == this) {
 			int dx = mmev->x - get_last_drag_pos().x;
 			int dy = mmev->y - get_last_drag_pos().y;
 
