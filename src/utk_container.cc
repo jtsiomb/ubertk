@@ -6,7 +6,7 @@ namespace utk {
 
 Container::Container()
 {
-	spacing = 3;
+	spacing = 4;
 	border = 0;
 	cache_idx = -1;
 }

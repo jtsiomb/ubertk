@@ -5,6 +5,8 @@ namespace utk {
 
 Button::Button(const char *txt, utk::Callback cb)
 {
+	pressed = false;
+
 	set_text(txt);
 	set_callback(EVENT_CLICK, cb);
 
@@ -22,7 +24,8 @@ bool Button::handle_event(Event *event)
 {
 	ClickEvent *cev;
 	if((cev = dynamic_cast<ClickEvent*>(event))) {
-		((ClickEvent*)cev)->widget = this;
+		pressed = false;
+		cev->widget = this;
 
 		on_click(cev);
 			
@@ -33,6 +36,12 @@ bool Button::handle_event(Event *event)
 		return true;
 	}
 
+	MButtonEvent *bev;
+	if((bev = dynamic_cast<MButtonEvent*>(event))) {
+		pressed = bev->pressed;
+		return true;
+	}
+
 	return false;
 }
 
@@ -40,7 +49,11 @@ void Button::draw() const
 {
 	IVec2 gpos = get_global_pos();
 
-	gfx::color(color.r, color.g, color.b, color.a);
+	if(pressed) {
+		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
+	} else {
+		gfx::color(color.r, color.g, color.b, color.a);
+	}
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
 	if(border) {

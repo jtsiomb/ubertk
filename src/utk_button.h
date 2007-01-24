@@ -7,6 +7,9 @@
 namespace utk {
 
 class Button : public Drawable {
+protected:
+	bool pressed;
+
 public:
 	Button(const char *txt = 0, utk::Callback cb = 0);
 	virtual ~Button();
