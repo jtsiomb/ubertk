@@ -27,6 +27,7 @@ Widget *Entry::handle_event(Event *event)
 
 			cursor++;
 
+			/*
 			char *first_ptr = text + cursor;
 			while(first_ptr > text && gfx::text_width(first_ptr, 18) < get_width() - border * 2) {
 				first_ptr--;
@@ -34,6 +35,7 @@ Widget *Entry::handle_event(Event *event)
 			if(first_ptr > text) {
 				first_ptr++;
 			}
+			*/
 
 			on_modify(kev);
 

@@ -92,6 +92,9 @@ void ScrollBar::draw() const
 	br = get_cursor_br();
 	gfx::rect(tl.x, tl.y, br.x, br.y);
 
+	gfx::color(255, 255, 255, 255);
+	gfx::circle(tl.x, tl.y, br.x, br.y, false);
+
 	if(border) {
 		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
 

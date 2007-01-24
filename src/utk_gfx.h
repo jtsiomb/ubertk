@@ -18,6 +18,10 @@ namespace utk {
 		extern void (*text)(int x, int y, const char *txt, int sz);
 		extern int (*text_spacing)(void);
 		extern int (*text_width)(const char *txt, int sz);
+
+		// high level drawing functions
+		// ----------------------------
+		void circle(int x1, int y1, int x2, int y2, bool outline);
 	}
 }
 

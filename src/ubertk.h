@@ -11,6 +11,7 @@
 #include <utk_button.h>
 #include <utk_scrollbar.h>
 #include <utk_entry.h>
+#include <utk_chkbox.h>
 
 namespace utk {
 

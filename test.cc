@@ -112,29 +112,18 @@ int main(int argc, char **argv)
 	win->add_child(vbox);
 
 	vbox->add_child(new utk::Label("a label"));
-	vbox->add_child(new utk::Label("another label"));
-
-	vbox->add_child(new utk::Button("press me", foo_handler));
 
 	r = new utk::ScrollBar();
 	g = new utk::ScrollBar();
 	b = new utk::ScrollBar();
-
-	/*
-	utk::Container *hbox = new utk::HBox;
-	vbox->add_child(hbox);
-	hbox->add_child(r);
-	hbox->add_child(g);
-	hbox->add_child(b);
-	*/
-
-	
 	vbox->add_child(r);
 	vbox->add_child(g);
 	vbox->add_child(b);
 
 	vbox->add_child(new utk::Entry);
 	
+	vbox->add_child(new utk::CheckBox("Eimai ninja!"));
+
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
 
 	glutMainLoop();

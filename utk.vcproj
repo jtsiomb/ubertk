@@ -154,6 +154,12 @@
 				RelativePath=".\src\utk_button.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_chkbox.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_chkbox.h">
+			</File>
+			<File
 				RelativePath=".\src\utk_container.cc">
 			</File>
 			<File
@@ -164,6 +170,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_drawable.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_entry.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_entry.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_events.cc">
