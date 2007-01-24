@@ -48,5 +48,6 @@ void PrintStringLines(const char **str, int lines);
 
 float GetMaxDescent();
 float GetLineAdvance();
+float GetTextWidth(const char *str);
 
 #endif	// TEXT_H

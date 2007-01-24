@@ -10,5 +10,6 @@ namespace utk {
 		void (*line)(int x1, int y1, int x2, int y2, int border) = 0;
 		void (*text)(int x, int y, const char *txt, int sz) = 0;
 		int (*text_spacing)(void) = 0;
+		int (*text_width)(const char *txt, int sz) = 0;
 	}
 }

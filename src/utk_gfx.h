@@ -17,6 +17,7 @@ namespace utk {
 		// text
 		extern void (*text)(int x, int y, const char *txt, int sz);
 		extern int (*text_spacing)(void);
+		extern int (*text_width)(const char *txt, int sz);
 	}
 }
 

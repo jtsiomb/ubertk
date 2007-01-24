@@ -25,6 +25,7 @@ void utk_rect(int x1, int y1, int x2, int y2);
 void utk_line(int x1, int y1, int x2, int y2, int width);
 void utk_text(int x, int y, const char *txt, int sz);
 int utk_text_spacing();
+int utk_text_width(const char *txt, int sz);
 
 unsigned int get_msec(void);
 
@@ -94,6 +95,7 @@ int main(int argc, char **argv)
 	utk::gfx::line = utk_line;
 	utk::gfx::text = utk_text;
 	utk::gfx::text_spacing = utk_text_spacing;
+	utk::gfx::text_width = utk_text_width;
 
 	// create the windows
 	utkroot = utk::init(xsz, ysz);
@@ -322,6 +324,16 @@ int utk_text_spacing()
 	return (int)(GetLineAdvance() * (float)ysz);
 }
 
+int utk_text_width(const char *txt, int sz)
+{
+	float prev_sz = GetTextSize();
+	SetTextSize((float)sz / (float)TEXT_PT_SIZE);
+
+	int width = (int)(GetTextWidth(txt) * (float)xsz);
+
+	SetTextSize(prev_sz);
+	return width;
+}
 
 #if defined(unix) || defined(__unix__)
 #include <time.h>

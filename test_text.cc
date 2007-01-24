@@ -417,3 +417,12 @@ float GetLineAdvance()
 {
 	return act_fnt->line_adv;
 }
+
+float GetTextWidth(const char *str)
+{
+	float width = 0;
+	while(*str) {
+		width += act_fnt->glyphs[(int)*str++].advance * act_fnt->scale * text_size;
+	}
+	return width;
+}
