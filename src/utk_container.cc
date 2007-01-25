@@ -24,17 +24,25 @@ Container::~Container()
 
 Widget *Container::handle_event(Event *event)
 {
+	Widget *res = 0;
+
 	const MouseEvent *mev;
 	if((mev = dynamic_cast<const MouseEvent*>(event))) {
 		iterator iter = begin();
 		while(iter != end()) {
 			Widget *w = *iter++;
-			if(w->hit_test(mev->x, mev->y)) {
-				return w->handle_event(event);
+
+			if(!res) {
+				res = w->handle_event(event);
+			} else {
+				w->handle_event(event);
 			}
+			//if(w->hit_test(mev->x, mev->y)) {
+			//	return w->handle_event(event);
+			//}
 		}
 	}
-	return 0;
+	return res;
 }
 
 void Container::add_child(Widget *w)
