@@ -40,14 +40,14 @@ Widget *ScrollBar::handle_event(Event *event)
 	}
 
 	MButtonEvent *mb;
-	if((mb = dynamic_cast<MButtonEvent*>(event)))
+	if((mb = dynamic_cast<MButtonEvent*>(event)) && hit_test(mb->x, mb->y))
 	{
 		dragging = false;
 		if (mb->pressed)
 		{
 			if (mb->button == MOUSE_LEFT)
 			{
-				if (RectTest(get_cursor_tl(), get_cursor_br(), IVec2(mb->x, mb->y)))
+				if (rect_test(get_cursor_tl(), get_cursor_br(), IVec2(mb->x, mb->y)))
 					dragging = true;
 			}
 		}

@@ -69,7 +69,7 @@ Widget *Entry::handle_event(Event *event)
 	}
 
 	ClickEvent *cev;
-	if((cev = dynamic_cast<ClickEvent*>(event))) {
+	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y)) {
 		focus = true;
 		grab_focus(this);
 

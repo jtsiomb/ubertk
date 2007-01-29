@@ -37,7 +37,7 @@ Widget *Window::handle_event(Event *event)
 	}
 
 	MButtonEvent *bev;
-	if((bev = dynamic_cast<MButtonEvent*>(event))) {
+	if((bev = dynamic_cast<MButtonEvent*>(event)) && hit_test(bev->x, bev->y)) {
 		return this;
 	}
 

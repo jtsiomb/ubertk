@@ -23,7 +23,7 @@ Button::~Button()
 Widget *Button::handle_event(Event *event)
 {
 	ClickEvent *cev;
-	if((cev = dynamic_cast<ClickEvent*>(event))) {
+	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y)) {
 		pressed = false;
 		cev->widget = this;
 
@@ -37,7 +37,7 @@ Widget *Button::handle_event(Event *event)
 	}
 
 	MButtonEvent *bev;
-	if((bev = dynamic_cast<MButtonEvent*>(event))) {
+	if((bev = dynamic_cast<MButtonEvent*>(event)) && hit_test(bev->x, bev->y)) {
 		pressed = bev->pressed;
 		return this;
 	}
