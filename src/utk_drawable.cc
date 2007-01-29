@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include "utk_drawable.h"
 
@@ -6,29 +7,18 @@ namespace utk {
 Drawable::Drawable()
 {
 	border = 0;
-	text = 0;
 }
 
-Drawable::~Drawable()
-{
-	if(text) delete [] text;
-}
+Drawable::~Drawable() {}
 
-void Drawable::set_text(const char *text)
+void Drawable::set_text(const char *str)
 {
-	if(this->text) delete [] this->text;
-
-	if(text) {
-		this->text = new char[strlen(text) + 1];
-		strcpy(this->text, text);
-	} else {
-		this->text = 0;
-	}
+	text = std::string(str ? str : "");
 }
 
 const char *Drawable::get_text() const
 {
-	return text;
+	return text.c_str();
 }
 	
 

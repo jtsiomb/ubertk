@@ -58,10 +58,10 @@ void CheckBox::draw() const
 	}
 
 	// render text
-	if (text)
+	if (text.size())
 	{
 		gfx::color(0, 0, 0, 255);
-		gfx::text(gpos.x + size.y, gpos.y + size.y, text, 18);
+		gfx::text(gpos.x + size.y, gpos.y + size.y, text.c_str(), 18);
 	}
 
 	Widget::draw();

@@ -1,6 +1,7 @@
 #ifndef UBERTK_DRAWABLE_H_
 #define UBERTK_DRAWABLE_H_
 
+#include <string>
 #include <utk_widget.h>
 #include <utk_types.h>
 
@@ -10,7 +11,7 @@ class Drawable : public Widget {
 protected:
 	Color color;
 	int border;
-	char *text;
+	std::string text;
 
 public:
 	Drawable();

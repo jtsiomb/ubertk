@@ -29,10 +29,10 @@ const Color &Label::get_text_color() const
 
 void Label::draw() const
 {
-	if(text) {
+	if(text.size()) {
 		IVec2 gpos = get_global_pos();
 		gfx::color(text_color.r, text_color.g, text_color.b, text_color.a);
-		gfx::text(gpos.x, gpos.y + gfx::text_spacing() + 1, text, 18);
+		gfx::text(gpos.x, gpos.y + gfx::text_spacing() + 1, text.c_str(), 18);
 	}
 }
 

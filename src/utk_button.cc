@@ -65,9 +65,9 @@ void Button::draw() const
 		gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);
 	}
 
-	if(text) {
+	if(text.size()) {
 		gfx::color(0, 0, 0, color.a);
-		gfx::text(gpos.x + border, gpos.y + size.y, text, 18);
+		gfx::text(gpos.x + border, gpos.y + size.y, get_text(), 18);
 	}
 
 	Widget::draw();

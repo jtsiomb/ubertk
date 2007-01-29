@@ -14,23 +14,27 @@ Entry::Entry(const char *txt, utk::Callback cb)
 
 	set_color(115, 156, 156);
 
-	vfirst = text;
 	//vsize = calc_num_view_chars();
 }
 
 Entry::~Entry() {}
 
 
-int Entry::calc_num_view_chars(const char *ptr, bool backwards) const
+/* calculates the number of characters of the string that can be viewed
+ * forwards or backwards. pt signifies the point from which we want to
+ * start counting.
+ */
+int Entry::calc_num_view_chars(int pt, bool backwards) const
 {
-	/*
-	if(!ptr) return 0;
+	if(pt < 0 || pt > text.size()) {
+		return 0;
+	}
 
-	char *vf = ptr;
-	char *vl = ptr;
-	*/
+	//while(gfx::text_width(string(text, pt, sz).c_str()) < get_width() - border * 2) {
+
+	//}
+	
 	return 0;
-
 }
 
 Widget *Entry::handle_event(Event *event)
@@ -38,8 +42,7 @@ Widget *Entry::handle_event(Event *event)
 	KeyboardEvent *kev;
 	if((kev = dynamic_cast<KeyboardEvent*>(event))) {
 		if(kev->pressed) {
-			std::string str = std::string(text ? text : "") + (char)kev->key;
-			set_text(str.c_str());
+			text += (char)kev->key;
 
 			cursor++;
 
@@ -100,19 +103,19 @@ void Entry::draw() const
 	gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y, border);
 	gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);
 
-	if(text) {
+	if(text.size()) {
 		gfx::color(0, 0, 0, color.a);
-		gfx::text(gpos.x + border, gpos.y + size.y, text, 18);
+		gfx::text(gpos.x + border, gpos.y + size.y, get_text(), 18);
 	}
 
 	if(focus) {
 		int cur_pos = 0;
 
-		if(text) {
+		if(text.size()) {
 			/*char *cur_ptr = text + cursor;
 			char savec = *cur_ptr;
 			*cur_ptr = 0;*/
-			cur_pos = gfx::text_width(text, 18);
+			cur_pos = gfx::text_width(text.c_str(), 18);
 			//*cur_ptr = savec;
 		}
 
