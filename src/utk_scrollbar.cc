@@ -40,18 +40,18 @@ Widget *ScrollBar::handle_event(Event *event)
 	}
 
 	MButtonEvent *mb;
-	if((mb = dynamic_cast<MButtonEvent*>(event)) && hit_test(mb->x, mb->y))
+	if((mb = dynamic_cast<MButtonEvent*>(event)))
 	{
 		dragging = false;
-		if (mb->pressed)
+		if (mb->pressed && hit_test(mb->x, mb->y))
 		{
 			if (mb->button == MOUSE_LEFT)
 			{
 				if (rect_test(get_cursor_tl(), get_cursor_br(), IVec2(mb->x, mb->y)))
 					dragging = true;
 			}
+			return this;
 		}
-		return this;
 	}
 
 	// no child handled the event, either we do or return false
@@ -81,7 +81,7 @@ void ScrollBar::draw() const
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
 	// draw cursor line
-	gfx::color(180, 0, 0, 255);
+	gfx::color(127, 127, 127, 255);
 	gfx::rect(gpos.x + 2, gpos.y + size.y / 2 - 2, 
 		gpos.x + size.x - 4, gpos.y + size.y / 2 + 2);
 
@@ -90,10 +90,19 @@ void ScrollBar::draw() const
 	IVec2 tl, br;
 	tl = get_cursor_tl();
 	br = get_cursor_br();
-	gfx::rect(tl.x, tl.y, br.x, br.y);
+	//gfx::rect(tl.x, tl.y, br.x, br.y);
 
-	gfx::color(255, 255, 255, 255);
+	gfx::color(127, 127, 127, 255);
 	gfx::circle(tl.x, tl.y, br.x, br.y, false);
+	if (dragging)
+	{
+		gfx::color(0, 255, 0, 255);
+	}
+	else
+	{
+		gfx::color(50, 50, 50, 255);
+	}
+	gfx::circle(tl.x + 3, tl.y + 3, br.x - 3, br.y - 3, false);
 
 	if(border) {
 		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);

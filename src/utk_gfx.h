@@ -8,7 +8,7 @@ namespace utk {
 		// graphics state
 		extern void (*color)(int r, int g, int b, int a);
 		extern void (*clip)(int x1, int y1, int x2, int y2);
-		extern void (*image)(void *pix, int xsz, int ysz);
+		extern void (*image)(int x, int y, void *pix, int xsz, int ysz);
 		
 		// drawing calls
 		extern void (*rect)(int x1, int y1, int x2, int y2);

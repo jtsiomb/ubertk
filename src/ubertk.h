@@ -12,6 +12,7 @@
 #include <utk_scrollbar.h>
 #include <utk_entry.h>
 #include <utk_chkbox.h>
+#include <utk_radio.h>
 
 namespace utk {
 

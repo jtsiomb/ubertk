@@ -18,6 +18,8 @@ public:
 	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
+
+	bool is_checked() const;
 };
 
 }

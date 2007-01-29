@@ -8,8 +8,15 @@ namespace utk {
 CheckBox::CheckBox(char *text, utk::Callback cb)
 {
 	this->text = text;
-	this->size.x = gfx::text_width(text, 18) + gfx::text_spacing();
-	this->size.y = gfx::text_spacing();
+		if (text)
+	{
+		this->size.x = gfx::text_width(text, 18) + gfx::text_spacing();
+		this->size.y = gfx::text_spacing();
+	}
+	else
+	{
+		size.x = size.y = gfx::text_spacing();
+	}
 	checked = false;
 }
 
@@ -58,6 +65,11 @@ void CheckBox::draw() const
 	}
 
 	Widget::draw();
+}
+
+bool CheckBox::is_checked() const
+{
+	return checked;
 }
 
 } // end namespace utk

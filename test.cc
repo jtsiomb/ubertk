@@ -19,7 +19,7 @@ void mouse_motion(int x, int y);
 
 void utk_color(int r, int g, int b, int a);
 void utk_clip(int x1, int y1, int x2, int y2);
-void utk_image(void *pix, int xsz, int ysz);
+void utk_image(int x, int y, void *pix, int xsz, int ysz);
 
 void utk_rect(int x1, int y1, int x2, int y2);
 void utk_line(int x1, int y1, int x2, int y2, int width);
@@ -34,6 +34,9 @@ int xsz, ysz;
 utk::Container *utkroot;
 utk::Window *win;
 utk::ScrollBar *r, *g, *b;
+utk::Label *melaxrines;
+utk::CheckBox *ninja;
+utk::Container *vbox;
 float max_descent;
 
 
@@ -97,18 +100,20 @@ int main(int argc, char **argv)
 	utk::gfx::text_spacing = utk_text_spacing;
 	utk::gfx::text_width = utk_text_width;
 
+	melaxrines = new utk::Label("kai m'aresoun oi melaxrines ...");
+
 	// create the windows
 	utkroot = utk::init(xsz, ysz);
 
 	win = new utk::Window;
 	win->set_pos(100, 100);
-	win->set_size(300, 200);
+	win->set_size(300, 500);
 	win->set_alpha(220);
 	win->set_text("test window g");
 	win->set_visible(true);
 	utkroot->add_child(win);
 
-	utk::Container *vbox = new utk::VBox;
+	vbox = new utk::VBox;
 	win->add_child(vbox);
 
 	vbox->add_child(new utk::Label("a label"));
@@ -120,13 +125,19 @@ int main(int argc, char **argv)
 	vbox->add_child(g);
 	vbox->add_child(b);
 
+	vbox->add_child(new utk::RadioBox("check me"));
+	vbox->add_child(new utk::RadioBox("check me out"));
+	vbox->add_child(new utk::RadioBox("check me out of the blue"));
+
 	vbox->add_child(new utk::Entry);
-	
-	vbox->add_child(new utk::CheckBox("Eimai ninja!"));
 
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
 
+	ninja = new utk::CheckBox("Eimai ninja!");
+	vbox->add_child(ninja);
+
 	glutMainLoop();
+
 	return 0;
 }
 
@@ -164,6 +175,7 @@ void redraw(void)
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+
 
 	glutSwapBuffers();
 }
@@ -278,9 +290,28 @@ void utk_clip(int x1, int y1, int x2, int y2)
 	glScissor(x1, ysz - y1, x2, ysz - y2);
 }
 
-void utk_image(void *pix, int xsz, int ysz)
+void utk_image(int x, int y, void *pix, int w, int h)
 {
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, xsz, ysz, 0, GL_BGRA, GL_UNSIGNED_BYTE, pix);
+	//glTexImage2D(GL_TEXTURE_2D, 0, 4, xsz, ysz, 0, GL_BGRA, GL_UNSIGNED_BYTE, pix);
+
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	//glScalef(1, -1, 1);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glPixelZoom(1, -1);
+	glRasterPos2f(CONVX(x), CONVY(y));
+	glDrawPixels(w, h, GL_BGRA, GL_UNSIGNED_BYTE, pix);
+	
+	
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
 }
 
 void utk_rect(int x1, int y1, int x2, int y2)

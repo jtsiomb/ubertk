@@ -196,6 +196,12 @@
 				RelativePath=".\src\utk_label.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_radio.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_radio.h">
+			</File>
+			<File
 				RelativePath=".\src\utk_scrollbar.cc">
 			</File>
 			<File
