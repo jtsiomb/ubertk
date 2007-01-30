@@ -61,6 +61,7 @@ Widget *Entry::handle_event(Event *event)
 			on_modify(kev);
 
 			if(callbacks[EVENT_MODIFY]) {
+				kev->widget = this;
 				callbacks[EVENT_MODIFY](kev);
 			}
 			

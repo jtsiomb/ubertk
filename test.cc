@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 
 	r = new utk::ScrollBar();
 	g = new utk::ScrollBar();
-	b = new utk::ScrollBar();
+	b = new utk::Slider(0, 1);
 	vbox->add_child(r);
 	vbox->add_child(g);
 	vbox->add_child(b);

@@ -22,9 +22,10 @@ ScrollBar::ScrollBar(int cursor_width, utk::Callback cb)
 	this->cursor_width = cursor_width;
 	cursor_height = 20;
 	cursor_pos = 0;
-	set_size(101 + cursor_width + 4, cursor_height + 4);
+	set_size(100 + cursor_width + 2, cursor_height + 4);
 	set_border(2);
 	set_color(128, 100, 80);
+	set_callback(EVENT_MODIFY, cb);
 }
 
 ScrollBar::~ScrollBar()
