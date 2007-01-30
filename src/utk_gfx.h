@@ -22,6 +22,10 @@ namespace utk {
 		// high level drawing functions
 		// ----------------------------
 		void circle(int x1, int y1, int x2, int y2, bool outline);
+		
+		void push_clip();
+		void pop_clip();
+		void set_clip(int x1, int y1, int x2, int y2);
 	}
 }
 

@@ -10,9 +10,7 @@ class Entry : public Drawable {
 protected:
 	bool focus;
 	int cursor;
-	int vfirst, vsize;
-
-	virtual int calc_num_view_chars(int pt, bool backwards = false) const;
+	int vfirst;
 
 public:
 	Entry(const char *txt = 0, utk::Callback cb = 0);

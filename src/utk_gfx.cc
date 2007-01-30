@@ -1,5 +1,6 @@
-#include "utk_gfx.h"
+#include <stack>
 #include <math.h>
+#include "utk_gfx.h"
 
 #define CIRCLE_SEGMENTS 40
 
@@ -46,7 +47,7 @@ void circle(int x1, int y1, int x2, int y2, bool outline)
 	else
 	{
 		int dy = y2 - y1;
-		for (unsigned int i=0; i<dy; i++)
+		for (int i=0; i<dy; i++)
 		{
 			float dist = (yscale - i) / yscale;
 			float xl = xscale * cos(asin(dist));
@@ -58,6 +59,41 @@ void circle(int x1, int y1, int x2, int y2, bool outline)
 	}
 }
 
+std::stack<Rect> clip_stack;
+
+void push_clip()
+{
+	if(clip_stack.empty()) {
+		clip_stack.push(Rect());
+	} else {
+		clip_stack.push(clip_stack.top());
+	}
+}
+
+void pop_clip()
+{
+	if(!clip_stack.empty()) {
+		clip_stack.pop();
+		
+		if(clip_stack.empty()) {
+			clip(0, 0, 0, 0);
+		} else {
+			Rect rect = clip_stack.top();
+			clip(rect.x1, rect.y1, rect.x2, rect.y2);
+		}
+	}
+}
+
+void set_clip(int x1, int y1, int x2, int y2)
+{
+	if(clip_stack.empty()) {
+		push_clip();
+		set_clip(x1, y1, x2, y2);
+	} else {
+		clip_stack.top() = Rect(x1, y1, x2, y2);
+	}
+	clip(x1, y1, x2, y2);
+}
 	
 } // end namespace gfx
 } // end namespace utk

@@ -20,6 +20,14 @@ public:
 	Color(int r = 0, int g = 0, int b = 0, int a = 255);
 };
 
+class Rect {
+public:
+	int x1, y1, x2, y2;
+
+	Rect();
+	Rect(int x1, int y1, int x2, int y2);
+};
+
 }
 
 #endif	// UBERTK_TYPES_H_

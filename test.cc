@@ -287,18 +287,19 @@ void utk_color(int r, int g, int b, int a)
 
 void utk_clip(int x1, int y1, int x2, int y2)
 {
-	glScissor(x1, ysz - y1, x2, ysz - y2);
+	if(x1 == x2 && y1 == y2 && x1 == y1 && x1 == 0) {
+		glDisable(GL_SCISSOR_TEST);
+	} else {
+		glEnable(GL_SCISSOR_TEST);
+	}
+	glScissor(x1, ysz - y2, x2 - x1, y2 - y1);
 }
 
 void utk_image(int x, int y, void *pix, int w, int h)
 {
-	//glTexImage2D(GL_TEXTURE_2D, 0, 4, xsz, ysz, 0, GL_BGRA, GL_UNSIGNED_BYTE, pix);
-
-
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	//glScalef(1, -1, 1);
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -307,7 +308,6 @@ void utk_image(int x, int y, void *pix, int w, int h)
 	glPixelZoom(1, -1);
 	glRasterPos2f(CONVX(x), CONVY(y));
 	glDrawPixels(w, h, GL_BGRA, GL_UNSIGNED_BYTE, pix);
-	
 	
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
