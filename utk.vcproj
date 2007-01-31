@@ -190,6 +190,12 @@
 				RelativePath=".\src\utk_gfx.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_img.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_img.h">
+			</File>
+			<File
 				RelativePath=".\src\utk_label.cc">
 			</File>
 			<File
@@ -206,6 +212,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_scrollbar.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_tball.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_tball.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_types.cc">

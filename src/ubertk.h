@@ -13,7 +13,10 @@
 #include <utk_entry.h>
 #include <utk_chkbox.h>
 #include <utk_radio.h>
+#include <utk_img.h>
+#include <utk_tball.h>
 #include <utk_slider.h>
+
 
 namespace utk {
 
