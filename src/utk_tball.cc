@@ -16,7 +16,7 @@ static inline bool raytrace_sphere(float x, float y, float &phi, float &theta)
 	//Vector3 eye = Vector3(0, 0, -2);
 	float eye_x, eye_y, eye_z;
 	eye_x = eye_y = 0;
-	eye_z = -1;
+	eye_z = -30;
 
 	//Vector3 ray_dir = Vector3(x, y, 0) - eye;
 	float rd_x, rd_y, rd_z;
@@ -48,7 +48,6 @@ static inline bool raytrace_sphere(float x, float y, float &phi, float &theta)
 	cp_x = rd_x * dist + eye_x;
 	cp_y = rd_y * dist + eye_y;
 	cp_z = rd_z * dist + eye_z;
-
 
 	//float closest_length = closet_point.length();
 	float cp_l = sqrt(cp_x * cp_x + cp_y * cp_y + cp_z * cp_z);
@@ -94,20 +93,23 @@ void TrackBall::update()
 				continue;
 			}
 
-			phi = fmod(phi, 3.14159f) + this->phi;
-			theta = fmod(theta, 2.0f * 3.14159f) + this->theta;
+			phi = fmod(phi + this->phi, 3.14159f) / 3.14159f;
+			theta = fmod(theta + this->theta, 2 * 3.14159f) / (2 * 3.14159f);
 
-			phi = 6 * (phi / (3.14159));
-			theta = 12 * (theta / (3.14159 * 2));
+			phi *= 6;
+			theta *= 12;
 
-			int p = phi;
-			p %= 12;
-			int t = theta;
-			t %= 6;
-
+			int p = (int)fmod(phi, 12);
+			int t = (int)fmod(theta, 6);
+			
 			//printf("%f, %f\n", phi, theta);
-			unsigned int color = 0xFF000000;
-			if ((p + t) % 2) color = 0xFFFFFFFF;
+			unsigned int c1 = 0xFF000000;
+			unsigned int c2 = 0xFFFFFFFF;
+			bool white = true;
+			if (p % 2) white = false;
+			if (t % 2) white = !white;
+
+			unsigned int color = white ? c1 : c2;
 
 			*dst++ = color;
 		}
@@ -155,19 +157,5 @@ static float get_theta(float x, float y, float z)
 {
 	return atan2(z, x);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 } // ena namespace utk
