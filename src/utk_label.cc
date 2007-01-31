@@ -7,10 +7,16 @@ Label::Label(const char *txt)
 {
 	if(txt) set_text(txt);
 	text_color = Color(0, 0, 0, 255);
-	set_size(0, gfx::text_spacing());
+	set_size(txt ? gfx::text_width(txt, 18) : 0, gfx::text_spacing());
 }
 
 Label::~Label() {}
+
+void Label::set_text(const char *txt)
+{
+	set_size(txt ? gfx::text_width(txt, 18) : 0, gfx::text_spacing());
+	Drawable::set_text(txt);
+}
 
 void Label::set_text_color(int r, int g, int b, int a)
 {

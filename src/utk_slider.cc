@@ -83,7 +83,11 @@ void Slider::draw() const
 	gfx::color(color.r, color.g, color.b, color.a);
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
-	gfx::color_clamp((int)(color.r * 1.5), (int)(color.g * 1.5), (int)(color.b * 1.5), color.a);
+	if(dragging) {
+		gfx::color_clamp((int)(color.r * 1.5), (int)(color.g * 1.5), (int)(color.b * 1.5), color.a);
+	} else {
+		gfx::color_clamp((int)(color.r * 1.4), (int)(color.g * 1.4), (int)(color.b * 1.4), color.a);
+	}
 	IVec2 tl = get_cursor_tl();
 	IVec2 br = get_cursor_br();
 	gfx::rect(tl.x, tl.y, br.x, br.y);
