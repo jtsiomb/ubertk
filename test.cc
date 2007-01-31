@@ -136,6 +136,8 @@ int main(int argc, char **argv)
 	ninja = new utk::CheckBox("Eimai ninja!");
 	vbox->add_child(ninja);
 
+	vbox->add_child(new utk::TrackBall(100, 100));
+
 	glutMainLoop();
 
 	return 0;
@@ -297,21 +299,10 @@ void utk_clip(int x1, int y1, int x2, int y2)
 
 void utk_image(int x, int y, void *pix, int w, int h)
 {
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
 
 	glPixelZoom(1, -1);
 	glRasterPos2f(CONVX(x), CONVY(y));
 	glDrawPixels(w, h, GL_BGRA, GL_UNSIGNED_BYTE, pix);
-	
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
 }
 
 void utk_rect(int x1, int y1, int x2, int y2)
