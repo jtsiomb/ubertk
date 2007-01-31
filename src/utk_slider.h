@@ -18,6 +18,8 @@ protected:
 
 public:
 	Slider(float start = 0.0, float end = 1.0, utk::Callback cb = 0);
+	Slider(float start, float end, float *link);
+	Slider(float start, float end, int *link);
 	virtual ~Slider();
 
 	virtual void set_value(float val);

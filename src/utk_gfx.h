@@ -19,13 +19,14 @@ namespace utk {
 		extern int (*text_spacing)(void);
 		extern int (*text_width)(const char *txt, int sz);
 
-		// high level drawing functions
-		// ----------------------------
+		// ---- high level drawing functions ----
 		void circle(int x1, int y1, int x2, int y2, bool outline);
 		
 		void push_clip();
 		void pop_clip();
 		void set_clip(int x1, int y1, int x2, int y2);
+
+		void color_clamp(int r, int g, int b, int a);
 	}
 }
 

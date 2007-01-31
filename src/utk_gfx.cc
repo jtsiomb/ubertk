@@ -94,6 +94,13 @@ void set_clip(int x1, int y1, int x2, int y2)
 	}
 	clip(x1, y1, x2, y2);
 }
+
+#define CLAMP(x, a, b)	((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
+
+void color_clamp(int r, int g, int b, int a)
+{
+	gfx::color(CLAMP(r, 0, 255), CLAMP(g, 0, 255), CLAMP(b, 0, 255), CLAMP(a, 0, 255));
+}
 	
 } // end namespace gfx
 } // end namespace utk

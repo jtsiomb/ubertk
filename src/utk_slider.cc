@@ -13,7 +13,7 @@ void Slider::initialize()
 }
 
 Slider::Slider(float start, float end, utk::Callback cb)
-	: ScrollBar(8)
+	: ScrollBar(10)
 {
 	initialize();
 	this->start = start;
@@ -21,7 +21,6 @@ Slider::Slider(float start, float end, utk::Callback cb)
 	set_callback(EVENT_MODIFY, cb);
 }
 
-/*
 Slider::Slider(float start, float end, float *link)
 {
 	initialize();
@@ -37,7 +36,6 @@ Slider::Slider(float start, float end, int *link)
 	this->end = end;
 	link_int = link;
 }
-*/
 
 Slider::~Slider() {}
 
@@ -85,21 +83,32 @@ void Slider::draw() const
 	gfx::color(color.r, color.g, color.b, color.a);
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
-	gfx::color(color.r * 1.5, color.g * 1.5, color.b * 1.5, color.a);
+	gfx::color_clamp((int)(color.r * 1.5), (int)(color.g * 1.5), (int)(color.b * 1.5), color.a);
 	IVec2 tl = get_cursor_tl();
 	IVec2 br = get_cursor_br();
 	gfx::rect(tl.x, tl.y, br.x, br.y);
 
-	gfx::color(color.r * 2.0, color.g * 1.5, color.b, color.a);
+	gfx::color_clamp((int)(color.r * 1.1), (int)(color.g * 1.5), (int)(color.b * 1.6), color.a);
 	gfx::rect(gpos.x + border, gpos.y + border, tl.x, gpos.y + size.y - border);
 
 	if(border) {
-		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
+		gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
 
 		gfx::line(gpos.x, gpos.y, gpos.x + size.x, gpos.y, border);
 		gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
 		gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y, border);
 		gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);
+	}
+
+	if(show_value) {
+		char txbuf[128];
+		char fmt[8];
+
+		sprintf(fmt, vis_decimal ? "%%.%df" : "%%d", vis_decimal);
+		sprintf(txbuf, fmt, vis_decimal ? get_value() : (int)get_value());
+
+		gfx::color(0, 0, 0, color.a);
+		gfx::text(gpos.x + border, gpos.y + size.y - border, txbuf, 18);
 	}
 
 	Widget::draw();
