@@ -3,6 +3,8 @@
 
 namespace utk {
 
+enum {HORIZONTAL, VERTICAL};
+
 class IVec2 {
 public:
 	int x, y;

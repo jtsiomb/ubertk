@@ -6,7 +6,7 @@
 
 namespace utk {
 
-class Slider : public ScrollBar {
+class Slider : public Scrollbar {
 protected:
 	float start, end;
 	int vis_decimal;

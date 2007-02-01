@@ -33,7 +33,7 @@ int xsz, ysz;
 
 utk::Container *utkroot;
 utk::Window *win;
-utk::Slider *r, *g, *b;
+utk::Scrollbar *r, *g, *b;
 utk::Label *melaxrines;
 utk::CheckBox *ninja;
 utk::Container *vbox;
@@ -120,9 +120,9 @@ int main(int argc, char **argv)
 
 	vbox->add_child(new utk::Label("a label"));
 
-	//r = new utk::ScrollBar();
-	//g = new utk::ScrollBar();
-	r = new utk::Slider(0, 1);
+	r = new utk::Scrollbar;
+	//g = new utk::ScrollBar;
+	//r = new utk::Slider(0, 1);
 	g = new utk::Slider(0, 1);
 	b = new utk::Slider(0, 1);
 	vbox->add_child(r);

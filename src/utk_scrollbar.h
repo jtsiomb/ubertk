@@ -1,34 +1,39 @@
-// utk_scrollbar.h
-
-#ifndef _UBERTK_SCROLLBAR_H_
-#define _UBERTK_SCROLLBAR_H_
+#ifndef UBERTK_SCROLLBAR_H_
+#define UBERTK_SCROLLBAR_H_
 
 #include <utk_drawable.h>
 #include <utk_events.h>
 
 namespace utk {
 
-class ScrollBar : public Drawable {
+class Scrollbar : public Drawable {
 protected:
 	int cursor_width;
-	int cursor_height;
-	int cursor_pos;
+	int track_len, track_start;
+	float val;
 
 	bool dragging;
+	int orient;
 
 	IVec2 get_cursor_tl() const;
 	IVec2 get_cursor_br() const;
+
 public:
-	ScrollBar(int cursor_width = 20, utk::Callback cb = 0);
-	virtual ~ScrollBar();
+	Scrollbar(utk::Callback cb = 0);
+	virtual ~Scrollbar();
 
 	virtual Widget *handle_event(Event *event);
 
-	virtual void draw() const;
+	virtual void set_size(int w, int h);
+	
+	virtual void set_value(float val);
+	virtual float get_value() const;
+	virtual void operator=(float val);
+	virtual operator float() const;
 
-	int get_percent() const;
+	virtual void draw() const;
 };
 
 }
 
-#endif // ndef _UBERTK_SCROLLBAR_H_
+#endif // ndef UBERTK_SCROLLBAR_H_

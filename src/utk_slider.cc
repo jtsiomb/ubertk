@@ -5,6 +5,7 @@ namespace utk {
 
 void Slider::initialize()
 {
+	cursor_width = 10;
 	start = end = 0;
 	vis_decimal = 2;
 	show_value = true;
@@ -13,7 +14,6 @@ void Slider::initialize()
 }
 
 Slider::Slider(float start, float end, utk::Callback cb)
-	: ScrollBar(10)
 {
 	initialize();
 	this->start = start;
@@ -44,12 +44,12 @@ Slider::~Slider() {}
 
 void Slider::set_value(float val)
 {
-	cursor_pos = NORM_TO_PERC((val - start) / (end - start));
+	val = (val - start) / (end - start);
 }
 
 float Slider::get_value() const
 {
-	return PERC_TO_NORM(cursor_pos) * (end - start) + start;
+	return val * (end - start) + start;
 }
 
 void Slider::operator=(float val)
@@ -64,7 +64,7 @@ Slider::operator float() const
 
 Widget *Slider::handle_event(Event *event)
 {
-	Widget *ret = ScrollBar::handle_event(event);
+	Widget *ret = Scrollbar::handle_event(event);
 
 	if(link_float) {
 		*link_float = get_value();

@@ -5,35 +5,32 @@
 
 namespace utk {
 
-IVec2 ScrollBar::get_cursor_tl() const
+IVec2 Scrollbar::get_cursor_tl() const
 {
-	IVec2 rel(cursor_pos + 2, 2);
+	IVec2 rel((int)(val * track_len) + track_start - cursor_width / 2, border);
 	return rel + get_global_pos();
 }
-IVec2 ScrollBar::get_cursor_br() const
+IVec2 Scrollbar::get_cursor_br() const
 {
-	IVec2 rel(cursor_pos + cursor_width, 2 + cursor_height);
+	IVec2 rel((int)(val * track_len) + track_start + cursor_width / 2, size.y - border);
 	return rel + get_global_pos();
 }
 
-ScrollBar::ScrollBar(int cursor_width, utk::Callback cb)
+Scrollbar::Scrollbar(utk::Callback cb)
 {
 	dragging = false;
-	this->cursor_width = cursor_width;
-	cursor_height = 20;
-	cursor_pos = 0;
-	set_size(100 + cursor_width + 2, cursor_height + 4);
+	cursor_width = 20;
+	val = 0;
+	set_size(100 + border * 2, 20 + border * 2);
 	set_border(2);
 	set_color(128, 100, 80);
 	set_callback(EVENT_MODIFY, cb);
+	orient = HORIZONTAL;
 }
 
-ScrollBar::~ScrollBar()
-{
+Scrollbar::~Scrollbar() {}
 
-}
-
-Widget *ScrollBar::handle_event(Event *event)
+Widget *Scrollbar::handle_event(Event *event)
 {
 	Widget *w;
 	if(child && (w = child->handle_event(event))) {
@@ -57,16 +54,19 @@ Widget *ScrollBar::handle_event(Event *event)
 
 	// no child handled the event, either we do or return false
 	MMotionEvent *mmev;
-	if((mmev = dynamic_cast<MMotionEvent*>(event))) 
-	{
-		if (dragging)
-		{
+	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
+		if(dragging) {
 			int dx = mmev->x - get_last_drag_pos().x;
-			if (dx < 0 && mmev->x > get_cursor_br().x) dx = 0;
-			if (dx > 0 && mmev->x < get_cursor_tl().x) dx = 0;
-			cursor_pos += dx;
-			if (cursor_pos < 0) cursor_pos = 0;
-			if (cursor_pos > 100) cursor_pos = 100;
+			if(dx < 0 && mmev->x > get_cursor_br().x) dx = 0;
+			if(dx > 0 && mmev->x < get_cursor_tl().x) dx = 0;
+			
+			if(dx) {
+				int cursor_pos = get_cursor_tl().x + dx - get_global_pos().x;
+				val = (float)(cursor_pos - border) / (float)track_len;
+				val = val < 0.0 ? 0.0 : (val > 1.0 ? 1.0 : val);
+
+				// TODO: also call callback and on_modify
+			}
 			return this;
 		}
 	}
@@ -74,7 +74,36 @@ Widget *ScrollBar::handle_event(Event *event)
 	return 0;
 }
 
-void ScrollBar::draw() const
+void Scrollbar::set_size(int w, int h)
+{
+	Widget::set_size(w, h);
+	track_start = border + cursor_width / 2;
+	track_len = w - border * 2 - cursor_width / 2;
+}
+
+void Scrollbar::set_value(float val)
+{
+	this->val = val;
+	// TODO: modify event
+}
+
+float Scrollbar::get_value() const
+{
+	return val;
+}
+
+void Scrollbar::operator=(float val)
+{
+	this->val = val;
+	// TODO: modify event
+}
+
+Scrollbar::operator float() const
+{
+	return val;
+}
+
+void Scrollbar::draw() const
 {
 	IVec2 gpos = get_global_pos();
 
@@ -117,9 +146,5 @@ void ScrollBar::draw() const
 	Widget::draw();
 }
 
-int ScrollBar::get_percent() const
-{
-	return cursor_pos;
-}
 
 }
