@@ -16,7 +16,8 @@
 #include <utk_img.h>
 #include <utk_tball.h>
 #include <utk_slider.h>
-
+#include <utk_colorbox.h>
+#include <utk_hsv.h>
 
 namespace utk {
 

@@ -64,7 +64,7 @@ Widget *Image::handle_event(Event *event)
 	}
 
 	MMotionEvent *mmev;
-	if((mmev = dynamic_cast<MMotionEvent*>(event)) && hit_test(mmev->x, mmev->y)) 
+	if((mmev = dynamic_cast<MMotionEvent*>(event))) 
 	{
 		if (dragging)
 		{
@@ -77,7 +77,7 @@ Widget *Image::handle_event(Event *event)
 			on_motion(mmev->x, mmev->y);
 		}
 		upd = true;
-		return this;
+		return 0;
 	}
 
 	return 0;	

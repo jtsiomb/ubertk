@@ -7,8 +7,8 @@ namespace utk {
 
 // x, y, z are [-1, 1]
 static float get_depth(float x, float y);
-static float get_phi(float x, float y, float z);
-static float get_theta(float x, float y, float z);
+static float get_sphi(float x, float y, float z);
+static float get_stheta(float x, float y, float z);
 
 static inline bool raytrace_sphere(float x, float y, float &phi, float &theta)
 {
@@ -16,7 +16,7 @@ static inline bool raytrace_sphere(float x, float y, float &phi, float &theta)
 	//Vector3 eye = Vector3(0, 0, -2);
 	float eye_x, eye_y, eye_z;
 	eye_x = eye_y = 0;
-	eye_z = -30;
+	eye_z = -3;
 
 	//Vector3 ray_dir = Vector3(x, y, 0) - eye;
 	float rd_x, rd_y, rd_z;
@@ -65,8 +65,8 @@ static inline bool raytrace_sphere(float x, float y, float &phi, float &theta)
 	sp_y = cp_y - deep * rd_y;
 	sp_z = cp_z - deep * rd_z;
 
-	phi = get_phi(sp_x, sp_y, sp_z);
-	theta = get_theta(sp_x, sp_y, sp_z);
+	phi = get_sphi(sp_x, sp_y, sp_z);
+	theta = get_stheta(sp_x, sp_y, sp_z);
 	return true;
 }
 
@@ -82,10 +82,6 @@ void TrackBall::update()
 			x = (x * 2) - 1;
 			y = (float) j / (float) (img_h - 1);
 			y = (y * 2) - 1;
-		
-
-			
-
 
 			if (!raytrace_sphere(x, y, phi, theta))
 			{
@@ -140,6 +136,17 @@ TrackBall::~TrackBall()
 
 }
 
+float TrackBall::get_phi() const
+{
+	return phi;
+}
+
+float TrackBall::get_theta() const
+{
+	return theta;
+}
+
+
 static float get_depth(float x, float y)
 {
 	float d = (float) hypot(x, y);
@@ -148,12 +155,12 @@ static float get_depth(float x, float y)
 	return cos(d);
 }
 
-static float get_phi(float x, float y, float z)
+static float get_sphi(float x, float y, float z)
 {
 	return acos(y / sqrt(x*x + y*y + z*z));
 }
 
-static float get_theta(float x, float y, float z)
+static float get_stheta(float x, float y, float z)
 {
 	return atan2(z, x);
 }

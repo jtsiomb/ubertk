@@ -160,6 +160,12 @@
 				RelativePath=".\src\utk_chkbox.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_colorbox.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_colorbox.h">
+			</File>
+			<File
 				RelativePath=".\src\utk_container.cc">
 			</File>
 			<File
@@ -188,6 +194,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_gfx.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_hsv.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_hsv.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_img.cc">

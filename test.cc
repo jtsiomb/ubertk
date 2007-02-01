@@ -33,10 +33,12 @@ int xsz, ysz;
 
 utk::Container *utkroot;
 utk::Window *win;
-utk::ScrollBar *r, *g, *b;
+utk::Slider *r, *g, *b;
 utk::Label *melaxrines;
 utk::CheckBox *ninja;
 utk::Container *vbox;
+utk::TrackBall *tball;
+utk::ColorBox *cbox;
 float max_descent;
 
 
@@ -118,8 +120,10 @@ int main(int argc, char **argv)
 
 	vbox->add_child(new utk::Label("a label"));
 
-	r = new utk::ScrollBar();
-	g = new utk::ScrollBar();
+	//r = new utk::ScrollBar();
+	//g = new utk::ScrollBar();
+	r = new utk::Slider(0, 1);
+	g = new utk::Slider(0, 1);
 	b = new utk::Slider(0, 1);
 	vbox->add_child(r);
 	vbox->add_child(g);
@@ -135,8 +139,12 @@ int main(int argc, char **argv)
 
 	ninja = new utk::CheckBox("Eimai ninja!");
 	vbox->add_child(ninja);
+	
+	cbox = new utk::ColorBox();
+	vbox->add_child(cbox);
 
-	vbox->add_child(new utk::TrackBall(100, 100));
+	tball = new utk::TrackBall(50, 50);
+	vbox->add_child(tball);
 
 	glutMainLoop();
 
@@ -145,15 +153,29 @@ int main(int argc, char **argv)
 
 void redraw(void)
 {
+	float h = b->get_value();
+	cbox->set_h(h);
+
+	float s, v;
+
+	s = cbox->get_s();
+	v = cbox->get_v();
+
+	float r, g, b;
+	utk::hsv_to_rgb(&r, &g, &b, h, s, v);
+
 	float t = (float)get_msec() / 1000.0;
-	glClearColor(r->get_percent() / 100.0f, g->get_percent() / 100.0f, b->get_percent() / 100.0f, 1);
+	//glClearColor(r->get_percent() / 100.0f, g->get_percent() / 100.0f, b->get_percent() / 100.0f, 1);
+	glClearColor(r, g, b, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslatef(0, 0, -6);
 	glRotatef(30.0, 1, 0, 0);
-	glRotatef(t * 10.0, 0, 1, 0);
+	//glRotatef(t * 10.0, 0, 1, 0);
+	glRotatef(360 * tball->get_phi() / 6.28f, 1, 0, 0);
+	glRotatef(360 * tball->get_theta() / 6.28f, 0, 1, 0);
 
 	draw_grid(2.0, 100.0);
 	glTranslatef(0, 0.8, 0);

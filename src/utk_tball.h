@@ -19,6 +19,9 @@ protected:
 public:
 	TrackBall(int w = 100, int h = 100, utk::Callback cb = 0);
 	virtual ~TrackBall();
+
+	float get_phi() const;
+	float get_theta() const;
 };
 
 }
