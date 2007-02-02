@@ -48,8 +48,8 @@ bool ray_sphere(vec3_t spos, float srad, vec3_t rdir, vec3_t *sp)
 	return true;
 }
 
-#define PI		3.141592653
-#define TWO_PI	6.283185307
+#define PI		3.141592653f
+#define TWO_PI	6.283185307f
 
 void TrackBall::update()
 {
@@ -60,6 +60,7 @@ void TrackBall::update()
 	unsigned int *pptr = pixels;
 	for(int y=0; y<img_h; y++) {
 		for(int x=0; x<img_w; x++) {
+
 			vec3_t sp, norm, ray_dir = get_primary_ray(x, y, img_w, img_h);
 
 			if(ray_sphere(sph_pos, sph_rad, ray_dir, &sp)) {
@@ -80,7 +81,7 @@ void TrackBall::update()
 				while(theta < 0.0) theta += TWO_PI;
 				while(phi < 0.0) phi += PI;
 
-				int tx = (int)(12.0 * fmod(theta, TWO_PI) / TWO_PI);
+				int tx = (int)(12.0f * fmod(theta, TWO_PI) / TWO_PI);
 				int ty = (int)(6.0 * fmod(phi, PI) / PI);
 
 				int cint = (int)(50.0 * dot);

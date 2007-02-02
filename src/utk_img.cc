@@ -41,10 +41,12 @@ Image::~Image()
 Widget *Image::handle_event(Event *event)
 {
 	ClickEvent *ce;
+	IVec2 pos = get_global_pos();
 	if((ce = dynamic_cast<ClickEvent*>(event)) && hit_test(ce->x, ce->y))
 	{
-		on_click(ce->x, ce->y);
+		on_click(ce->x - pos.x, ce->y - pos.y);
 		upd = true;
+		dragging = false;
 		return this;
 	}
 

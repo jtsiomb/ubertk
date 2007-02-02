@@ -33,7 +33,7 @@ int Progress::get_progress_mode() const
 void Progress::step()
 {
 	if(infinite) {
-		set_value(fmod(get_value() + step_inc, 1.0));
+		set_value(fmod(get_value() + step_inc, 1.0f));
 	} else {
 		float val = get_value() + step_inc;
 		set_value(MIN(val, 1.0));

@@ -124,11 +124,11 @@ int main(int argc, char **argv)
 	r = new utk::Scrollbar;
 	//g = new utk::ScrollBar;
 	//r = new utk::Slider(0, 1);
-	g = new utk::Slider(0, 1);
+	//g = new utk::Slider(0, 1);
 	b = new utk::Slider(0, 1);
-	vbox->add_child(r);
-	vbox->add_child(g);
-	vbox->add_child(b);
+	//vbox->add_child(r);
+	//vbox->add_child(g);
+	//vbox->add_child(b);
 
 	vbox->add_child(new utk::RadioBox("check me"));
 	vbox->add_child(new utk::RadioBox("check me out"));
@@ -143,6 +143,7 @@ int main(int argc, char **argv)
 	
 	cbox = new utk::ColorBox();
 	vbox->add_child(cbox);
+	vbox->add_child(b);
 
 	tball = new utk::TrackBall(50, 50);
 	vbox->add_child(tball);
@@ -165,12 +166,12 @@ void redraw(void)
 	float s = cbox->get_s();
 	float v = cbox->get_v();
 
-	//float r, g, b;
-	//utk::hsv_to_rgb(&r, &g, &b, h, s, v);
+	float r, g, b;
+	utk::hsv_to_rgb(&r, &g, &b, h, s, v);
 
 	float t = (float)get_msec() / 1000.0;
-	glClearColor(r->get_value(), g->get_value(), b->get_value(), 1);
-	//glClearColor(r, g, b, 1);
+	//glClearColor(r->get_value(), g->get_value(), b->get_value(), 1);
+	glClearColor(r, g, b, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
