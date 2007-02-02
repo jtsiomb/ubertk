@@ -39,6 +39,7 @@ utk::CheckBox *ninja;
 utk::Container *vbox;
 utk::TrackBall *tball;
 utk::ColorBox *cbox;
+utk::Progress *pbar;
 float max_descent;
 
 
@@ -146,6 +147,9 @@ int main(int argc, char **argv)
 	tball = new utk::TrackBall(50, 50);
 	vbox->add_child(tball);
 
+	pbar = new utk::Progress;
+	vbox->add_child(pbar);
+
 	glutMainLoop();
 
 	return 0;
@@ -156,10 +160,10 @@ void redraw(void)
 	float h = b->get_value();
 	cbox->set_h(h);
 
-	float s, v;
+	pbar->set_value(r->get_value());
 
-	s = cbox->get_s();
-	v = cbox->get_v();
+	float s = cbox->get_s();
+	float v = cbox->get_v();
 
 	float r, g, b;
 	utk::hsv_to_rgb(&r, &g, &b, h, s, v);

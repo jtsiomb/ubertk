@@ -14,7 +14,7 @@ IVec2 Scrollbar::get_cursor_br() const
 	return rel + get_global_pos();
 }
 
-Scrollbar::Scrollbar(utk::Callback cb)
+void Scrollbar::initialize()
 {
 	dragging = false;
 	cursor_width = 20;
@@ -22,8 +22,26 @@ Scrollbar::Scrollbar(utk::Callback cb)
 	set_border(2);
 	set_size(100 + border * 2 + cursor_width, 20 + border * 2);
 	set_color(128, 100, 80);
-	set_callback(EVENT_MODIFY, cb);
 	orient = HORIZONTAL;
+	link_float = 0;
+}
+
+Scrollbar::Scrollbar(utk::Callback cb)
+{
+	initialize();
+	set_callback(EVENT_MODIFY, cb);
+}
+
+Scrollbar::Scrollbar(int orient, utk::Callback cb)
+{
+	initialize();
+	this->orient = orient;
+}
+
+Scrollbar::Scrollbar(float *link)
+{
+	initialize();
+	link_float = link;
 }
 
 Scrollbar::~Scrollbar() {}
@@ -61,6 +79,9 @@ Widget *Scrollbar::handle_event(Event *event)
 				cursor_pos += dx;
 				cursor_pos = cursor_pos < 0 ? 0 : (cursor_pos > track_len ? track_len : cursor_pos);
 
+				if(link_float) {
+					*link_float = get_value();
+				}
 				// TODO: also call callback and on_modify
 			}
 			return this;

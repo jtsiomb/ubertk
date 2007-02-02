@@ -18,6 +18,7 @@
 #include <utk_slider.h>
 #include <utk_colorbox.h>
 #include <utk_hsv.h>
+#include <utk_progress.h>
 
 namespace utk {
 

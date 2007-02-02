@@ -255,6 +255,12 @@
 			<File
 				RelativePath=".\src\utk_win.h">
 			</File>
+			<File
+				RelativePath=".\src\utk_progress.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_progress.h">
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\test.cc">

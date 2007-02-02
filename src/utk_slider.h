@@ -11,7 +11,6 @@ protected:
 	float start, end;
 	int vis_decimal;
 	bool show_value;
-	float *link_float;
 	int *link_int;
 
 	void initialize();
@@ -22,12 +21,12 @@ public:
 	Slider(float start, float end, int *link);
 	virtual ~Slider();
 
+	virtual Widget *handle_event(Event *event);
+
 	virtual void set_value(float val);
 	virtual float get_value() const;
 	virtual void operator=(float val);
 	virtual operator float() const;
-
-	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
 };

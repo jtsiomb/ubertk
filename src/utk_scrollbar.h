@@ -15,11 +15,17 @@ protected:
 	bool dragging;
 	int orient;
 
+	float *link_float;
+
 	IVec2 get_cursor_tl() const;
 	IVec2 get_cursor_br() const;
 
+	void initialize();
+
 public:
-	explicit Scrollbar(utk::Callback cb = 0);
+	Scrollbar(utk::Callback cb = 0);
+	Scrollbar(int orient, utk::Callback cb = 0);
+	Scrollbar(float *link);
 	virtual ~Scrollbar();
 
 	virtual Widget *handle_event(Event *event);

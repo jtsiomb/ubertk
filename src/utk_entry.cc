@@ -30,7 +30,7 @@ Widget *Entry::handle_event(Event *event)
 				if(!text.empty()) {
 					text.erase(text.end() - 1);
 
-					if(vfirst >= text.size() && vfirst > 0) {
+					if(vfirst >= (int)text.size() && vfirst > 0) {
 						vfirst--;
 						std::string view_str(text, vfirst);
 						while(vfirst > 0 && gfx::text_width(view_str.c_str(), 18) < size.x) {

@@ -27,9 +27,12 @@ void Drawable::set_color(int r, int g, int b, int a)
 	color = Color(r, g, b, a);
 }
 
+#define MIN(a, b)	((a) < (b) ? (a) : (b))
 void Drawable::set_color(const Color &col)
 {
 	color = col;
+	light_color = lighter_color(col);
+	dark_color = darker_color(col);
 }
 
 const Color &Drawable::get_color() const

@@ -30,6 +30,19 @@ Color::Color(int r, int g, int b, int a)
 	this->a = a;
 }
 
+Color lighter_color(const Color &col)
+{
+	int r = (int)(col.r * 1.25);
+	int g = (int)(col.b * 1.25);
+	int b = (int)(col.b * 1.25);
+	return Color(r > 255 ? 255 : r, g > 255 ? 255 : g, b > 255 ? 255 : b, col.a);
+}
+
+Color darker_color(const Color &col)
+{
+	return Color((int)(col.r * 0.75), (int)(col.g * 0.75), (int)(col.b * 0.75), col.a);
+}
+
 Rect::Rect()
 {
 	x1 = x2 = y1 = y2 = 0;

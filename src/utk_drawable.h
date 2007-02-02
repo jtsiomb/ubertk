@@ -9,7 +9,7 @@ namespace utk {
 
 class Drawable : public Widget {
 protected:
-	Color color;
+	Color color, light_color, dark_color;
 	int border;
 	std::string text;
 

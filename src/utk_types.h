@@ -22,6 +22,9 @@ public:
 	Color(int r = 0, int g = 0, int b = 0, int a = 255);
 };
 
+Color lighter_color(const Color &col);
+Color darker_color(const Color &col);
+
 class Rect {
 public:
 	int x1, y1, x2, y2;

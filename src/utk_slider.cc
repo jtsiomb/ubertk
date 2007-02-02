@@ -9,26 +9,25 @@ void Slider::initialize()
 	start = end = 0;
 	vis_decimal = 2;
 	show_value = true;
-	link_float = 0;
 	link_int = 0;
 
 	set_size(size.x, size.y);
 }
 
 Slider::Slider(float start, float end, utk::Callback cb)
+	: Scrollbar(cb)
 {
 	initialize();
 	this->start = start;
 	this->end = end;
-	set_callback(EVENT_MODIFY, cb);
 }
 
 Slider::Slider(float start, float end, float *link)
+	: Scrollbar(link)
 {
 	initialize();
 	this->start = start;
 	this->end = end;
-	link_float = link;
 }
 
 Slider::Slider(float start, float end, int *link)
@@ -41,8 +40,6 @@ Slider::Slider(float start, float end, int *link)
 
 Slider::~Slider() {}
 
-#define NORM_TO_PERC(x)	(int)(100.0 * (x))
-#define PERC_TO_NORM(x)	((float)(x) / 100.0)
 
 void Slider::set_value(float val)
 {
@@ -68,9 +65,6 @@ Widget *Slider::handle_event(Event *event)
 {
 	Widget *ret = Scrollbar::handle_event(event);
 
-	if(link_float) {
-		*link_float = get_value();
-	}
 	if(link_int) {
 		*link_int = (int)get_value();
 	}
