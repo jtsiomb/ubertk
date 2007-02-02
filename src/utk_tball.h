@@ -7,7 +7,8 @@ namespace utk {
 
 class TrackBall : public Image {
 private:
-	struct { float x, y, z; } *prim_rays;
+	struct { float x, y, z; } *norm_cache;
+	bool cache_valid;
 
 protected:
 	float phi, theta;

@@ -60,7 +60,7 @@ void Progress::draw() const
 	float val = get_value();
 	int bar_x = gpos.x + (int)(val * (size.x - border * 2)) + border;
 
-	Color pbar_col(200, 100, 80, color.a);
+	Color pbar_col(74, 122, 171, color.a);
 	if(!infinite) {
 		IVec2 pb_tl(gpos.x + border, gpos.y + border);
 		IVec2 pb_br(bar_x, gpos.y + size.y - border);
@@ -68,16 +68,17 @@ void Progress::draw() const
 		gfx::color(pbar_col.r, pbar_col.g, pbar_col.b, pbar_col.a);
 		gfx::rect(pb_tl.x, pb_tl.y, pb_br.x, pb_br.y);
 
-		Color ltcol = lighter_color(pbar_col);
-		Color drcol = darker_color(pbar_col);
+		if(pb_tl.x < pb_br.x) {
+			Color ltcol = lighter_color(pbar_col);
+			gfx::color(ltcol.r, ltcol.g, ltcol.b, ltcol.a);
+			gfx::rect(pb_tl.x, pb_tl.y, pb_br.x, pb_tl.y + 1);
+			gfx::rect(pb_tl.x, pb_tl.y, pb_tl.x + 1, pb_br.y);
 
-		gfx::color(ltcol.r, ltcol.g, ltcol.b, ltcol.a);
-		gfx::rect(pb_tl.x, pb_tl.y, pb_br.x, pb_tl.y + 1);
-		gfx::rect(pb_tl.x, pb_tl.y, pb_tl.x + 1, pb_br.y);
-
-		gfx::color(drcol.r, drcol.g, drcol.b, drcol.a);
-		gfx::rect(pb_tl.x, pb_br.y - 1, pb_br.x, pb_br.y);
-		gfx::rect(pb_br.x - 1, pb_tl.y, pb_br.x, pb_br.y);
+			Color drcol = darker_color(pbar_col);
+			gfx::color(drcol.r, drcol.g, drcol.b, drcol.a);
+			gfx::rect(pb_tl.x, pb_br.y - 1, pb_br.x, pb_br.y);
+			gfx::rect(pb_br.x - 1, pb_tl.y, pb_br.x, pb_br.y);
+		}
 	} else {
 		gfx::rect(MAX(gpos.x + border, bar_x - 30), gpos.y + border, bar_x, gpos.y + size.y - border);
 	}
