@@ -1,5 +1,3 @@
-// utk_huebox.cc
-
 #include "utk_huebox.h"
 
 namespace utk {
@@ -31,7 +29,7 @@ void HueBox::on_click(int x, int y)
 
 }
 
-HueBox::HueBox(utk::Callback cb = 0) : Image(128, 10, cb)
+HueBox::HueBox(utk::Callback cb) : Image(128, 10, cb)
 {
 	h = sel_h = 0;
 }

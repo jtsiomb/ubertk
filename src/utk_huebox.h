@@ -1,7 +1,5 @@
-// utk_huebox.h
-
-#ifndef _UBERTK_HUEBOX_H_
-#define _UBERTK_HUEBOX_H_
+#ifndef UBERTK_HUEBOX_H_
+#define UBERTK_HUEBOX_H_
 
 #include <utk_img.h>
 
