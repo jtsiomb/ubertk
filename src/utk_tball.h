@@ -1,5 +1,3 @@
-// utk_tball.h
-
 #ifndef _UBERTK_TBALL_H_
 #define _UBERTK_TBALL_H_
 
@@ -8,6 +6,9 @@
 namespace utk {
 
 class TrackBall : public Image {
+private:
+	struct { float x, y, z; } *prim_rays;
+
 protected:
 	float phi, theta;
 

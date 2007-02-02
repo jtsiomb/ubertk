@@ -165,12 +165,12 @@ void redraw(void)
 	float s = cbox->get_s();
 	float v = cbox->get_v();
 
-	float r, g, b;
-	utk::hsv_to_rgb(&r, &g, &b, h, s, v);
+	//float r, g, b;
+	//utk::hsv_to_rgb(&r, &g, &b, h, s, v);
 
 	float t = (float)get_msec() / 1000.0;
-	//glClearColor(r->get_percent() / 100.0f, g->get_percent() / 100.0f, b->get_percent() / 100.0f, 1);
-	glClearColor(r, g, b, 1);
+	glClearColor(r->get_value(), g->get_value(), b->get_value(), 1);
+	//glClearColor(r, g, b, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);

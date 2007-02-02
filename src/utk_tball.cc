@@ -1,113 +1,97 @@
-// utk_tball.cc
-
-#include "utk_tball.h"
 #include <math.h>
+#include "utk_tball.h"
 
 namespace utk {
 
-// x, y, z are [-1, 1]
-static float get_depth(float x, float y);
-static float get_sphi(float x, float y, float z);
-static float get_stheta(float x, float y, float z);
+struct vec3_t {
+	float x, y, z;
+};
 
-static inline bool raytrace_sphere(float x, float y, float &phi, float &theta)
+static vec3_t get_primary_ray(int x, int y, int w, int h)
 {
-	// eye point
-	//Vector3 eye = Vector3(0, 0, -2);
-	float eye_x, eye_y, eye_z;
-	eye_x = eye_y = 0;
-	eye_z = -3;
+	vec3_t pt;
+	float aspect = (float)w / (float)h;
 
-	//Vector3 ray_dir = Vector3(x, y, 0) - eye;
-	float rd_x, rd_y, rd_z;
-	rd_x = x;
-	rd_y = y;
-	rd_z = 0;
-	rd_x -= eye_x;
-	rd_y -= eye_y;
-	rd_z -= eye_z;
-	
-	//ray_dir.Normalize();
-	float rd_l = sqrt(rd_x*rd_x + rd_y*rd_y + rd_z*rd_z);
-	rd_x /= rd_l;
-	rd_y /= rd_l;
-	rd_z /= rd_l;
+	pt.x = ((float)x / (float)w) - 0.5;
+	pt.y = -(((float)y / (float)h) - 0.5) / aspect;
+	pt.z = 1.0;
 
-	// closest point to the center
-	//Vector3 eye_to_center = Vector3(0, 0, 0) - eye;
-	float ec_x, ec_y, ec_z;
-	ec_x = -eye_x;
-	ec_y = -eye_y;
-	ec_z = -eye_z;
-	
-	//float dist = dot_product(ray_dir, eye_to_center);
-	float dist = ec_x * rd_x + ec_y * rd_y + ec_z * rd_z;
-	
-	//Vector3 closest_point = eye + dist * ray_dir;
-	float cp_x, cp_y, cp_z;
-	cp_x = rd_x * dist + eye_x;
-	cp_y = rd_y * dist + eye_y;
-	cp_z = rd_z * dist + eye_z;
+	return pt;
+}
 
-	//float closest_length = closet_point.length();
-	float cp_l = sqrt(cp_x * cp_x + cp_y * cp_y + cp_z * cp_z);
+#define SQ(x)	((x) * (x))
 
-	if (cp_l > 1.0f) return false;
+// XXX: assumes rays start from origin
+bool ray_sphere(vec3_t spos, float srad, vec3_t rdir, vec3_t *sp)
+{
+	float a, b, c, d, sqrt_d, t1, t2, dist;
 
-	// how deep is the closest point
-	//float deep = sqrt(closest_length * closest_length + 1.0f * 1.0f);
-	float deep = sqrt(cp_l * cp_l + 1.0f);
+	a = SQ(rdir.x) + SQ(rdir.y) + SQ(rdir.z);
+	b = 2.0 * rdir.x * -spos.x + 2.0 * rdir.y * -spos.y + 2.0 * rdir.z * -spos.z;
+	c = SQ(spos.x) + SQ(spos.y) + SQ(spos.z) + 2.0 * (-spos.x - spos.y - spos.z) - SQ(srad);
 
-	// sphere point
-	//Vector3 sp = closest_point - deep * ray_dir;
-	float sp_x, sp_y, sp_z;
-	sp_x = cp_x - deep * rd_x;
-	sp_y = cp_y - deep * rd_y;
-	sp_z = cp_z - deep * rd_z;
+	if((d = SQ(b) - 4.0 * a * c) < 0.0) return false;
 
-	phi = get_sphi(sp_x, sp_y, sp_z);
-	theta = get_stheta(sp_x, sp_y, sp_z);
+	sqrt_d = sqrt(d);
+	t1 = (-b + sqrt_d) / (2.0 * a);
+	t2 = (-b - sqrt_d) / (2.0 * a);
+
+	if(t1 < 0.00001 && t2 < 0.00001) return false;
+
+	if(t1 < 0.00001) t1 = t2;
+	if(t2 < 0.00001) t2 = t1;
+	dist = t1 < t2 ? t1 : t2;
+
+	sp->x = rdir.x * dist;
+	sp->y = rdir.y * dist;
+	sp->z = rdir.z * dist;
 	return true;
 }
 
+#define PI		3.141592653
+#define TWO_PI	6.283185307
+
 void TrackBall::update()
 {
-	float x, y, phi, theta;
-	unsigned int *dst = pixels;
-	for (int j=0; j<img_h; j++)
-	{
-		for (int i=0; i<img_w; i++)
-		{
-			x = (float) i / (float) (img_w - 1);
-			x = (x * 2) - 1;
-			y = (float) j / (float) (img_h - 1);
-			y = (y * 2) - 1;
+	vec3_t ldir = {-0.577, 0.577, -0.577};
+	vec3_t sph_pos = {0, 0, 10.5};
+	float sph_rad = 1.0;
 
-			if (!raytrace_sphere(x, y, phi, theta))
-			{
-				*dst++ = 0;
-				continue;
+	unsigned int *pptr = pixels;
+	for(int y=0; y<img_h; y++) {
+		for(int x=0; x<img_w; x++) {
+			vec3_t sp, norm, ray_dir = get_primary_ray(x, y, img_w, img_h);
+
+			if(ray_sphere(sph_pos, sph_rad, ray_dir, &sp)) {
+				norm.x = sp.x - sph_pos.x;
+				norm.y = sp.y - sph_pos.y;
+				norm.z = sp.z - sph_pos.z;
+				float nlen = sqrt(SQ(norm.x) + SQ(norm.y) + SQ(norm.z));
+				norm.x /= nlen;
+				norm.y /= nlen;
+				norm.z /= nlen;
+
+				float dot = ldir.x * norm.x + ldir.y * norm.y + ldir.z * norm.z;
+				dot = dot < 0.0 ? 0.0 : (dot > 1.0 ? 1.0 : dot);
+
+				float theta = atan2(norm.z, norm.x) - this->theta;
+				float phi = acos(norm.y) - this->phi;
+
+				while(theta < 0.0) theta += TWO_PI;
+				while(phi < 0.0) phi += PI;
+
+				int tx = (int)(12.0 * fmod(theta, TWO_PI) / TWO_PI);
+				int ty = (int)(6.0 * fmod(phi, PI) / PI);
+
+				int cint = (int)(50.0 * dot);
+				if((tx % 2) == (ty % 2)) {
+					cint = (int)(255.0 * dot);
+				}
+
+				*pptr++ = 0xff000000 | (cint << 16) | (cint << 8) | cint;
+			} else {
+				*pptr++ = 0;
 			}
-
-			phi = fmod(phi + this->phi, 3.14159f) / 3.14159f;
-			theta = fmod(theta + this->theta, 2 * 3.14159f) / (2 * 3.14159f);
-
-			phi *= 6;
-			theta *= 12;
-
-			int p = (int)fmod(phi, 12);
-			int t = (int)fmod(theta, 6);
-			
-			//printf("%f, %f\n", phi, theta);
-			unsigned int c1 = 0xFF000000;
-			unsigned int c2 = 0xFFFFFFFF;
-			bool white = true;
-			if (p % 2) white = false;
-			if (t % 2) white = !white;
-
-			unsigned int color = white ? c1 : c2;
-
-			*dst++ = color;
 		}
 	}
 }
@@ -146,23 +130,5 @@ float TrackBall::get_theta() const
 	return theta;
 }
 
-
-static float get_depth(float x, float y)
-{
-	float d = (float) hypot(x, y);
-	if (d > 1.0f) return 0.0f;
-
-	return cos(d);
-}
-
-static float get_sphi(float x, float y, float z)
-{
-	return acos(y / sqrt(x*x + y*y + z*z));
-}
-
-static float get_stheta(float x, float y, float z)
-{
-	return atan2(z, x);
-}
 
 } // ena namespace utk
