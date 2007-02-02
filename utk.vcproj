@@ -202,6 +202,12 @@
 				RelativePath=".\src\utk_hsv.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_huebox.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_huebox.h">
+			</File>
+			<File
 				RelativePath=".\src\utk_img.cc">
 			</File>
 			<File
@@ -212,6 +218,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_label.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_progress.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_progress.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_radio.cc">
@@ -254,12 +266,6 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_win.h">
-			</File>
-			<File
-				RelativePath=".\src\utk_progress.cc">
-			</File>
-			<File
-				RelativePath=".\src\utk_progress.h">
 			</File>
 		</Filter>
 		<File
