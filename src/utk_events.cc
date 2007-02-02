@@ -8,6 +8,7 @@ static int last_press_x, last_press_y;
 static Widget *mouse_press_widget;
 static Widget *focused_widget;
 static IVec2 last_drag;
+static IVec2 mouse_pos;
 
 Event::Event()
 {
@@ -81,6 +82,9 @@ void event(Event *e)
 
 	MMotionEvent *mev;
 	if((mev = dynamic_cast<MMotionEvent*>(e))) {
+		mouse_pos.x = mev->x;
+		mouse_pos.y = mev->y;
+
 		root->handle_event(e);
 
 		if(mouse_button_state >= 0) {
@@ -130,6 +134,11 @@ int get_button_state()
 Widget *get_button_press_widget()
 {
 	return mouse_press_widget;
+}
+
+IVec2 get_mouse_pos()
+{
+	return mouse_pos;
 }
 
 IVec2 get_last_drag_pos()

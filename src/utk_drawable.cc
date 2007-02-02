@@ -25,6 +25,8 @@ const char *Drawable::get_text() const
 void Drawable::set_color(int r, int g, int b, int a)
 {
 	color = Color(r, g, b, a);
+	light_color = lighter_color(color);
+	dark_color = darker_color(color);
 }
 
 #define MIN(a, b)	((a) < (b) ? (a) : (b))
@@ -42,7 +44,7 @@ const Color &Drawable::get_color() const
 
 void Drawable::set_alpha(int a)
 {
-	color.a = a;
+	color.a = light_color.a = dark_color.a = a;
 }
 
 int Drawable::get_alpha() const

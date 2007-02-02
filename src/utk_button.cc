@@ -37,9 +37,11 @@ Widget *Button::handle_event(Event *event)
 	}
 
 	MButtonEvent *bev;
-	if((bev = dynamic_cast<MButtonEvent*>(event)) && hit_test(bev->x, bev->y)) {
-		pressed = bev->pressed;
-		return this;
+	if((bev = dynamic_cast<MButtonEvent*>(event))) {
+		if(bev->pressed && hit_test(bev->x, bev->y) || !bev->pressed) {
+			pressed = bev->pressed;
+			if(pressed) return this;
+		}
 	}
 
 	return 0;
@@ -49,25 +51,35 @@ void Button::draw() const
 {
 	IVec2 gpos = get_global_pos();
 
-	if(pressed) {
-		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
-	} else {
-		gfx::color(color.r, color.g, color.b, color.a);
-	}
+	gfx::color(color.r, color.g, color.b, color.a);
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
 	if(border) {
-		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
+		for(int i=0; i<border; i++) {
+			if(pressed) {
+				gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
+			} else {
+				gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
+			}
+			gfx::rect(gpos.x + i, gpos.y + size.y - 1 - i, gpos.x + size.x - i, gpos.y + size.y - i);
+			gfx::rect(gpos.x + size.x - 1 - i, gpos.y + i, gpos.x + size.x - i, gpos.y + size.y - i);
 
-		gfx::line(gpos.x, gpos.y, gpos.x + size.x, gpos.y, border);
-		gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
-		gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y, border);
-		gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);
+			if(pressed) {
+				gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
+			} else {
+				gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
+			}
+			gfx::rect(gpos.x + i, gpos.y + i, gpos.x + size.x - i, gpos.y + 1 + i);
+			gfx::rect(gpos.x + i, gpos.y + i, gpos.x + 1 + i, gpos.y + size.y - i);
+		}
 	}
 
 	if(text.size()) {
+		const char *txt = get_text();
+		int twidth = gfx::text_width(txt, 18);
+
 		gfx::color(0, 0, 0, color.a);
-		gfx::text(gpos.x + border, gpos.y + size.y, get_text(), 18);
+		gfx::text(gpos.x + (size.x - twidth) / 2, gpos.y + size.y, get_text(), 18);
 	}
 
 	Widget::draw();

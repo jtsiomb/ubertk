@@ -136,8 +136,6 @@ int main(int argc, char **argv)
 
 	vbox->add_child(new utk::Entry);
 
-	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
-
 	ninja = new utk::CheckBox("Eimai ninja!");
 	vbox->add_child(ninja);
 	
@@ -150,6 +148,9 @@ int main(int argc, char **argv)
 
 	pbar = new utk::Progress;
 	vbox->add_child(pbar);
+
+	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
+
 
 	glutMainLoop();
 

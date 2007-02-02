@@ -30,24 +30,35 @@ void ColorBox::on_click(int x, int y)
 
 	sel_s = x;
 	sel_v = y;
+
+	float r, g, b;
+	hsv_to_rgb(&r, &g, &b, h, s, v);
+	Drawable::set_color((int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), color.a);
 }
+
+#define CLAMP(x, a, b)	((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
 
 void ColorBox::on_drag(int dx, int dy)
 {
-	sel_s += dx;
-	sel_v += dy;
-	if (sel_s < 0) sel_s = 0;
-	if (sel_s >= img_w) sel_s = img_w - 1;
-	if (sel_v < 0) sel_v = 0;
-	if (sel_v >= img_h) sel_v = img_h - 1;
+	IVec2 gpos = get_global_pos();
+	IVec2 mpos = get_mouse_pos();
 
-	s = (float) sel_s / (float) (img_w - 1);
-	v = (float) sel_v / (float) (img_h - 1);
+	sel_s = CLAMP(mpos.x - gpos.x, 0, img_w - 1);
+	sel_v = CLAMP(mpos.y - gpos.y, 0, img_w - 1);
+
+	s = (float)sel_s / (float)(img_w - 1);
+	v = (float)sel_v / (float)(img_h - 1);
+
+	float r, g, b;
+	hsv_to_rgb(&r, &g, &b, h, s, v);
+	Drawable::set_color((int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), color.a);
 }
 
 ColorBox::ColorBox(utk::Callback cb) : Image(150, 150, cb)
 {
-	sel_s = sel_v = h = s = v = 0;
+	sel_s = sel_v = 0;
+	h = s = v = 0;
+	set_color(0, 0, 0);
 }
 ColorBox::~ColorBox()
 {
@@ -70,9 +81,25 @@ float ColorBox::get_v() const
 void ColorBox::set_h(float h)
 {
 	this->h = h;
+
+	float r, g, b;
+	hsv_to_rgb(&r, &g, &b, h, s, v);
+	Drawable::set_color((int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), color.a);
 }
 
-unsigned int ColorBox::get_selected_color() const
+void ColorBox::set_color(int r, int g, int b, int a)
+{
+	Drawable::set_color(r, g, b, a);
+	rgb_to_hsv((float)r / 255.0, (float)g / 255.0, (float)b / 255.0, &h, &s, &v);
+}
+
+void ColorBox::set_color(const Color &col)
+{
+	Drawable::set_color(col);
+	rgb_to_hsv((float)col.r / 255.0, (float)col.g / 255.0, (float)col.b / 255.0, &h, &s, &v);
+}
+
+unsigned int ColorBox::get_packed_color() const
 {
 	return pack_hsv(h, s, v);
 }
