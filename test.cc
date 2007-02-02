@@ -161,7 +161,7 @@ void redraw(void)
 	float h = b->get_value();
 	cbox->set_h(h);
 
-	pbar->set_value(r->get_value());
+	pbar->set_value(b->get_value());
 
 	float s = cbox->get_s();
 	float v = cbox->get_v();

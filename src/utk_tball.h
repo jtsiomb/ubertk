@@ -19,7 +19,7 @@ protected:
 	virtual void on_motion(int x, int y);
 	virtual void on_drag(int dx, int dy);
 public:
-	TrackBall(int w = 100, int h = 100, utk::Callback cb = 0);
+	TrackBall(int w = 50, int h = 50, utk::Callback cb = 0);
 	virtual ~TrackBall();
 
 	float get_phi() const;
