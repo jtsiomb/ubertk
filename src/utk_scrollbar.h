@@ -10,7 +10,7 @@ class Scrollbar : public Drawable {
 protected:
 	int cursor_width;
 	int track_len, track_start;
-	float val;
+	int cursor_pos;
 
 	bool dragging;
 	int orient;
@@ -19,12 +19,13 @@ protected:
 	IVec2 get_cursor_br() const;
 
 public:
-	Scrollbar(utk::Callback cb = 0);
+	explicit Scrollbar(utk::Callback cb = 0);
 	virtual ~Scrollbar();
 
 	virtual Widget *handle_event(Event *event);
 
 	virtual void set_size(int w, int h);
+	virtual void set_border(int border);
 	
 	virtual void set_value(float val);
 	virtual float get_value() const;

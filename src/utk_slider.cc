@@ -11,6 +11,8 @@ void Slider::initialize()
 	show_value = true;
 	link_float = 0;
 	link_int = 0;
+
+	set_size(size.x, size.y);
 }
 
 Slider::Slider(float start, float end, utk::Callback cb)
@@ -44,12 +46,12 @@ Slider::~Slider() {}
 
 void Slider::set_value(float val)
 {
-	val = (val - start) / (end - start);
+	Scrollbar::set_value((val - start) / (end - start));
 }
 
 float Slider::get_value() const
 {
-	return val * (end - start) + start;
+	return Scrollbar::get_value() * (end - start) + start;
 }
 
 void Slider::operator=(float val)

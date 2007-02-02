@@ -1,5 +1,3 @@
-// utk_scrollbar.cc
-
 #include "utk_scrollbar.h"
 #include "utk_gfx.h"
 
@@ -7,12 +5,12 @@ namespace utk {
 
 IVec2 Scrollbar::get_cursor_tl() const
 {
-	IVec2 rel((int)(val * track_len) + track_start - cursor_width / 2, border);
+	IVec2 rel(cursor_pos + track_start - cursor_width / 2, border);
 	return rel + get_global_pos();
 }
 IVec2 Scrollbar::get_cursor_br() const
 {
-	IVec2 rel((int)(val * track_len) + track_start + cursor_width / 2, size.y - border);
+	IVec2 rel(cursor_pos + track_start + cursor_width / 2, size.y - border);
 	return rel + get_global_pos();
 }
 
@@ -20,9 +18,9 @@ Scrollbar::Scrollbar(utk::Callback cb)
 {
 	dragging = false;
 	cursor_width = 20;
-	val = 0;
-	set_size(100 + border * 2, 20 + border * 2);
+	cursor_pos = 0;
 	set_border(2);
+	set_size(100 + border * 2 + cursor_width, 20 + border * 2);
 	set_color(128, 100, 80);
 	set_callback(EVENT_MODIFY, cb);
 	orient = HORIZONTAL;
@@ -52,7 +50,6 @@ Widget *Scrollbar::handle_event(Event *event)
 		}
 	}
 
-	// no child handled the event, either we do or return false
 	MMotionEvent *mmev;
 	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
 		if(dragging) {
@@ -61,9 +58,8 @@ Widget *Scrollbar::handle_event(Event *event)
 			if(dx > 0 && mmev->x < get_cursor_tl().x) dx = 0;
 			
 			if(dx) {
-				int cursor_pos = get_cursor_tl().x + dx - get_global_pos().x;
-				val = (float)(cursor_pos - border) / (float)track_len;
-				val = val < 0.0 ? 0.0 : (val > 1.0 ? 1.0 : val);
+				cursor_pos += dx;
+				cursor_pos = cursor_pos < 0 ? 0 : (cursor_pos > track_len ? track_len : cursor_pos);
 
 				// TODO: also call callback and on_modify
 			}
@@ -78,29 +74,35 @@ void Scrollbar::set_size(int w, int h)
 {
 	Widget::set_size(w, h);
 	track_start = border + cursor_width / 2;
-	track_len = w - border * 2 - cursor_width / 2;
+	track_len = w - border * 2 - cursor_width;
+}
+
+void Scrollbar::set_border(int border)
+{
+	Drawable::set_border(border);
+	track_start = border + cursor_width / 2;
+	track_len = size.x - border * 2 - cursor_width;
 }
 
 void Scrollbar::set_value(float val)
 {
-	this->val = val;
+	cursor_pos = (int)(val * track_len);
 	// TODO: modify event
 }
 
 float Scrollbar::get_value() const
 {
-	return val;
+	return (float)cursor_pos / (float)track_len;
 }
 
 void Scrollbar::operator=(float val)
 {
-	this->val = val;
-	// TODO: modify event
+	set_value(val);
 }
 
 Scrollbar::operator float() const
 {
-	return val;
+	return get_value();
 }
 
 void Scrollbar::draw() const
@@ -111,31 +113,25 @@ void Scrollbar::draw() const
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
 	// draw cursor line
-	gfx::color(127, 127, 127, 255);
-	gfx::rect(gpos.x + 2, gpos.y + size.y / 2 - 2, 
-		gpos.x + size.x - 4, gpos.y + size.y / 2 + 2);
+	gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
+	gfx::rect(gpos.x + track_start, gpos.y + size.y / 2 - 1, gpos.x + track_start + track_len, gpos.y + size.y / 2 + 1);
 
 	// draw cursor
-	gfx::color(0, 0, dragging ? 255 : 127, 255);
-	IVec2 tl, br;
-	tl = get_cursor_tl();
-	br = get_cursor_br();
-	//gfx::rect(tl.x, tl.y, br.x, br.y);
+	IVec2 tl = get_cursor_tl();
+	IVec2 br = get_cursor_br();
 
-	gfx::color(127, 127, 127, 255);
+	gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
 	gfx::circle(tl.x, tl.y, br.x, br.y, false);
-	if (dragging)
-	{
-		gfx::color(0, 255, 0, 255);
-	}
-	else
-	{
-		gfx::color(50, 50, 50, 255);
+
+	if (dragging) {
+		gfx::color_clamp((int)(color.r * 1.1), (int)(color.g * 1.5), (int)(color.b * 1.6), color.a);
+	} else {
+		gfx::color(50, 50, 50, color.a);
 	}
 	gfx::circle(tl.x + 3, tl.y + 3, br.x - 3, br.y - 3, false);
 
 	if(border) {
-		gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
+		gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
 
 		gfx::line(gpos.x, gpos.y, gpos.x + size.x, gpos.y, border);
 		gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
