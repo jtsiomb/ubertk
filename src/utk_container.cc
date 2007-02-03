@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "utk_container.h"
 #include "utk_events.h"
+#include <stack>
 
 namespace utk {
 
@@ -165,10 +166,22 @@ size_t Container::size() const
 
 void Container::draw() const
 {
+	// draw in reverse order
+	//std::stack<Widget*> ch_stack;
 	const_iterator iter = begin();
 	while(iter != end()) {
+		//ch_stack.push(*iter++);
 		(*iter++)->draw();
 	}
+
+	/*
+	while (!ch_stack.empty())
+	{
+		Widget *ch = ch_stack.top();
+		ch_stack.pop();
+		ch->draw();
+	}
+	*/
 }
 
 int Container::get_width() const

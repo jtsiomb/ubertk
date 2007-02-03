@@ -53,6 +53,7 @@ Widget *Scrollbar::handle_event(Event *event)
 		return w;
 	}
 
+	// no child handled the event, either we do or return 0
 	MButtonEvent *mb;
 	if((mb = dynamic_cast<MButtonEvent*>(event)))
 	{
@@ -140,9 +141,10 @@ void Scrollbar::draw() const
 	// draw cursor
 	IVec2 tl = get_cursor_tl();
 	IVec2 br = get_cursor_br();
-
 	gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
 	gfx::circle(tl.x, tl.y, br.x, br.y, false);
+	gfx::color(0, dragging ? 255 : 0,0, 255);
+	gfx::circle(tl.x + 4, tl.y + 4, br.x - 4, br.y - 4, false);
 
 	if (dragging) {
 		gfx::color_clamp((int)(color.r * 1.1), (int)(color.g * 1.5), (int)(color.b * 1.6), color.a);

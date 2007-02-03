@@ -32,7 +32,7 @@ unsigned int get_msec(void);
 int xsz, ysz;
 
 utk::Container *utkroot;
-utk::Window *win;
+utk::Window *win, *win2;
 utk::Scrollbar *r, *g, *b;
 utk::Label *melaxrines;
 utk::CheckBox *ninja;
@@ -150,7 +150,6 @@ int main(int argc, char **argv)
 	vbox->add_child(pbar);
 
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
-
 
 	glutMainLoop();
 
