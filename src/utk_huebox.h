@@ -14,7 +14,7 @@ protected:
 
 	virtual void on_click(int x, int y);
 	//virtual void on_motion(int x, int y);
-	//virtual void on_drag(int dx, int dy);
+	virtual void on_drag(int dx, int dy);
 public:
 	HueBox(utk::Callback cb = 0);
 	virtual ~HueBox();

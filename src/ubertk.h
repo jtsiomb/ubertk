@@ -19,6 +19,7 @@
 #include <utk_colorbox.h>
 #include <utk_hsv.h>
 #include <utk_progress.h>
+#include <utk_huebox.h>
 
 namespace utk {
 

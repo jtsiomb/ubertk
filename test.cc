@@ -40,6 +40,7 @@ utk::Container *vbox;
 utk::TrackBall *tball;
 utk::ColorBox *cbox;
 utk::Progress *pbar;
+utk::HueBox *hue;
 float max_descent;
 
 
@@ -141,6 +142,9 @@ int main(int argc, char **argv)
 	
 	cbox = new utk::ColorBox();
 	vbox->add_child(cbox);
+	hue = new utk::HueBox();
+	vbox->add_child(hue);
+
 	vbox->add_child(b);
 
 	tball = new utk::TrackBall(50, 50);
@@ -158,7 +162,7 @@ int main(int argc, char **argv)
 
 void redraw(void)
 {
-	float h = b->get_value();
+	float h = hue->get_h();
 	cbox->set_h(h);
 
 	pbar->set_value(b->get_value());
