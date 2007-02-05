@@ -8,7 +8,6 @@ namespace utk {
 Container::Container()
 {
 	spacing = 4;
-	border = 0;
 	cache_idx = -1;
 }
 
@@ -93,16 +92,6 @@ void Container::set_spacing(int sp)
 int Container::get_spacing() const
 {
 	return spacing;
-}
-
-void Container::set_border(int b)
-{
-	border = b;
-}
-
-int Container::get_border() const
-{
-	return border;
 }
 
 Container::iterator Container::begin()
@@ -191,7 +180,7 @@ int Container::get_width() const
 	{
 		w += (*this)[i]->get_width() + spacing;
 	}
-	w += 2 * border;
+	w += 2 * padding;
 	return (int)w;
 }
 
@@ -200,9 +189,9 @@ int Container::get_width() const
 /* ---- layout function for the horizontal box container ---- */
 void HBox::layout()
 {
-	int cur_x = border;
+	int cur_x = padding;
 	for(size_t i=0; i<cont.size(); i++) {
-		(*this)[i]->set_pos(cur_x, border);
+		(*this)[i]->set_pos(cur_x, padding);
 		cur_x += (*this)[i]->get_width() + spacing;
 	}
 }
@@ -210,9 +199,9 @@ void HBox::layout()
 /* ---- layout function for the vertical box container ---- */
 void VBox::layout()
 {
-	int cur_y = border;
+	int cur_y = padding;
 	for(size_t i=0; i<cont.size(); i++) {
-		(*this)[i]->set_pos(border, cur_y);
+		(*this)[i]->set_pos(padding, cur_y);
 		cur_y += (*this)[i]->get_height() + spacing;
 	}
 }

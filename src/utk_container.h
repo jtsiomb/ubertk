@@ -15,7 +15,7 @@ private:
 
 protected:
 	std::list<Widget*> cont;
-	int spacing, border;
+	int spacing;
 
 	virtual void layout() = 0;
 
@@ -36,9 +36,6 @@ public:
 
 	virtual void set_spacing(int sp);
 	virtual int get_spacing() const;
-
-	virtual void set_border(int b);
-	virtual int get_border() const;
 
 	virtual iterator begin();
 	virtual const_iterator begin() const;

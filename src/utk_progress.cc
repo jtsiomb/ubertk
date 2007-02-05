@@ -54,8 +54,12 @@ void Progress::draw() const
 {
 	IVec2 gpos = get_global_pos();
 
-	gfx::color(color.r, color.g, color.b, color.a);
-	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
+	gfx::color_clamp(color.r, color.g, color.b, color.a);
+	if(border) {
+		gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | gfx::BEVEL_INSET, 1);
+	} else {
+		gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
+	}
 
 	float val = get_value();
 	int bar_x = gpos.x + (int)(val * (size.x - border * 2)) + border;
@@ -65,41 +69,14 @@ void Progress::draw() const
 		IVec2 pb_tl(gpos.x + border, gpos.y + border);
 		IVec2 pb_br(bar_x, gpos.y + size.y - border);
 
-		gfx::color(pbar_col.r, pbar_col.g, pbar_col.b, pbar_col.a);
+		gfx::color_clamp(pbar_col.r, pbar_col.g, pbar_col.b, pbar_col.a);
+		
 		gfx::rect(pb_tl.x, pb_tl.y, pb_br.x, pb_br.y);
-
 		if(pb_tl.x < pb_br.x) {
-			Color ltcol = lighter_color(pbar_col);
-			gfx::color(ltcol.r, ltcol.g, ltcol.b, ltcol.a);
-			gfx::rect(pb_tl.x, pb_tl.y, pb_br.x, pb_tl.y + 1);
-			gfx::rect(pb_tl.x, pb_tl.y, pb_tl.x + 1, pb_br.y);
-
-			Color drcol = darker_color(pbar_col);
-			gfx::color(drcol.r, drcol.g, drcol.b, drcol.a);
-			gfx::rect(pb_tl.x, pb_br.y - 1, pb_br.x, pb_br.y);
-			gfx::rect(pb_br.x - 1, pb_tl.y, pb_br.x, pb_br.y);
+			gfx::bevel(pb_tl.x, pb_tl.y, pb_br.x, pb_br.y, 0, 1);
 		}
 	} else {
 		gfx::rect(MAX(gpos.x + border, bar_x - 30), gpos.y + border, bar_x, gpos.y + size.y - border);
-	}
-
-	if(border) {
-
-		Color dark_color = darker_color(color);
-		gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
-		gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + 1);
-		gfx::rect(gpos.x, gpos.y, gpos.x + 1, gpos.y + size.y);
-
-		Color light_color = lighter_color(color);
-		gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
-		gfx::rect(gpos.x, gpos.y + size.y - 1, gpos.x + size.x, gpos.y + size.y);
-		gfx::rect(gpos.x + size.x - 1, gpos.y, gpos.x + size.x, gpos.y + size.y);
-
-		/*gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
-		gfx::line(gpos.x, gpos.y, gpos.x + size.x, gpos.y, border);
-		gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
-		gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y, border);
-		gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);*/
 	}
 
 	Widget::draw();

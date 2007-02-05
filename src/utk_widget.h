@@ -11,6 +11,7 @@ class Event;
 class Widget {
 protected:
 	IVec2 pos, size;
+	int padding;
 
 	Widget *child, *parent;
 	bool visible;
@@ -28,6 +29,7 @@ public:
 	virtual void destroy_children(bool enable);
 
 	virtual void set_pos(int x, int y);
+	virtual void set_pos(IVec2 pos);
 	virtual IVec2 get_pos() const;
 	virtual IVec2 get_global_pos() const;
 
@@ -35,6 +37,9 @@ public:
 	virtual IVec2 get_size() const;
 	virtual int get_width() const;
 	virtual int get_height() const;
+
+	virtual void set_padding(int pad);
+	virtual int get_padding() const;
 
 	virtual void set_visible(bool vis);
 	virtual bool get_visible() const;

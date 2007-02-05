@@ -27,6 +27,9 @@ namespace utk {
 		void set_clip(int x1, int y1, int x2, int y2);
 
 		void color_clamp(int r, int g, int b, int a);
+
+		enum {BEVEL_INSET = 1, BEVEL_FILLBG = 2};
+		void bevel(int x1, int y1, int x2, int y2, unsigned int flags = 0, int thickness = 1);
 	}
 }
 

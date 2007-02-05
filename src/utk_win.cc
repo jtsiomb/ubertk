@@ -11,6 +11,7 @@ Window::Window()
 	visible = false;
 	color.r = color.g = color.b = 128;
 	border = 2;
+	padding = 4;
 	tbar_height = 20;
 }
 

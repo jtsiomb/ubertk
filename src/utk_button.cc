@@ -51,28 +51,8 @@ void Button::draw() const
 {
 	IVec2 gpos = get_global_pos();
 
-	gfx::color(color.r, color.g, color.b, color.a);
-	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
-
-	if(border) {
-		for(int i=0; i<border; i++) {
-			if(pressed) {
-				gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
-			} else {
-				gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
-			}
-			gfx::rect(gpos.x + i, gpos.y + size.y - 1 - i, gpos.x + size.x - i, gpos.y + size.y - i);
-			gfx::rect(gpos.x + size.x - 1 - i, gpos.y + i, gpos.x + size.x - i, gpos.y + size.y - i);
-
-			if(pressed) {
-				gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
-			} else {
-				gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
-			}
-			gfx::rect(gpos.x + i, gpos.y + i, gpos.x + size.x - i, gpos.y + 1 + i);
-			gfx::rect(gpos.x + i, gpos.y + i, gpos.x + 1 + i, gpos.y + size.y - i);
-		}
-	}
+	gfx::color_clamp(color.r, color.g, color.b, color.a);
+	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | (pressed ? gfx::BEVEL_INSET : 0), 2);
 
 	if(text.size()) {
 		const char *txt = get_text();

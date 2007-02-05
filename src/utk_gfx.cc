@@ -7,6 +7,8 @@
 namespace utk {
 namespace gfx {
 
+static Color cur_col;
+
 void (*color)(int r, int g, int b, int a) = 0;
 void (*clip)(int x1, int y1, int x2, int y2) = 0;
 void (*image)(int x, int y, void *pix, int xsz, int ysz) = 0;
@@ -99,7 +101,42 @@ void set_clip(int x1, int y1, int x2, int y2)
 
 void color_clamp(int r, int g, int b, int a)
 {
-	gfx::color(CLAMP(r, 0, 255), CLAMP(g, 0, 255), CLAMP(b, 0, 255), CLAMP(a, 0, 255));
+	cur_col.r = CLAMP(r, 0, 255);
+	cur_col.g = CLAMP(g, 0, 255);
+	cur_col.b = CLAMP(b, 0, 255);
+	cur_col.a = CLAMP(a, 0, 255);
+	gfx::color(cur_col.r, cur_col.g, cur_col.b, cur_col.a);
+}
+
+void bevel(int x1, int y1, int x2, int y2, unsigned int flags, int thickness)
+{
+	Color light_color = lighter_color(cur_col);
+	Color dark_color = darker_color(cur_col);
+
+	if(flags & BEVEL_FILLBG) {
+		gfx::color(cur_col.r, cur_col.g, cur_col.b, cur_col.a);
+		gfx::rect(x1, y1, x2, y2);
+	}
+
+	for(int i=0; i<thickness; i++) {
+		if(flags & BEVEL_INSET) {
+			gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
+			gfx::rect(x1 + i, y1 + i, x2 - i, y1 + 1 + i);
+			gfx::rect(x1 + i, y1 + i, x1 + 1 + i, y2 - i);
+			
+			gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
+			gfx::rect(x1 + i, y2 - 1 - i, x2 - i, y2 - i);
+			gfx::rect(x2 - 1 - i, y1 + i, x2 - i, y2 - i);
+		} else {
+			gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
+			gfx::rect(x1 + i, y2 - 1 - i, x2 - i, y2 - i);
+			gfx::rect(x2 - 1 - i, y1 + i, x2 - i, y2 - i);
+
+			gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
+			gfx::rect(x1 + i, y1 + i, x2 - i, y1 + 1 + i);
+			gfx::rect(x1 + i, y1 + i, x1 + 1 + i, y2 - i);
+		}
+	}
 }
 	
 } // end namespace gfx

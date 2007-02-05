@@ -5,6 +5,7 @@ namespace utk {
 
 Widget::Widget()
 {
+	padding = 0;
 	visible = true;
 	child = parent = 0;
 	herod_mode = true;
@@ -36,6 +37,11 @@ void Widget::set_pos(int x, int y)
 {
 	pos.x = x;
 	pos.y = y;
+}
+
+void Widget::set_pos(IVec2 pos)
+{
+	this->pos = pos;
 }
 
 IVec2 Widget::get_pos() const
@@ -72,6 +78,21 @@ int Widget::get_height() const
 	return size.y;
 }
 
+void Widget::set_padding(int pad)
+{
+	padding = pad;
+
+	if(child) {
+		IVec2 cpos = child->get_pos();
+		child->set_pos(cpos.x + padding, cpos.y + padding);
+	}
+}
+
+int Widget::get_padding() const
+{
+	return padding;
+}
+
 void Widget::set_visible(bool vis)
 {
 	visible = vis;
@@ -86,6 +107,9 @@ void Widget::add_child(Widget *w)
 {
 	child = w;
 	w->set_parent(this);
+
+	IVec2 cpos = w->get_pos();
+	w->set_pos(cpos.x + padding, cpos.y + padding);
 }
 
 Widget *Widget::get_child()
