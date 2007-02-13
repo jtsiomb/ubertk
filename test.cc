@@ -110,10 +110,10 @@ int main(int argc, char **argv)
 	utkroot = utk::init(xsz, ysz);
 
 	win = new utk::Window;
-	win->set_pos(100, 100);
+	win->set_pos(100, 80);
 	win->set_size(300, 500);
 	win->set_alpha(220);
-	win->set_text("test window g");
+	win->set_text("UTK rulez!");
 	win->set_visible(true);
 	utkroot->add_child(win);
 
@@ -154,6 +154,24 @@ int main(int argc, char **argv)
 	vbox->add_child(pbar);
 
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
+
+
+	utk::ScrollWin *scrolly = new utk::ScrollWin;
+	scrolly->set_pos(400, 100);
+	scrolly->set_size(100, 200);
+	scrolly->set_view_size(100, 100);
+	utkroot->add_child(scrolly);
+
+	vbox = new utk::VBox;
+	scrolly->add_child(vbox);
+
+	vbox->add_child(new utk::Label("This"));
+	vbox->add_child(new utk::Label("is a"));
+	vbox->add_child(new utk::Label("sample"));
+	vbox->add_child(new utk::Label("of a utk"));
+	vbox->add_child(new utk::Label("scrollable"));
+	vbox->add_child(new utk::Label("widget"));
+
 
 	glutMainLoop();
 

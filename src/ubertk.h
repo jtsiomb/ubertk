@@ -20,6 +20,7 @@
 #include <utk_hsv.h>
 #include <utk_progress.h>
 #include <utk_huebox.h>
+#include <utk_scrollwin.h>
 
 namespace utk {
 

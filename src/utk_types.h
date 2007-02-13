@@ -11,6 +11,7 @@ public:
 
 	IVec2(int x = 0, int y = 0);
 	IVec2 operator+(const IVec2 &v) const;
+	IVec2 operator-(const IVec2 &v) const;
 };
 
 bool rect_test(const IVec2 &tl, const IVec2 &br, const IVec2 &pos);

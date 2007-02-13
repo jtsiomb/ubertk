@@ -13,6 +13,11 @@ IVec2 IVec2::operator+(const IVec2 &v) const
 	return IVec2(x + v.x, y + v.y);
 }
 
+IVec2 IVec2::operator-(const IVec2 &v) const
+{
+	return IVec2(x - v.x, y - v.y);
+}
+
 bool rect_test(const IVec2 &tl, const IVec2 &br, const IVec2 &pos)
 {
 	if (pos.x < tl.x) return false;

@@ -66,7 +66,7 @@ void Window::draw() const
 		return;
 	}
 
-	gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
+	gfx::color_clamp(light_color.r, light_color.g, light_color.b, light_color.a);
 
 	int sy = text.size() ? gpos.y - tbar_height : gpos.y;
 	
