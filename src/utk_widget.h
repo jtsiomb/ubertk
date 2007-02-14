@@ -41,8 +41,9 @@ public:
 	virtual void set_padding(int pad);
 	virtual int get_padding() const;
 
-	virtual void set_visible(bool vis);
-	virtual bool get_visible() const;
+	virtual void show();
+	virtual void hide();
+	virtual bool is_visible() const;
 
 	virtual void add_child(Widget *w);
 	virtual Widget *get_child();

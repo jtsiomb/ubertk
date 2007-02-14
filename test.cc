@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 	win->set_size(300, 500);
 	win->set_alpha(220);
 	win->set_text("UTK rulez!");
-	win->set_visible(true);
+	win->show();
 	utkroot->add_child(win);
 
 	vbox = new utk::VBox;
@@ -159,6 +159,7 @@ int main(int argc, char **argv)
 	utk::Window *win2 = new utk::Window;
 	win2->set_pos(500, 150);
 	win2->set_size(150, 300);
+	win2->show();
 	utkroot->add_child(win2);
 
 	vbox = new utk::VBox;

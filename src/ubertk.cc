@@ -29,14 +29,7 @@ void close(Container *root)
 void draw(Container *root)
 {
 	if(!root) root = root_widget;
-
-	size_t sz = root->size();
-	for(size_t i=0; i<sz; i++) {
-		Drawable *d = dynamic_cast<Drawable*>((*root)[i]);
-		if(d) {
-			d->draw();
-		}
-	}
+	root->draw();
 }
 
 Container *get_root_widget()

@@ -93,12 +93,17 @@ int Widget::get_padding() const
 	return padding;
 }
 
-void Widget::set_visible(bool vis)
+void Widget::show()
 {
-	visible = vis;
+	visible = true;
 }
 
-bool Widget::get_visible() const
+void Widget::hide()
+{
+	visible = false;
+}
+
+bool Widget::is_visible() const
 {
 	return visible;
 }
@@ -144,6 +149,7 @@ void Widget::rise()
 	if(parent && (cont = dynamic_cast<Container*>(parent))) {
 		cont->raise_child(this);
 	}
+	printf("widget rise\n");
 }
 
 void Widget::sink()
@@ -152,6 +158,7 @@ void Widget::sink()
 	if(parent && (cont = dynamic_cast<Container*>(parent))) {
 		cont->sink_child(this);
 	}
+	printf("widget sink\n");
 }
 
 bool Widget::hit_test(int x, int y) const
@@ -162,7 +169,9 @@ bool Widget::hit_test(int x, int y) const
 
 void Widget::draw() const
 {
-	if(child) child->draw();
+	if(child && child->visible) {
+		child->draw();
+	}
 }
 
 void Widget::set_callback(int event_type, Callback cbfunc)

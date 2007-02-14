@@ -155,11 +155,17 @@ size_t Container::size() const
 
 void Container::draw() const
 {
-	std::list<Widget*>::const_reverse_iterator iter = cont.rbegin();
-	//const_iterator iter = begin();
+	const_iterator iter = begin();
+	while(iter != end()) {
+		Widget *w = *iter++;
+		if(w->is_visible()) {
+			w->draw();
+		}
+	}
+	/*std::list<Widget*>::const_reverse_iterator iter = cont.rbegin();
 	while(iter != cont.rend()) {
 		(*iter--)->draw();
-	}
+	}*/
 }
 
 int Container::get_width() const
