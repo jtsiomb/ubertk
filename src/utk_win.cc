@@ -9,7 +9,7 @@ namespace utk {
 Window::Window()
 {
 	visible = false;
-	color.r = color.g = color.b = 128;
+	set_color(128, 128, 128, 255);
 	border = 2;
 	padding = 4;
 	tbar_height = 20;
@@ -40,6 +40,11 @@ Widget *Window::handle_event(Event *event)
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(event)) && hit_test(bev->x, bev->y)) {
 		return this;
+	}
+
+	ClickEvent *cev;
+	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y)) {
+		rise();
 	}
 
 	return 0;

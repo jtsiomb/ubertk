@@ -156,11 +156,19 @@ int main(int argc, char **argv)
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
 
 
+	utk::Window *win2 = new utk::Window;
+	win2->set_pos(500, 150);
+	win2->set_size(150, 300);
+	utkroot->add_child(win2);
+
+	vbox = new utk::VBox;
+	win2->add_child(vbox);
+
 	utk::ScrollWin *scrolly = new utk::ScrollWin;
 	scrolly->set_pos(400, 100);
 	scrolly->set_size(100, 200);
 	scrolly->set_view_size(100, 100);
-	utkroot->add_child(scrolly);
+	vbox->add_child(scrolly);
 
 	vbox = new utk::VBox;
 	scrolly->add_child(vbox);
