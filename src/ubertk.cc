@@ -1,4 +1,5 @@
 #include "ubertk.h"
+#include "utk_gfx.h"
 
 #if defined(unix) || defined(__unix__)
 #include <time.h>
@@ -29,7 +30,15 @@ void close(Container *root)
 void draw(Container *root)
 {
 	if(!root) root = root_widget;
+
+	IVec2 cpos, csz;
+	cpos = root->get_pos();
+	csz = root->get_size();
+
+	gfx::push_clip();
+	gfx::set_clip(cpos.x, cpos.y, cpos.x + csz.x, cpos.y + csz.y);
 	root->draw();
+	gfx::pop_clip();
 }
 
 Container *get_root_widget()

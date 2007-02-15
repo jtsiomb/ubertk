@@ -25,6 +25,7 @@ namespace utk {
 		void push_clip();
 		void pop_clip();
 		void set_clip(int x1, int y1, int x2, int y2);
+		void mult_clip(int x1, int y1, int x2, int y2);
 
 		void color_clamp(int r, int g, int b, int a);
 

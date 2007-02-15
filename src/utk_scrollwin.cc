@@ -1,9 +1,6 @@
 #include "utk_scrollwin.h"
 #include "utk_gfx.h"
-
-#define MIN(a, b)	((a) < (b) ? (a) : (b))
-#define MAX(a, b)	((a) > (b) ? (a) : (b))
-#define CLAMP(x, a, b)	MIN(MAX(a, x), b)
+#include "utk_macros.h"
 
 namespace utk {
 

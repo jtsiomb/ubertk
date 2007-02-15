@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "utk_container.h"
 #include "utk_events.h"
+#include "utk_gfx.h"
 #include <stack>
 
 namespace utk {
@@ -153,19 +154,23 @@ size_t Container::size() const
 	return cont.size();
 }
 
+// EDO EINAI I DRAW FUNCTION !!!111oneoneeleven
 void Container::draw() const
 {
-	const_iterator iter = begin();
-	while(iter != end()) {
+	std::list<Widget*>::const_reverse_iterator iter = cont.rbegin();
+	while(iter != cont.rend()) {
 		Widget *w = *iter++;
 		if(w->is_visible()) {
+			IVec2 cpos, csz;
+			cpos = w->get_pos();
+			csz = w->get_size();
+			
+			gfx::push_clip();
+			gfx::mult_clip(cpos.x, cpos.y, cpos.x + csz.x, cpos.y + csz.y);
 			w->draw();
+			gfx::pop_clip();
 		}
 	}
-	/*std::list<Widget*>::const_reverse_iterator iter = cont.rbegin();
-	while(iter != cont.rend()) {
-		(*iter--)->draw();
-	}*/
 }
 
 int Container::get_width() const

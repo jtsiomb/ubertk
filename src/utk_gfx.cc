@@ -1,6 +1,7 @@
 #include <stack>
 #include <math.h>
 #include "utk_gfx.h"
+#include "utk_macros.h"
 
 #define CIRCLE_SEGMENTS 40
 
@@ -97,7 +98,17 @@ void set_clip(int x1, int y1, int x2, int y2)
 	clip(x1, y1, x2, y2);
 }
 
-#define CLAMP(x, a, b)	((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
+void mult_clip(int x1, int y1, int x2, int y2)
+{
+	if(!clip_stack.empty()) {
+		Rect cur = clip_stack.top();
+		x1 = MAX(cur.x1, x1);
+		y1 = MAX(cur.y1, y1);
+		x2 = MIN(cur.x2, x2);
+		y2 = MIN(cur.y2, y2);
+	}
+	set_clip(x1, y1, x2, y2);
+}
 
 void color_clamp(int r, int g, int b, int a)
 {

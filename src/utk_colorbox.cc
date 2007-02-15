@@ -57,8 +57,8 @@ void ColorBox::on_drag(int dx, int dy)
 ColorBox::ColorBox(utk::Callback cb) : Image(150, 150, cb)
 {
 	sel_s = sel_v = 0;
-	h = s = v = 0;
-	set_color(0, 0, 0);
+	set_color_hsv(0, 0, 0);
+	update();
 }
 ColorBox::~ColorBox()
 {
@@ -91,6 +91,14 @@ void ColorBox::set_color(int r, int g, int b, int a)
 {
 	Drawable::set_color(r, g, b, a);
 	rgb_to_hsv((float)r / 255.0, (float)g / 255.0, (float)b / 255.0, &h, &s, &v);
+}
+
+void ColorBox::set_color_hsv(int h, int s, int v, int a)
+{
+	this->s = s;
+	this->v = v;
+	color.a = a;
+	set_h(h);
 }
 
 void ColorBox::set_color(const Color &col)

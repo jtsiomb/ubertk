@@ -1,5 +1,6 @@
 #include "utk_widget.h"
 #include "utk_container.h"
+#include "utk_gfx.h"
 
 namespace utk {
 
@@ -149,7 +150,6 @@ void Widget::rise()
 	if(parent && (cont = dynamic_cast<Container*>(parent))) {
 		cont->raise_child(this);
 	}
-	printf("widget rise\n");
 }
 
 void Widget::sink()
@@ -158,7 +158,6 @@ void Widget::sink()
 	if(parent && (cont = dynamic_cast<Container*>(parent))) {
 		cont->sink_child(this);
 	}
-	printf("widget sink\n");
 }
 
 bool Widget::hit_test(int x, int y) const
@@ -170,7 +169,14 @@ bool Widget::hit_test(int x, int y) const
 void Widget::draw() const
 {
 	if(child && child->visible) {
+		IVec2 cpos, csz;
+		cpos = child->get_pos();
+		csz = child->get_size();
+
+		gfx::push_clip();
+		gfx::mult_clip(cpos.x, cpos.y, cpos.x + csz.x, cpos.y + csz.y);
 		child->draw();
+		gfx::pop_clip();
 	}
 }
 

@@ -3,7 +3,7 @@
 
 namespace utk {
 
-inline float MIN(float a, float b, float c)
+inline float min3(float a, float b, float c)
 {
 	float ret = a;
 	if (b < ret) ret = b;
@@ -11,10 +11,10 @@ inline float MIN(float a, float b, float c)
 	return ret;
 }
 
-inline float MAX(float a, float b, float c)
+inline float max3(float a, float b, float c)
 {
 	float ret = a;
-	if (b> ret) ret = b;
+	if (b > ret) ret = b;
 	if (c > ret) ret = c;
 	return ret;
 }
@@ -23,8 +23,8 @@ void rgb_to_hsv( float r, float g, float b, float *h, float *s, float *v )
 {
 	float min, max, delta;
 
-	min = MIN( r, g, b );
-	max = MAX( r, g, b );
+	min = min3( r, g, b );
+	max = max3( r, g, b );
 	*v = max;				// v
 
 	delta = max - min;

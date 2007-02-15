@@ -42,6 +42,7 @@ void HueBox::on_drag(int dx, int dy)
 HueBox::HueBox(utk::Callback cb) : Image(150, 20, cb)
 {
 	h = sel_h = 0;
+	update();
 }
 HueBox::~HueBox()
 {

@@ -1,6 +1,7 @@
 #include <math.h>
 #include "utk_progress.h"
 #include "utk_gfx.h"
+#include "utk_macros.h"
 
 namespace utk {
 
@@ -26,9 +27,6 @@ int Progress::get_progress_mode() const
 {
 	return infinite ? PROGRESS_INFINITE : PROGRESS_FINITE;
 }
-
-#define MIN(a, b)	((a) < (b) ? (a) : (b))
-#define MAX(a, b)	((a) > (b) ? (a) : (b))
 
 void Progress::step()
 {

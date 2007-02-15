@@ -28,6 +28,7 @@ public:
 	void set_h(float h);
 
 	virtual void set_color(int r, int g, int b, int a = 255);
+	virtual void set_color_hsv(int h, int s, int v, int a = 255);
 	virtual void set_color(const Color &col);
 	virtual unsigned int get_packed_color() const;
 };
