@@ -170,7 +170,7 @@ void Widget::draw() const
 {
 	if(child && child->visible) {
 		IVec2 cpos, csz;
-		cpos = child->get_pos();
+		cpos = child->get_global_pos();
 		csz = child->get_size();
 
 		gfx::push_clip();

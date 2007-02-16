@@ -44,7 +44,8 @@ Widget *Window::handle_event(Event *event)
 
 	ClickEvent *cev;
 	if((cev = dynamic_cast<ClickEvent*>(event))) {
-		if(hit_test(cev->x, cev->y)) {
+		if(!cev->widget && hit_test(cev->x, cev->y)) {
+			cev->widget = this;
 			rise();
 			return this;
 		}

@@ -167,8 +167,7 @@ int main(int argc, char **argv)
 
 	utk::ScrollWin *scrolly = new utk::ScrollWin;
 	scrolly->set_pos(400, 100);
-	scrolly->set_size(100, 200);
-	scrolly->set_view_size(100, 100);
+	scrolly->set_size(100, 100);
 	vbox->add_child(scrolly);
 
 	vbox = new utk::VBox;
@@ -178,8 +177,12 @@ int main(int argc, char **argv)
 	vbox->add_child(new utk::Label("is a"));
 	vbox->add_child(new utk::Label("sample"));
 	vbox->add_child(new utk::Label("of a utk"));
-	vbox->add_child(new utk::Label("scrollable"));
+	vbox->add_child(new utk::Label("scrollable fucking widget"));
 	vbox->add_child(new utk::Label("widget"));
+	vbox->add_child(new utk::Label("..."));
+	vbox->add_child(new utk::Label("That's all"));
+	vbox->add_child(new utk::Label("for now."));
+	vbox->add_child(new utk::Label("Goodbye!"));
 
 
 	glutMainLoop();
@@ -357,7 +360,6 @@ void utk_clip(int x1, int y1, int x2, int y2)
 
 void utk_image(int x, int y, void *pix, int w, int h)
 {
-
 	glPixelZoom(1, -1);
 	glRasterPos2f(CONVX(x), CONVY(y));
 	glDrawPixels(w, h, GL_BGRA, GL_UNSIGNED_BYTE, pix);

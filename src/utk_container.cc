@@ -162,7 +162,7 @@ void Container::draw() const
 		Widget *w = *iter++;
 		if(w->is_visible()) {
 			IVec2 cpos, csz;
-			cpos = w->get_pos();
+			cpos = w->get_global_pos();
 			csz = w->get_size();
 			
 			gfx::push_clip();
@@ -199,11 +199,22 @@ void HBox::layout()
 /* ---- layout function for the vertical box container ---- */
 void VBox::layout()
 {
+	int max_x = get_size().x;
 	int cur_y = padding;
-	for(size_t i=0; i<cont.size(); i++) {
-		(*this)[i]->set_pos(padding, cur_y);
-		cur_y += (*this)[i]->get_height() + spacing;
+
+	const_iterator iter = begin();
+	while(iter != end()) {
+		Widget *w = *iter++;
+
+		w->set_pos(padding, cur_y);
+		
+		cur_y += w->get_height() + spacing;
+		if(w->get_width() > max_x) {
+			max_x = w->get_width();
+		}
 	}
+
+	set_size(max_x, cur_y - spacing + padding);
 }
 
 void NullBox::layout()

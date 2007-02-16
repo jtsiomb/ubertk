@@ -106,6 +106,9 @@ void mult_clip(int x1, int y1, int x2, int y2)
 		y1 = MAX(cur.y1, y1);
 		x2 = MIN(cur.x2, x2);
 		y2 = MIN(cur.y2, y2);
+
+		if(x2 < x1) x2 = x1;
+		if(y2 < y1) y2 = y1;
 	}
 	set_clip(x1, y1, x2, y2);
 }
