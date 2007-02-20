@@ -1,11 +1,16 @@
-src = $(wildcard src/*.cc)
-obj = $(src:.cc=.o)
+ccsrc = $(wildcard src/*.cc)
+csrc = $(wildcard src/*.c)					  
+ccobj = $(ccsrc:.cc=.o)
+cobj = $(csrc:.c=.o)
+obj = $(cobj) $(ccobj)
 lib_a = libutk.a
 dist_file = ubertk.tar.gz
 diag_file = diag.ps
 
+CC = gcc
 CXX = g++
 AR = ar
+CCFLAGS = -std=c89 -pedantic -Wall -g -Isrc
 CXXFLAGS = -ansi -pedantic -Wall -g -Isrc `pkg-config --cflags freetype2`
 
 .PHONY: all

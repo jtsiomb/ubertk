@@ -109,13 +109,9 @@ int main(int argc, char **argv)
 	// create the windows
 	utkroot = utk::init(xsz, ysz);
 
-	win = new utk::Window;
-	win->set_pos(100, 80);
-	win->set_size(300, 500);
+	win = utk::create_window(utkroot, 100, 80, 300, 500, "UTK rulez!");
 	win->set_alpha(220);
-	win->set_text("UTK rulez!");
 	win->show();
-	utkroot->add_child(win);
 
 	vbox = new utk::VBox;
 	win->add_child(vbox);
@@ -156,11 +152,8 @@ int main(int argc, char **argv)
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
 
 
-	utk::Window *win2 = new utk::Window;
-	win2->set_pos(500, 150);
-	win2->set_size(150, 300);
+	win2 = utk::create_window(utkroot, 500, 150, 150, 300, "foo");
 	win2->show();
-	utkroot->add_child(win2);
 
 	vbox = new utk::VBox;
 	win2->add_child(vbox);
