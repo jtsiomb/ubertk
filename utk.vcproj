@@ -121,9 +121,6 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
-			<File
-				RelativePath=".\shit.cpp">
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -236,6 +233,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_scrollbar.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_scrollwin.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_scrollwin.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_slider.cc">

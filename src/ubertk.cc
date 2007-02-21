@@ -8,6 +8,8 @@
 #include <windows.h>
 #endif	/* unix */
 
+#include "cursor.inl"
+
 namespace utk {
 
 static Container *root_widget;
@@ -38,6 +40,11 @@ void draw(Container *root)
 	gfx::push_clip();
 	gfx::set_clip(cpos.x, cpos.y, cpos.x + csz.x, cpos.y + csz.y);
 	root->draw();
+	
+
+	// draw cursor
+	gfx::image(get_mouse_pos().x, get_mouse_pos().y, utk_cursor_image, 24, 24);
+
 	gfx::pop_clip();
 }
 
