@@ -32,6 +32,10 @@ public:
 
 	virtual void set_size(int w, int h);
 	virtual void set_border(int border);
+
+	virtual void set_cursor_width(int width);
+	virtual void set_cursor_width(float percent);
+	virtual int get_cursor_width() const;
 	
 	virtual void set_value(float val);
 	virtual float get_value() const;

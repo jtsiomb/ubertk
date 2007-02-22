@@ -1,16 +1,36 @@
 #include "utk_scrollbar.h"
 #include "utk_gfx.h"
+#include "utk_common.h"
 
 namespace utk {
 
 IVec2 Scrollbar::get_cursor_tl() const
 {
-	IVec2 rel(cursor_pos + track_start - cursor_width / 2, border);
+	IVec2 rel;
+	int cwidth_half = cursor_width / 2;
+	
+	if(orient == HORIZONTAL) {
+		rel.x = cursor_pos + track_start - cwidth_half;
+		rel.y = border;
+	} else {
+		rel.x = border;
+		rel.y = cursor_pos + track_start - cwidth_half;
+	}
+	
 	return rel + get_global_pos();
 }
 IVec2 Scrollbar::get_cursor_br() const
 {
-	IVec2 rel(cursor_pos + track_start + cursor_width / 2, size.y - border);
+	IVec2 rel;
+	int cwidth_half = cursor_width / 2;
+
+	if(orient == HORIZONTAL) {
+		rel.x = cursor_pos + track_start + cwidth_half;
+		rel.y = size.y - border;
+	} else {
+		rel.x = size.x - border;
+		rel.y = cursor_pos + track_start + cwidth_half;
+	}
 	return rel + get_global_pos();
 }
 
@@ -72,9 +92,17 @@ Widget *Scrollbar::handle_event(Event *event)
 	MMotionEvent *mmev;
 	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
 		if(dragging) {
-			int dx = mmev->x - get_last_drag_pos().x;
-			if(dx < 0 && mmev->x > get_cursor_br().x) dx = 0;
-			if(dx > 0 && mmev->x < get_cursor_tl().x) dx = 0;
+			int dx;
+			
+			if(orient == HORIZONTAL) {
+				dx = mmev->x - get_last_drag_pos().x;
+				if(dx < 0 && mmev->x > get_cursor_br().x) dx = 0;
+				if(dx > 0 && mmev->x < get_cursor_tl().x) dx = 0;
+			} else {
+				dx = mmev->y - get_last_drag_pos().y;
+				if(dx < 0 && mmev->y > get_cursor_br().y) dx = 0;
+				if(dx > 0 && mmev->y < get_cursor_tl().y) dx = 0;
+			}
 			
 			if(dx) {
 				cursor_pos += dx;
@@ -83,7 +111,9 @@ Widget *Scrollbar::handle_event(Event *event)
 				if(link_float) {
 					*link_float = get_value();
 				}
-				// TODO: also call callback and on_modify
+
+				on_modify(mmev);
+				callback(mmev, EVENT_MODIFY);
 			}
 			return this;
 		}
@@ -96,14 +126,32 @@ void Scrollbar::set_size(int w, int h)
 {
 	Widget::set_size(w, h);
 	track_start = border + cursor_width / 2;
-	track_len = w - border * 2 - cursor_width;
+	track_len = (orient == HORIZONTAL ? w : h) - border * 2 - cursor_width;
 }
 
 void Scrollbar::set_border(int border)
 {
 	Drawable::set_border(border);
 	track_start = border + cursor_width / 2;
-	track_len = size.x - border * 2 - cursor_width;
+	track_len = (orient == HORIZONTAL ? size.x : size.y) - border * 2 - cursor_width;
+}
+
+void Scrollbar::set_cursor_width(int width)
+{
+	int max_width = (orient == HORIZONTAL ? size.x : size.y) - border * 2;
+	cursor_width = MIN(width, max_width);
+	set_size(size.x, size.y);	// force recalc of track_len
+}
+
+void Scrollbar::set_cursor_width(float percent)
+{
+	float width = (float)((orient == HORIZONTAL ? size.x : size.y) - border * 2);
+	set_cursor_width((int)(width * percent));
+}
+
+int Scrollbar::get_cursor_width() const
+{
+	return cursor_width;
 }
 
 void Scrollbar::set_value(float val)
@@ -134,24 +182,16 @@ void Scrollbar::draw() const
 	gfx::color(color.r, color.g, color.b, color.a);
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
-	// draw cursor line
-	gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
-	gfx::rect(gpos.x + track_start, gpos.y + size.y / 2 - 1, gpos.x + track_start + track_len, gpos.y + size.y / 2 + 1);
-
 	// draw cursor
 	IVec2 tl = get_cursor_tl();
 	IVec2 br = get_cursor_br();
-	gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
-	gfx::circle(tl.x, tl.y, br.x, br.y, false);
-	gfx::color(0, dragging ? 255 : 0,0, 255);
-	gfx::circle(tl.x + 4, tl.y + 4, br.x - 4, br.y - 4, false);
 
-	if (dragging) {
-		gfx::color_clamp((int)(color.r * 1.1), (int)(color.g * 1.5), (int)(color.b * 1.6), color.a);
+	if(dragging) {
+		gfx::color_clamp(light_color.r, light_color.g, light_color.b, light_color.a);
 	} else {
-		gfx::color(50, 50, 50, color.a);
+		gfx::color_clamp(color.r, color.g, color.b, color.a);
 	}
-	gfx::circle(tl.x + 3, tl.y + 3, br.x - 3, br.y - 3, false);
+	gfx::bevel(tl.x, tl.y, br.x, br.y, gfx::BEVEL_FILLBG, 1);
 
 	if(border) {
 		gfx::color_clamp((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);

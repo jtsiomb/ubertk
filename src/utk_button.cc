@@ -28,10 +28,7 @@ Widget *Button::handle_event(Event *event)
 		cev->widget = this;
 
 		on_click(cev);
-			
-		if(callbacks[EVENT_CLICK]) {
-			callbacks[EVENT_CLICK](cev);
-		}
+		callback(cev, EVENT_CLICK);
 
 		return this;
 	}

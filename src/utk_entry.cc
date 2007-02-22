@@ -59,12 +59,7 @@ Widget *Entry::handle_event(Event *event)
 			}
 
 			on_modify(kev);
-
-			if(callbacks[EVENT_MODIFY]) {
-				kev->widget = this;
-				callbacks[EVENT_MODIFY](kev);
-			}
-			
+			callback(kev, EVENT_MODIFY);
 			return this;
 		}
 	}
@@ -75,11 +70,7 @@ Widget *Entry::handle_event(Event *event)
 		grab_focus(this);
 
 		on_click(cev);
-
-		if(callbacks[EVENT_CLICK]) {
-			callbacks[EVENT_CLICK](cev);
-		}
-
+		callback(cev, EVENT_CLICK);
 		return this;
 	}
 	

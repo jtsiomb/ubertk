@@ -104,7 +104,13 @@ IVec2 get_last_drag_pos();
 
 void grab_focus(Widget *w);
 
-typedef void (*Callback)(Event*);
+typedef void (*Callback)(Event*, void*);
+
+struct CallbackClosure {
+	Callback func;
+	void *data;
+};
+
 
 }	// end namespace utk
 

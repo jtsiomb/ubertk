@@ -44,12 +44,12 @@ utk::HueBox *hue;
 float max_descent;
 
 
-void foo_handler(utk::Event *event)
+void foo_handler(utk::Event *event, void *data)
 {
 	printf("a button was just pressed!\n");
 }
 
-void exit_bn_handler(utk::Event *event)
+void exit_bn_handler(utk::Event *event, void *data)
 {
 	exit(0);
 }
@@ -154,12 +154,31 @@ int main(int argc, char **argv)
 
 
 	win2 = utk::create_window(utkroot, 500, 150, 150, 300, "foo");
+	//win2 = new utk::Window;
+	//win2->set_pos(500, 150);
+	//win2->set_size(150, 300);
+	//utkroot->add_child(win2);
 	win2->show();
 
 	vbox = new utk::VBox;
 	win2->add_child(vbox);
 
-	utk::ScrollWin *scrolly = new utk::ScrollWin;
+	utk::ListBox *listy = new utk::ListBox;
+	listy->set_size(100, 100);
+	vbox->add_child(listy);
+
+	listy->add_item("This");
+	listy->add_item("is a");
+	listy->add_item("sample");
+	listy->add_item("of a utk");
+	listy->add_item("listbox fucking widget dude");
+	listy->add_item("listbox yes");
+	listy->add_item("...");
+	listy->add_item("that's all for now");
+	listy->add_item("I'll go home now...");
+	listy->add_item("goodnight!");
+
+	/*utk::ScrollWin *scrolly = new utk::ScrollWin;
 	scrolly->set_pos(400, 100);
 	scrolly->set_size(100, 100);
 	vbox->add_child(scrolly);
@@ -177,7 +196,7 @@ int main(int argc, char **argv)
 	vbox->add_child(new utk::Label("That's all"));
 	vbox->add_child(new utk::Label("for now."));
 	vbox->add_child(new utk::Label("Goodbye!"));
-
+	*/
 
 	glutMainLoop();
 

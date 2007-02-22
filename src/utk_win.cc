@@ -7,6 +7,8 @@
 
 namespace utk {
 
+unsigned int get_msec();
+
 Window::Window()
 {
 	visible = false;
@@ -60,6 +62,7 @@ WinFrame::WinFrame(Widget *child)
 	Window *win;
 
 	set_color(128, 130, 200);
+	shaded = false;
 
 	if((win = dynamic_cast<Window*>(child))) {
 		add_child(child);
@@ -85,10 +88,24 @@ void WinFrame::update_geometry()
 	set_size(csz.x + cbord * 2, csz.y + cbord * 2 + win->tbar_height);
 }
 
+void WinFrame::set_shade(bool shade)
+{
+	shaded = shade;
+
+	if(shade) {
+		Window *cwin = (Window*)child;
+		orig_size = size;
+		set_size(orig_size.x, cwin->get_border() * 2 + cwin->tbar_height);
+	} else {
+		set_size(orig_size.x, orig_size.y);
+	}
+}
+
 Widget *WinFrame::handle_event(Event *event)
 {
-	if(child && child->handle_event(event)) {
-		return child;
+	Widget *w;
+	if(child && (w = child->handle_event(event))) {
+		return w;
 	}
 
 	// no child handled the event, either we do or return false
@@ -113,6 +130,21 @@ Widget *WinFrame::handle_event(Event *event)
 		if(!cev->widget && hit_test(cev->x, cev->y)) {
 			cev->widget = this;
 			rise();
+
+			Window *cwin = (Window*)child;
+			IVec2 gpos = get_global_pos();
+			int bord = cwin->get_border();
+
+			if(cev->x >= gpos.x + bord && cev->x < gpos.x + size.x - bord &&
+					cev->y >= gpos.y + bord && cev->y < gpos.y + cwin->tbar_height + bord) {
+				unsigned int msec = get_msec();
+				if(msec - last_click < 400) {
+					set_shade(!shaded);
+				} else {
+					last_click = msec;
+				}
+			}
+			
 			return this;
 		}
 	}

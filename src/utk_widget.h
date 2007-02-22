@@ -18,7 +18,7 @@ protected:
 
 	bool herod_mode;
 
-	Callback callbacks[EVENT_COUNT];
+	CallbackClosure callbacks[EVENT_COUNT];
 
 public:
 	Widget();
@@ -60,11 +60,15 @@ public:
 
 	virtual void draw() const;
 
-	virtual void set_callback(int event_type, Callback cbfunc);
+	virtual void set_callback(int event_type, Callback cbfunc, void *data = 0);
 	virtual Callback get_callback(int event_type) const;
+	virtual void *get_callback_data(int event_type) const;
+
+	virtual void callback(Event *event, int event_type);
 
 	virtual void on_click(Event *event);
 	virtual void on_focus(Event *event);
+	virtual void on_modify(Event *event);
 };
 
 }

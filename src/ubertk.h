@@ -21,6 +21,7 @@
 #include <utk_progress.h>
 #include <utk_huebox.h>
 #include <utk_scrollwin.h>
+#include <utk_listbox.h>
 
 namespace utk {
 

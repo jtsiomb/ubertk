@@ -180,10 +180,11 @@ void Widget::draw() const
 	}
 }
 
-void Widget::set_callback(int event_type, Callback cbfunc)
+void Widget::set_callback(int event_type, Callback cbfunc, void *data)
 {
 	if(event_type >= 0 && event_type < EVENT_COUNT) {
-		callbacks[event_type] = cbfunc;
+		callbacks[event_type].func = cbfunc;
+		callbacks[event_type].data = data;
 	}
 }
 
@@ -192,11 +193,30 @@ Callback Widget::get_callback(int event_type) const
 	if(event_type < 0 || event_type > EVENT_COUNT) {
 		return 0;
 	}
-	return callbacks[event_type];
+	return callbacks[event_type].func;
+}
+
+void *Widget::get_callback_data(int event_type) const
+{
+	if(get_callback(event_type)) {
+		return callbacks[event_type].data;
+	}
+}
+
+void Widget::callback(Event *event, int event_type)
+{
+	CallbackClosure *cbc = &callbacks[event_type];
+	if(cbc->func) {
+		if(!event->widget) {
+			event->widget = this;
+		}
+		cbc->func(event, cbc->data);
+	}
 }
 
 void Widget::on_click(Event *event) {}
 void Widget::on_focus(Event *event) {}
+void Widget::on_modify(Event *event) {}
 
 
 }	// end of namespace utk
