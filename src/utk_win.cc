@@ -175,7 +175,9 @@ void WinFrame::draw() const
 
 	bevel(gpos.x + bord, gpos.y + bord, gpos.x + size.x - bord, gpos.y + bord + child->tbar_height, gfx::BEVEL_FILLBG, MAX(1, third));
 
-	Widget::draw();
+	if(!shaded) {
+		Widget::draw();
+	}
 }
 
 
