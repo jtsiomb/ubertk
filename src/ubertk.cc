@@ -8,11 +8,12 @@
 #include <windows.h>
 #endif	/* unix */
 
-#include "cursor.inl"
-
 namespace utk {
 
+#include "cursor.inl"
+
 static Container *root_widget;
+static bool draw_cursor;
 
 Container *init(int x, int y)
 {
@@ -20,6 +21,11 @@ Container *init(int x, int y)
 	cont->set_size(x, y);
 	cont->set_pos(0, 0);
 	root_widget = cont;
+
+#if defined(WIN32) || defined(__WIN32__)
+	draw_cursor = true;
+#endif
+	
 	return cont;
 }
 
@@ -41,9 +47,9 @@ void draw(Container *root)
 	gfx::set_clip(cpos.x, cpos.y, cpos.x + csz.x, cpos.y + csz.y);
 	root->draw();
 	
-
-	// draw cursor
-	gfx::image(get_mouse_pos().x, get_mouse_pos().y, utk_cursor_image, 24, 24);
+	if(draw_cursor) {
+		gfx::image(get_mouse_pos().x, get_mouse_pos().y, utk_cursor_image, 16, 16);
+	}
 
 	gfx::pop_clip();
 }

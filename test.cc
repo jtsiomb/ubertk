@@ -62,7 +62,9 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	glutCreateWindow("ubertk test");
+#if defined(WIN32) || defined(__WIN32__)
 	glutSetCursor(GLUT_CURSOR_NONE);
+#endif
 	xsz = glutGet(GLUT_WINDOW_WIDTH);
 	ysz = glutGet(GLUT_WINDOW_HEIGHT);
 
