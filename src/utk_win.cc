@@ -104,7 +104,7 @@ void WinFrame::set_shade(bool shade)
 Widget *WinFrame::handle_event(Event *event)
 {
 	Widget *w;
-	if(child && (w = child->handle_event(event))) {
+	if(!shaded && child && (w = child->handle_event(event))) {
 		return w;
 	}
 
