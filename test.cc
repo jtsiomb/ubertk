@@ -155,7 +155,7 @@ int main(int argc, char **argv)
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
 
 
-	win2 = utk::create_window(utkroot, 500, 150, 150, 300, "foo");
+	win2 = utk::create_window(utkroot, 500, 150, 150, 300, "foo g");
 	//win2 = new utk::Window;
 	//win2->set_pos(500, 150);
 	//win2->set_size(150, 300);

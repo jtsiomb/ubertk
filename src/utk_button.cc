@@ -56,7 +56,7 @@ void Button::draw() const
 		int twidth = gfx::text_width(txt, 18);
 
 		gfx::color(0, 0, 0, color.a);
-		gfx::text(gpos.x + (size.x - twidth) / 2, gpos.y + size.y, get_text(), 18);
+		gfx::text(gpos.x + (size.x - twidth) / 2, gpos.y + size.y, txt, 18);
 	}
 
 	Widget::draw();
