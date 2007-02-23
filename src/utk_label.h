@@ -23,6 +23,7 @@ public:
 	virtual void draw() const;
 };
 
+Label *create_label(Widget *parent, const char *txt);
 
 }
 

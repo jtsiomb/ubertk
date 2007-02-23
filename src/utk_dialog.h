@@ -1,6 +1,8 @@
 #ifndef UTK_DIALOG_H_
 #define UTK_DIALOG_H_
 
+#include <utk_widget.h>
+
 namespace utk {
 
 enum {
@@ -21,7 +23,8 @@ enum {
 
 enum { DLG_MODAL = (1 << 15) };
 
-Window *create_message_dialog(const char *msg, unsigned int type, unsigned int bn_mask = 0);
+Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0);
+Widget *message_dialog(const char *msg, unsigned int type, Callback func = 0);
 
 } // end utk namespace
 

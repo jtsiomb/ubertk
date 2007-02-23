@@ -42,4 +42,11 @@ void Label::draw() const
 	}
 }
 
+Label *create_label(Widget *parent, const char *txt)
+{
+	Label *lb = new Label(txt);
+	parent->add_child(lb);
+	return lb;
+}
+
 }

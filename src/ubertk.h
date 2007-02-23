@@ -22,6 +22,7 @@
 #include <utk_huebox.h>
 #include <utk_scrollwin.h>
 #include <utk_listbox.h>
+#include <utk_dialog.h>
 
 namespace utk {
 

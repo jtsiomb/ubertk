@@ -313,6 +313,22 @@ void keyb(unsigned char key, int x, int y)
 	case 27:
 		exit(0);
 
+	case '1':
+		message_dialog("is this a dialog?", utk::MSG_TYPE_QUESTION);
+		break;
+
+	case '2':
+		message_dialog("this is a dialog", utk::MSG_TYPE_INFO);
+		break;
+
+	case '3':
+		message_dialog("Consider yourself warned\ndude...", utk::MSG_TYPE_WARNING);
+		break;
+
+	case '4':
+		message_dialog("Everything is lost!\nRun for the hills!", utk::MSG_TYPE_ERROR);
+		break;
+
 	default:
 		break;
 	}
