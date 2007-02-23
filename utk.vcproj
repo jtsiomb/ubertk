@@ -139,6 +139,9 @@
 			Name="utk"
 			Filter="">
 			<File
+				RelativePath=".\src\cursor.inl">
+			</File>
+			<File
 				RelativePath=".\src\ubertk.cc">
 			</File>
 			<File
@@ -161,6 +164,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_colorbox.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_common.c">
+			</File>
+			<File
+				RelativePath=".\src\utk_common.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_container.cc">
@@ -215,6 +224,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_label.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_listbox.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_listbox.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_progress.cc">
