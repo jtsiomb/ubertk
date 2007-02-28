@@ -201,6 +201,7 @@ void *Widget::get_callback_data(int event_type) const
 	if(get_callback(event_type)) {
 		return callbacks[event_type].data;
 	}
+	return 0;
 }
 
 void Widget::callback(Event *event, int event_type)

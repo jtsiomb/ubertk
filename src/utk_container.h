@@ -70,6 +70,10 @@ protected:
 };
 
 
-}
+HBox *create_hbox(Widget *parent, int padding = 0, int spacing = 4);
+VBox *create_vbox(Widget *parent, int padding = 0, int spacing = 4);
+NullBox *create_nullbox(Widget *parent);
+
+}	// end of namespace utk
 
 #endif	// UBERTK_CONTAINER_H_

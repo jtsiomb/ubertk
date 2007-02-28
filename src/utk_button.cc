@@ -3,7 +3,7 @@
 
 namespace utk {
 
-Button::Button(const char *txt, utk::Callback cb)
+Button::Button(const char *txt, Callback cb)
 {
 	pressed = false;
 
@@ -60,6 +60,19 @@ void Button::draw() const
 	}
 
 	Widget::draw();
+}
+
+Button *create_button(Widget *parent, const char *text, Callback func)
+{
+	return create_button(parent, text, 100, gfx::text_spacing() + 4, func);
+}
+
+Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func)
+{
+	Button *bn = new Button(text, func);
+	bn->set_size(xsz, ysz);
+	parent->add_child(bn);
+	return bn;
 }
 
 }	// end of namespace utk

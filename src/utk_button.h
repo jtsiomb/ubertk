@@ -11,7 +11,7 @@ protected:
 	bool pressed;
 
 public:
-	Button(const char *txt = 0, utk::Callback cb = 0);
+	Button(const char *txt = 0, Callback cb = 0);
 	virtual ~Button();
 
 	virtual Widget *handle_event(Event *event);
@@ -19,6 +19,9 @@ public:
 	virtual void draw() const;
 };
 
-}
+Button *create_button(Widget *parent, const char *text, Callback func = 0);
+Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func = 0);
+
+}	// end of namespace utk
 
 #endif	// UBERTK_BUTTON_H_

@@ -47,8 +47,28 @@ Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 
 	free(buf);
 
+	if(bn_mask) {
+		printf("foo\n");
+		HBox *hbox = create_hbox(vbox);
+	
+		if(bn_mask & MSG_BN_OK) {
+			create_button(hbox, "OK", func);
+		}
+		if(bn_mask & MSG_BN_CANCEL) {
+			create_button(hbox, "Cancel", func);
+		}
+		if(bn_mask & MSG_BN_YES) {
+			create_button(hbox, "Yes", func);
+		}
+		if(bn_mask & MSG_BN_NO) {
+			create_button(hbox, "No", func);
+		}
+	}
+
+
 	int width = MAX(max_len + 10, 100);
-	int height = lines * gfx::text_spacing() + 20;
+	int text_spacing = gfx::text_spacing();
+	int height = lines * text_spacing + 10 + (bn_mask ? text_spacing + 10 : 0);
 	int x = (root->get_size().x - width) / 2;
 	int y = (root->get_size().y - height) / 2;
 	

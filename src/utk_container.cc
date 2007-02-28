@@ -184,16 +184,25 @@ int Container::get_width() const
 	return (int)w;
 }
 
-// TODO: also change the size of the container to fit the children
-
 /* ---- layout function for the horizontal box container ---- */
 void HBox::layout()
 {
+	int max_y = get_size().y;
 	int cur_x = padding;
-	for(size_t i=0; i<cont.size(); i++) {
-		(*this)[i]->set_pos(cur_x, padding);
-		cur_x += (*this)[i]->get_width() + spacing;
+
+	const_iterator iter = begin();
+	while(iter != end()) {
+		Widget *w = *iter++;
+
+		w->set_pos(cur_x, padding);
+
+		cur_x += w->get_width() + spacing;
+		if(w->get_height() > max_y) {
+			max_y = w->get_height();
+		}
 	}
+
+	set_size(cur_x - spacing + padding, max_y);
 }
 
 /* ---- layout function for the vertical box container ---- */
@@ -220,5 +229,31 @@ void VBox::layout()
 void NullBox::layout()
 {
 }
+
+HBox *create_hbox(Widget *parent, int padding, int spacing)
+{
+	HBox *hbox = new HBox;
+	hbox->set_padding(padding);
+	hbox->set_spacing(spacing);
+	parent->add_child(hbox);
+	return hbox;
+}
+
+VBox *create_vbox(Widget *parent, int padding, int spacing)
+{
+	VBox *vbox = new VBox;
+	vbox->set_padding(padding);
+	vbox->set_spacing(spacing);
+	parent->add_child(vbox);
+	return vbox;
+}
+
+NullBox *create_nullbox(Widget *parent)
+{
+	NullBox *nbox = new NullBox;
+	parent->add_child(nbox);
+	return nbox;
+}
+
 
 }	// namespace utk end
