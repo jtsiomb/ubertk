@@ -17,14 +17,14 @@ protected:
 	std::list<Widget*> cont;
 	int spacing;
 
-	virtual void layout() = 0;
-
 public:
 	typedef std::list<Widget*>::iterator iterator;
 	typedef std::list<Widget*>::const_iterator const_iterator;
 
 	Container();
 	virtual ~Container();
+
+	virtual void layout() = 0;
 
 	virtual Widget *handle_event(Event *event);
 
@@ -55,17 +55,17 @@ public:
 
 
 class HBox : public Container {
-protected:
+public:
 	virtual void layout();
 };
 
 class VBox : public Container {
-protected:
+public:
 	virtual void layout();
 };
 
 class NullBox : public Container {
-protected:
+public:
 	virtual void layout();
 };
 

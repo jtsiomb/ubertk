@@ -33,6 +33,8 @@ void draw(Container *root = 0);
 Container *get_root_widget();
 
 unsigned int get_msec();
+
+void print_widget_tree(Widget *root = (Widget*)0xffffffff);
 	
 }
 

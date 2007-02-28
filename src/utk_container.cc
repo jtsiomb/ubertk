@@ -196,6 +196,11 @@ void HBox::layout()
 
 		w->set_pos(cur_x, padding);
 
+		Container *cont;
+		if((cont = dynamic_cast<Container*>(w))) {
+			cont->layout();
+		}
+		
 		cur_x += w->get_width() + spacing;
 		if(w->get_height() > max_y) {
 			max_y = w->get_height();
@@ -216,6 +221,11 @@ void VBox::layout()
 		Widget *w = *iter++;
 
 		w->set_pos(padding, cur_y);
+
+		Container *cont;
+		if((cont = dynamic_cast<Container*>(w))) {
+			cont->layout();
+		}
 		
 		cur_y += w->get_height() + spacing;
 		if(w->get_width() > max_x) {

@@ -1,3 +1,4 @@
+#include <typeinfo>
 #include "ubertk.h"
 #include "utk_gfx.h"
 
@@ -74,6 +75,29 @@ unsigned int get_msec()
 #else
 	return GetTickCount();
 #endif	/* __unix__ */
+}
+
+void print_widget_tree(Widget *root)
+{
+	static int lvl;
+	if(root == (Widget*)0xffffffff) root = root_widget;
+
+	for(int i=0; i<lvl; i++) {
+		putchar(' ');
+	}
+	printf("%s\n", typeid(root).name());
+
+	Container *cont;
+	if((cont = dynamic_cast<Container*>(root))) {
+		Container::iterator iter = cont->begin();
+		while(iter != cont->end()) {
+			print_widget_tree(*iter++);
+		}
+	} else {
+		print_widget_tree(root->get_child());
+	}
+
+	lvl--;
 }
 
 }	// namespace utk end

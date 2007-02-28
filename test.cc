@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 	// create the windows
 	utkroot = utk::init(xsz, ysz);
 
-	win = utk::create_window(utkroot, 100, 80, 300, 500, "UTK rulez!");
+	/*win = utk::create_window(utkroot, 100, 80, 300, 500, "UTK rulez!");
 	win->set_alpha(220);
 	win->show();
 
@@ -125,7 +125,9 @@ int main(int argc, char **argv)
 	//g = new utk::ScrollBar;
 	//r = new utk::Slider(0, 1);
 	//g = new utk::Slider(0, 1);
+	*/
 	b = new utk::Slider(0, 1);
+	/*
 	//vbox->add_child(r);
 	//vbox->add_child(g);
 	//vbox->add_child(b);
@@ -138,28 +140,26 @@ int main(int argc, char **argv)
 
 	ninja = new utk::CheckBox("Eimai ninja!");
 	vbox->add_child(ninja);
+	*/
 	
 	cbox = new utk::ColorBox();
-	vbox->add_child(cbox);
+	//vbox->add_child(cbox);
 	hue = new utk::HueBox();
-	vbox->add_child(hue);
+	//vbox->add_child(hue);
 
-	vbox->add_child(b);
+	//vbox->add_child(b);
 
 	tball = new utk::TrackBall(50, 50);
-	vbox->add_child(tball);
+	//vbox->add_child(tball);
 
 	pbar = new utk::Progress;
+	/*
 	vbox->add_child(pbar);
 
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
-
+	*/
 
 	win2 = utk::create_window(utkroot, 500, 150, 150, 300, "foo g");
-	//win2 = new utk::Window;
-	//win2->set_pos(500, 150);
-	//win2->set_size(150, 300);
-	//utkroot->add_child(win2);
 	win2->show();
 
 	vbox = new utk::VBox;
@@ -180,25 +180,10 @@ int main(int argc, char **argv)
 	listy->add_item("I'll go home now...");
 	listy->add_item("goodnight!");
 
-	/*utk::ScrollWin *scrolly = new utk::ScrollWin;
-	scrolly->set_pos(400, 100);
-	scrolly->set_size(100, 100);
-	vbox->add_child(scrolly);
+	utk::VBox *label_box = create_vbox(vbox);
+	create_label(label_box, "test");
 
-	vbox = new utk::VBox;
-	scrolly->add_child(vbox);
-
-	vbox->add_child(new utk::Label("This"));
-	vbox->add_child(new utk::Label("is a"));
-	vbox->add_child(new utk::Label("sample"));
-	vbox->add_child(new utk::Label("of a utk"));
-	vbox->add_child(new utk::Label("scrollable fucking widget"));
-	vbox->add_child(new utk::Label("widget"));
-	vbox->add_child(new utk::Label("..."));
-	vbox->add_child(new utk::Label("That's all"));
-	vbox->add_child(new utk::Label("for now."));
-	vbox->add_child(new utk::Label("Goodbye!"));
-	*/
+	utk::print_widget_tree();
 
 	glutMainLoop();
 
