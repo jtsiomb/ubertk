@@ -20,6 +20,9 @@ public:
 	virtual void set_size(int w, int h);
 	virtual void set_size(IVec2 sz);
 
+	virtual void rise();
+	virtual void sink();
+
 	virtual void draw() const;
 
 	friend class WinFrame;

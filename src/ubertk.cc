@@ -1,4 +1,3 @@
-#include <typeinfo>
 #include "ubertk.h"
 #include "utk_gfx.h"
 
@@ -26,6 +25,8 @@ Container *init(int x, int y)
 #if defined(WIN32) || defined(__WIN32__)
 	draw_cursor = true;
 #endif
+
+	get_msec();	// initialize timer
 	
 	return cont;
 }
@@ -77,24 +78,39 @@ unsigned int get_msec()
 #endif	/* __unix__ */
 }
 
-void print_widget_tree(Widget *root)
+void print_widget_tree(Widget *w)
 {
 	static int lvl;
-	if(root == (Widget*)0xffffffff) root = root_widget;
+	if(!w) return;
+	if(w == (Widget*)0xffffffff) w = root_widget;
 
 	for(int i=0; i<lvl; i++) {
-		putchar(' ');
+		fputs("  ", stdout);
 	}
-	printf("%s\n", typeid(root).name());
+	fputs(w->class_name(), stdout);
+
+	Drawable *draw;
+	if((draw = dynamic_cast<Drawable*>(w))) {
+		const char *text = draw->get_text();
+
+		if(text && *text) {
+			printf("  (%s)", text);
+		}
+	}
+
+	printf("   [%dx%d-%d+%d]", w->get_size().x, w->get_size().y, w->get_pos().x, w->get_pos().y);
+	putchar('\n');
+
+	lvl++;
 
 	Container *cont;
-	if((cont = dynamic_cast<Container*>(root))) {
+	if((cont = dynamic_cast<Container*>(w))) {
 		Container::iterator iter = cont->begin();
 		while(iter != cont->end()) {
 			print_widget_tree(*iter++);
 		}
 	} else {
-		print_widget_tree(root->get_child());
+		print_widget_tree(w->get_child());
 	}
 
 	lvl--;

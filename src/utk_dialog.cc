@@ -47,8 +47,8 @@ Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 
 	free(buf);
 
+	int bn_width = 0;
 	if(bn_mask) {
-		printf("foo\n");
 		HBox *hbox = create_hbox(vbox);
 	
 		if(bn_mask & MSG_BN_OK) {
@@ -63,10 +63,12 @@ Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 		if(bn_mask & MSG_BN_NO) {
 			create_button(hbox, "No", func);
 		}
+
+		bn_width = hbox->get_width();
 	}
 
 
-	int width = MAX(max_len + 10, 100);
+	int width = MAX(max_len, bn_width) + 10;
 	int text_spacing = gfx::text_spacing();
 	int height = lines * text_spacing + 10 + (bn_mask ? text_spacing + 10 : 0);
 	int x = (root->get_size().x - width) / 2;
@@ -74,6 +76,7 @@ Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 	
 	Window *win = create_window(root, x, y, width, height, type_str[type]);
 	win->add_child(vbox);
+	win->rise();
 	win->show();
 
 	return win;

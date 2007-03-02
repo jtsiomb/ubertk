@@ -23,6 +23,19 @@ Container::~Container()
 	}
 }
 
+void Container::layout()
+{
+	Widget *ptr = parent;
+
+	while(ptr && !dynamic_cast<Container*>(ptr)) {
+		ptr = ptr->get_parent();
+	}
+
+	if(ptr) {
+		((Container*)ptr)->layout();
+	}
+}
+
 Widget *Container::handle_event(Event *event)
 {
 	Widget *res = 0;
@@ -173,16 +186,6 @@ void Container::draw() const
 	}
 }
 
-int Container::get_width() const
-{
-	size_t w = 0;
-	for (size_t i=0; i<cont.size(); i++)
-	{
-		w += (*this)[i]->get_width() + spacing;
-	}
-	w += 2 * padding;
-	return (int)w;
-}
 
 /* ---- layout function for the horizontal box container ---- */
 void HBox::layout()
@@ -195,11 +198,6 @@ void HBox::layout()
 		Widget *w = *iter++;
 
 		w->set_pos(cur_x, padding);
-
-		Container *cont;
-		if((cont = dynamic_cast<Container*>(w))) {
-			cont->layout();
-		}
 		
 		cur_x += w->get_width() + spacing;
 		if(w->get_height() > max_y) {
@@ -207,7 +205,12 @@ void HBox::layout()
 		}
 	}
 
-	set_size(cur_x - spacing + padding, max_y);
+	if(cont.size() > 0) {
+		cur_x -= spacing;
+	}
+
+	set_size(cur_x + padding, max_y);
+	Container::layout();
 }
 
 /* ---- layout function for the vertical box container ---- */
@@ -222,18 +225,18 @@ void VBox::layout()
 
 		w->set_pos(padding, cur_y);
 
-		Container *cont;
-		if((cont = dynamic_cast<Container*>(w))) {
-			cont->layout();
-		}
-		
 		cur_y += w->get_height() + spacing;
 		if(w->get_width() > max_x) {
 			max_x = w->get_width();
 		}
 	}
 
-	set_size(max_x, cur_y - spacing + padding);
+	if(cont.size() > 0) {
+		cur_y -= spacing;
+	}
+
+	set_size(max_x, cur_y + padding);
+	Container::layout();
 }
 
 void NullBox::layout()

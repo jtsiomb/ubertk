@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 	// create the windows
 	utkroot = utk::init(xsz, ysz);
 
-	/*win = utk::create_window(utkroot, 100, 80, 300, 500, "UTK rulez!");
+	win = utk::create_window(utkroot, 100, 80, 300, 500, "UTK rulez!");
 	win->set_alpha(220);
 	win->show();
 
@@ -125,9 +125,7 @@ int main(int argc, char **argv)
 	//g = new utk::ScrollBar;
 	//r = new utk::Slider(0, 1);
 	//g = new utk::Slider(0, 1);
-	*/
 	b = new utk::Slider(0, 1);
-	/*
 	//vbox->add_child(r);
 	//vbox->add_child(g);
 	//vbox->add_child(b);
@@ -140,24 +138,21 @@ int main(int argc, char **argv)
 
 	ninja = new utk::CheckBox("Eimai ninja!");
 	vbox->add_child(ninja);
-	*/
 	
 	cbox = new utk::ColorBox();
-	//vbox->add_child(cbox);
+	vbox->add_child(cbox);
 	hue = new utk::HueBox();
-	//vbox->add_child(hue);
+	vbox->add_child(hue);
 
-	//vbox->add_child(b);
+	vbox->add_child(b);
 
 	tball = new utk::TrackBall(50, 50);
-	//vbox->add_child(tball);
+	vbox->add_child(tball);
 
 	pbar = new utk::Progress;
-	/*
 	vbox->add_child(pbar);
 
 	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
-	*/
 
 	win2 = utk::create_window(utkroot, 500, 150, 150, 300, "foo g");
 	win2->show();
@@ -180,8 +175,9 @@ int main(int argc, char **argv)
 	listy->add_item("I'll go home now...");
 	listy->add_item("goodnight!");
 
-	utk::VBox *label_box = create_vbox(vbox);
+	utk::HBox *label_box = create_hbox(vbox);
 	create_label(label_box, "test");
+	create_label(label_box, "foo");
 
 	utk::print_widget_tree();
 

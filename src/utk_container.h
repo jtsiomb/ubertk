@@ -24,7 +24,7 @@ public:
 	Container();
 	virtual ~Container();
 
-	virtual void layout() = 0;
+	virtual void layout();
 
 	virtual Widget *handle_event(Event *event);
 
@@ -47,7 +47,7 @@ public:
 
 	virtual size_t size() const;
 
-	virtual int get_width() const;
+	//virtual int get_width() const;
 
 	virtual void draw() const;	// just calls the draw() of each contained widget
 };

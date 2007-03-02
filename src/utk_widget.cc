@@ -1,3 +1,4 @@
+#include <typeinfo>
 #include "utk_widget.h"
 #include "utk_container.h"
 #include "utk_gfx.h"
@@ -19,6 +20,44 @@ Widget::~Widget()
 	if(herod_mode) {
 		delete child;
 	}
+}
+
+static int digits(int x)
+{
+	x = abs(x);
+	if(x < 10) return 1;
+	return digits(x / 10) + 1;
+}
+
+const char *Widget::class_name() const
+{
+	const char *str = typeid(*this).name();
+
+#ifdef __GNUC__
+	static char buf[256];
+	int ns = 0, num = 0;
+
+	if(*str == 'N' && isdigit(str[1])) {
+		ns = atoi(str + 1);
+		str += digits(ns) + 1;
+
+		memcpy(buf, str, ns);
+		memcpy(buf + ns, "::", 3);
+		str += ns;
+	}
+
+	if(isdigit(*str)) {
+		num = atoi(str);
+		str += digits(num);
+	}
+
+	char *ptr = buf + (ns ? ns + 2 : 0);
+	memcpy(ptr, str, num);
+	ptr[num] = 0;
+	return buf;
+#else
+	return str;	// the name mangling is compiler-specific
+#endif
 }
 
 Widget *Widget::handle_event(Event *event)
@@ -71,12 +110,12 @@ IVec2 Widget::get_size() const
 
 int Widget::get_width() const
 {
-	return size.x;
+	return get_size().x;
 }
 
 int Widget::get_height() const
 {
-	return size.y;
+	return get_size().y;
 }
 
 void Widget::set_padding(int pad)

@@ -44,6 +44,24 @@ void Window::set_size(IVec2 sz)
 	set_size(sz.x, sz.y);
 }
 
+void Window::rise()
+{
+	if(parent && dynamic_cast<WinFrame*>(parent)) {
+		parent->rise();
+	} else {
+		Widget::rise();
+	}
+}
+
+void Window::sink()
+{
+	if(parent && dynamic_cast<WinFrame*>(parent)) {
+		parent->sink();
+	} else {
+		Widget::sink();
+	}
+}
+
 void Window::draw() const
 {
 	IVec2 gpos = get_global_pos();
@@ -74,6 +92,8 @@ WinFrame::WinFrame(Widget *child)
 	} else {
 		utk_error("non-window widget passed as WinFrame's child\n");
 	}
+
+	last_click = 0;
 }
 
 WinFrame::~WinFrame() {}

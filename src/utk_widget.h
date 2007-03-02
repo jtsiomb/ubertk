@@ -24,6 +24,8 @@ public:
 	Widget();
 	virtual ~Widget();
 
+	virtual const char *class_name() const;
+
 	virtual Widget *handle_event(Event *event);
 
 	virtual void destroy_children(bool enable);

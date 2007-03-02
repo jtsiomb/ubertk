@@ -34,6 +34,7 @@ Container *get_root_widget();
 
 unsigned int get_msec();
 
+void class_name(Widget *w);
 void print_widget_tree(Widget *root = (Widget*)0xffffffff);
 	
 }
