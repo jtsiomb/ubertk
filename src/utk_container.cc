@@ -51,9 +51,6 @@ Widget *Container::handle_event(Event *event)
 			} else {
 				w->handle_event(event);
 			}
-			//if(w->hit_test(mev->x, mev->y)) {
-			//	return w->handle_event(event);
-			//}
 		}
 	}
 	return res;

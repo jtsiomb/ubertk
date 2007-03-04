@@ -220,7 +220,30 @@ Window *create_window(Widget *parent, int x, int y, int w, int h, const char *ti
 
 	WinFrame *frm = new WinFrame(win);
 	parent->add_child(frm);
+
+	win->rise();
 	return win;
+}
+
+void destroy_window(Widget *w)
+{
+	if(dynamic_cast<Window*>(w)) {
+		/*
+		Widget *parent = w->get_parent();
+		
+		if(dynamic_cast<WinFrame*>(parent)) {
+			w = parent;
+			parent = w->get_parent();
+		}
+
+		if(parent) {
+			parent->remove_child(w);
+		}
+		*/
+		utk::destruct_queue.push_back(w);
+	} else {
+		utk_error("non-window widget passed to destroy_window()\n");
+	}
 }
 
 }	// namespace utk end

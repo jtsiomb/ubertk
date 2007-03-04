@@ -51,7 +51,7 @@ public:
 
 
 Window *create_window(Widget *parent, int x, int y, int w, int h, const char *title);
-
+void destroy_window(Widget *w);
 
 }	// end of namespace utk
 

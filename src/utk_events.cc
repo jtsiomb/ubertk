@@ -1,3 +1,4 @@
+#include <list>
 #include "ubertk.h"
 #include "utk_events.h"
 
@@ -9,6 +10,10 @@ static Widget *mouse_press_widget;
 static Widget *focused_widget;
 static IVec2 last_drag;
 static IVec2 mouse_pos;
+
+std::list<Widget*> destruct_queue;
+
+static void handle_event(Event *e);
 
 Event::Event()
 {
@@ -69,6 +74,32 @@ FocusEvent::~FocusEvent() {}
 // ------ low level event handling ------
 
 void event(Event *e)
+{
+	handle_event(e);
+	
+	if(!destruct_queue.empty()) {
+		std::list<Widget*>::iterator iter = destruct_queue.begin();
+		while(iter != destruct_queue.end()) {
+			Widget *w = *iter++;
+			if(dynamic_cast<Window*>(w)) {
+				Widget *parent = w->get_parent();
+		
+				if(dynamic_cast<WinFrame*>(parent)) {
+					w = parent;
+					parent = w->get_parent();
+				}
+
+				if(parent) {
+					parent->remove_child(w);
+				}
+			}
+		}
+
+		destruct_queue.clear();
+	}
+}
+
+static void handle_event(Event *e)
 {
 	Widget *root = get_root_widget();
 

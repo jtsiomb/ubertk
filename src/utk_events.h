@@ -1,6 +1,7 @@
 #ifndef UBERTK_EVENTS_H_
 #define UBERTK_EVENTS_H_
 
+#include <list>
 #include <utk_types.h>
 
 namespace utk {
@@ -111,6 +112,8 @@ struct CallbackClosure {
 	void *data;
 };
 
+
+extern std::list<Widget*> destruct_queue;
 
 }	// end namespace utk
 

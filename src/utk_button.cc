@@ -62,14 +62,15 @@ void Button::draw() const
 	Widget::draw();
 }
 
-Button *create_button(Widget *parent, const char *text, Callback func)
+Button *create_button(Widget *parent, const char *text, Callback func, void *cdata)
 {
-	return create_button(parent, text, 100, gfx::text_spacing() + 4, func);
+	return create_button(parent, text, 100, gfx::text_spacing() + 4, func, cdata);
 }
 
-Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func)
+Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func, void *cdata)
 {
-	Button *bn = new Button(text, func);
+	Button *bn = new Button(text);
+	bn->set_callback(EVENT_CLICK, func, cdata);
 	bn->set_size(xsz, ysz);
 	parent->add_child(bn);
 	return bn;

@@ -50,6 +50,7 @@ public:
 	virtual void add_child(Widget *w);
 	virtual Widget *get_child();
 	virtual const Widget *get_child() const;
+	virtual bool remove_child(Widget *w = 0);
 
 	virtual void set_parent(Widget *w);
 	virtual Widget *get_parent();

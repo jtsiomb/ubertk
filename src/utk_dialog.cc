@@ -4,7 +4,19 @@
 
 namespace utk {
 
-Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func)
+static void def_dialog_handler(Event *event, void *data)
+{
+	Widget *w = event->widget;
+	while(w && !dynamic_cast<Window*>(w)) {
+		w = w->get_parent();
+	}
+
+	if(w) {
+		destroy_window(w);
+	}
+}
+
+Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func, void *cdata)
 {
 	static char *type_str[] = {
 		"Question",
@@ -14,6 +26,8 @@ Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 	};
 	int lines = 0;
 	int max_len = 0;
+
+	if(!func) func = def_dialog_handler;
 
 	Widget *root = get_root_widget();
 	VBox *vbox = new VBox;
@@ -76,16 +90,20 @@ Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 	
 	Window *win = create_window(root, x, y, width, height, type_str[type]);
 	win->add_child(vbox);
-	win->rise();
 	win->show();
 
 	return win;
 }
 
-Widget *message_dialog(const char *msg, unsigned int type, Callback func)
+Widget *message_dialog(const char *msg, unsigned int type, Callback func, void *cdata)
 {
 	unsigned int bn_mask = (type == MSG_TYPE_QUESTION ? MSG_BN_YES_NO : MSG_BN_OK);
-	return message_dialog(msg, type, bn_mask, func);
+	return message_dialog(msg, type, bn_mask, func, cdata);
+}
+
+void destory_dialog(Widget *w)
+{
+	destroy_window(w);
 }
 
 } // end of utk namespace

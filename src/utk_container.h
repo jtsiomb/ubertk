@@ -47,8 +47,6 @@ public:
 
 	virtual size_t size() const;
 
-	//virtual int get_width() const;
-
 	virtual void draw() const;	// just calls the draw() of each contained widget
 };
 

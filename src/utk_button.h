@@ -19,8 +19,8 @@ public:
 	virtual void draw() const;
 };
 
-Button *create_button(Widget *parent, const char *text, Callback func = 0);
-Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func = 0);
+Button *create_button(Widget *parent, const char *text, Callback func = 0, void *cdata = 0);
+Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func = 0, void *cdata = 0);
 
 }	// end of namespace utk
 

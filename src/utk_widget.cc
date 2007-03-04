@@ -167,6 +167,15 @@ const Widget *Widget::get_child() const
 	return child;
 }
 
+bool Widget::remove_child(Widget *w)
+{
+	if(!child) return false;
+	if(herod_mode) {
+		delete child;
+	}
+	child = 0;
+	return true;
+}
 
 void Widget::set_parent(Widget *w)
 {

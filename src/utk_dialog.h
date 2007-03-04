@@ -23,8 +23,9 @@ enum {
 
 enum { DLG_MODAL = (1 << 15) };
 
-Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0);
-Widget *message_dialog(const char *msg, unsigned int type, Callback func = 0);
+Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0, void *cdata = 0);
+Widget *message_dialog(const char *msg, unsigned int type, Callback func = 0, void *cdata = 0);
+void destory_dialog(Widget *w);
 
 } // end utk namespace
 
