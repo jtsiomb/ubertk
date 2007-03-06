@@ -11,6 +11,7 @@ Widget::Widget()
 	visible = true;
 	child = parent = 0;
 	herod_mode = true;
+	name = 0;
 
 	memset(callbacks, 0, EVENT_COUNT * sizeof *callbacks);
 }
@@ -20,6 +21,35 @@ Widget::~Widget()
 	if(herod_mode) {
 		delete child;
 	}
+}
+
+void Widget::set_name(const char *name)
+{
+	char *tmp;
+	if((tmp = (char*)malloc(strlen(name) + 1))) {
+		strcpy(tmp, name);
+
+		free(this->name);
+		this->name = tmp;
+	}
+}
+
+const char *Widget::get_name() const
+{
+	return name;
+}
+
+Widget *Widget::find_widget(const char *name)
+{
+	return (Widget*)((const Widget*)this)->find_widget(name);
+}
+
+const Widget *Widget::find_widget(const char *name) const
+{
+	if(strcmp(name, this->name) == 0) {
+		return this;
+	}
+	return child ? child->find_widget(name) : 0;
 }
 
 static int digits(int x)

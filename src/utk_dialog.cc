@@ -101,6 +101,49 @@ Widget *message_dialog(const char *msg, unsigned int type, Callback func, void *
 	return message_dialog(msg, type, bn_mask, func, cdata);
 }
 
+Widget *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func, void *cdata)
+{
+	char *cwd_pname = "/tmp";
+	Widget *root = get_root_widget();
+	int width = 350;
+	int height = 400;
+	int x = (root->get_size().x - width) / 2;
+	int y = (root->get_size().y - height) / 2;
+
+	Window *win = create_window(root, x, y, width, height, type == FILE_DIALOG_OPEN ? "open file" : "save file");
+	win->show();
+	VBox *main_vbox = create_vbox(win);
+
+	HBox *path_hbox = create_hbox(main_vbox);
+	create_label(path_hbox, "path:");
+	Entry *en_path = create_entry(path_hbox, cwd_pname, 150);	// TODO: also pass func to change the dir on modify
+
+	HBox *list_hbox = create_hbox(main_vbox);
+
+	VBox *bmark_vbox = create_vbox(list_hbox);
+	create_button(bmark_vbox, "go home");
+	create_button(bmark_vbox, "new dir");
+	create_button(bmark_vbox, "rename");
+
+	ListBox *listb = create_listbox(list_hbox, 200, 200);
+	// TODO: populate and add callbacks
+	
+
+	HBox *fname_hbox = create_hbox(main_vbox);
+	create_label(fname_hbox, "filename:");
+	create_entry(fname_hbox, "", 100);
+
+	HBox *filter_hbox = create_hbox(main_vbox);
+	create_label(filter_hbox, "filter:");
+	create_entry(filter_hbox, "", 100);
+
+	HBox *bn_hbox = create_hbox(main_vbox);
+	create_button(bn_hbox, type == FILE_DIALOG_OPEN ? "open" : "save");
+	create_button(bn_hbox, "cancel");
+
+	return win;
+}
+
 void destory_dialog(Widget *w)
 {
 	destroy_window(w);

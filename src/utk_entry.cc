@@ -1,6 +1,7 @@
 #include <string>
 #include "utk_entry.h"
 #include "utk_gfx.h"
+#include "utk_common.h"
 
 namespace utk {
 
@@ -117,7 +118,23 @@ void Entry::draw() const
 	Widget::draw();
 }
 
-void Entry::on_click(Event *event) {}
-void Entry::on_modify(Event *event) {}
+
+Entry *create_entry(Widget *parent, const char *text, int width, Callback func, void *cdata)
+{
+	Entry *en = new Entry(text);
+	en->set_callback(EVENT_MODIFY, func, cdata);
+	en->set_size(width, gfx::text_spacing() + 4);
+	parent->add_child(en);
+	return en;
+}
+
+void destroy_entry(Entry *en)
+{
+	if(dynamic_cast<Entry*>(en)) {
+		delete en;
+	} else {
+		utk_error("non-entry widget passed to destroy_entry()\n");
+	}
+}
 
 }	// utk namespace end

@@ -31,6 +31,12 @@ public:
 	virtual void draw() const;
 };
 
+ListBox *create_listbox(Widget *parent, int width, int height, Callback func = 0, void *cdata = 0);
+ListBox *create_listbox(Widget *parent, int width, int height, const char **items, int inum, Callback func = 0, void *cdata = 0);
+ListBox *create_listbox(Widget *parent, int width, int height, int *link);
+ListBox *create_listbox(Widget *parent, int width, int height, const char *link);
+void destroy_listbox(ListBox *lb);
+
 } // end namespace utk
 
 #endif	// UTK_LISTBOX_H_

@@ -141,7 +141,8 @@ static void handle_event(Event *e)
 			bev->press_y = last_press_y;
 
 			// houston, we have a click!
-			if(bev->button >= MOUSE_LEFT && bev->button < MOUSE_RIGHT && bev->x == last_press_x && bev->y == last_press_y) {
+			if(bev->button >= MOUSE_LEFT && bev->button < MOUSE_RIGHT &&
+					abs(bev->x - last_press_x) < 2 && abs(bev->y - last_press_y) < 2) {
 				ClickEvent cev;
 				cev.button = bev->button;
 				cev.x = bev->x;

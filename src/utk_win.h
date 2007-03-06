@@ -44,6 +44,8 @@ public:
 
 	virtual Widget *handle_event(Event *event);
 
+	virtual bool is_visible() const;
+
 	virtual void draw() const;
 
 	friend class Window;

@@ -10,6 +10,7 @@ class Event;
 
 class Widget {
 protected:
+	char *name;
 	IVec2 pos, size;
 	int padding;
 
@@ -23,6 +24,12 @@ protected:
 public:
 	Widget();
 	virtual ~Widget();
+	
+	virtual void set_name(const char *name);
+	virtual const char *get_name() const;
+
+	virtual Widget *find_widget(const char *name);
+	virtual const Widget *find_widget(const char *name) const;
 
 	virtual const char *class_name() const;
 

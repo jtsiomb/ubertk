@@ -24,6 +24,8 @@ public:
 	Container();
 	virtual ~Container();
 
+	virtual const Widget *find_widget(const char *name) const;
+
 	virtual void layout();
 
 	virtual Widget *handle_event(Event *event);

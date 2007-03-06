@@ -23,6 +23,18 @@ Container::~Container()
 	}
 }
 
+const Widget *Container::find_widget(const char *name) const
+{
+	const_iterator iter = begin();
+	while(iter != end()) {
+		if(strcmp((*iter)->get_name(), name) == 0) {
+			return *iter;
+		}
+		iter++;
+	}
+	return 0;
+}
+
 void Container::layout()
 {
 	Widget *ptr = parent;

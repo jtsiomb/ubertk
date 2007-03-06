@@ -175,6 +175,8 @@ int main(int argc, char **argv)
 	listy->add_item("I'll go home now...");
 	listy->add_item("goodnight!");
 
+	listy->select(2);
+
 	utk::HBox *label_box = create_hbox(vbox);
 	create_label(label_box, "test");
 	create_label(label_box, "foo");
@@ -308,6 +310,10 @@ void keyb(unsigned char key, int x, int y)
 
 	case '4':
 		message_dialog("Everything is lost!\nRun for the hills!", utk::MSG_TYPE_ERROR);
+		break;
+		
+	case 'f':
+		file_dialog(utk::FILE_DIALOG_OPEN, 0, 0, 0);
 		break;
 
 	default:

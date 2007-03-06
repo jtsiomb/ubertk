@@ -174,11 +174,15 @@ Widget *WinFrame::handle_event(Event *event)
 	return 0;
 }
 
+bool WinFrame::is_visible() const
+{
+	return child->is_visible();
+}
 
 void WinFrame::draw() const
 {
 	Window *child = (Window*)this->child;
-	
+
 	IVec2 gpos = get_global_pos();
 	int bord = child->get_border();
 	int third = bord / 3;

@@ -19,10 +19,10 @@ public:
 	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
-
-	virtual void on_click(Event *event);
-	virtual void on_modify(Event *event);
 };
+
+Entry *create_entry(Widget *parent, const char *text, int width = 100, Callback func = 0, void *cdata = 0);
+void destroy_entry(Entry *en);
 
 }
 
