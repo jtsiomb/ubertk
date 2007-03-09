@@ -84,7 +84,9 @@ void Entry::draw() const
 
 	int border = focus ? 2 : 1;
 
-	gfx::color(color.r, color.g, color.b, color.a);
+	gfx::color_clamp(color.r, color.g, color.b, color.a);
+	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_INSET | gfx::BEVEL_FILLBG, 1);
+	/*
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
 	gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
@@ -92,6 +94,7 @@ void Entry::draw() const
 	gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
 	gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y, border);
 	gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);
+	*/
 
 	std::string view_text(text, vfirst);
 

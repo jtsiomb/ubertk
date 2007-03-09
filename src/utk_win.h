@@ -10,6 +10,8 @@ class Window : public Drawable {
 protected:
 	int tbar_height;
 	bool shaded;
+	bool focused;
+	Widget *win_focus;
 
 public:
 	Window();
@@ -23,6 +25,10 @@ public:
 	virtual void rise();
 	virtual void sink();
 
+	virtual void set_win_focus(Widget *w);
+	virtual Widget *get_win_focus();
+	virtual const Widget *get_win_focus() const;
+
 	virtual void draw() const;
 
 	friend class WinFrame;
@@ -31,6 +37,7 @@ public:
 
 class WinFrame : public Drawable {
 protected:
+	Color unfocused_col;
 	unsigned int last_click; // to detect double-clicks
 	bool shaded;
 	IVec2 orig_size;	// used when shaded

@@ -69,6 +69,10 @@ Button *create_button(Widget *parent, const char *text, Callback func, void *cda
 
 Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func, void *cdata)
 {
+	if(ysz == 0) {
+		ysz = gfx::text_spacing() + 4;
+	}
+
 	Button *bn = new Button(text);
 	bn->set_callback(EVENT_CLICK, func, cdata);
 	bn->set_size(xsz, ysz);

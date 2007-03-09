@@ -98,6 +98,11 @@ public:
  */
 void event(Event *e);
 
+enum { FOCUS_POINT, FOCUS_CLICK };
+
+void set_focus_mode(unsigned int fmode);
+unsigned int get_focus_mode();
+
 int get_button_state();
 Widget *get_button_press_widget();
 IVec2 get_mouse_pos();

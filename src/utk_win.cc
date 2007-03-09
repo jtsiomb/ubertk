@@ -12,6 +12,7 @@ unsigned int get_msec();
 Window::Window()
 {
 	visible = false;
+	focused = false;
 	set_color(128, 128, 128, 255);
 	border = 3;
 	padding = 4;
@@ -22,6 +23,13 @@ Window::~Window() {}
 
 Widget *Window::handle_event(Event *event)
 {
+	FocusEvent *fev;
+	if((fev = dynamic_cast<FocusEvent*>(event))) {
+		focused = fev->focus;
+		callback(fev, EVENT_FOCUS);
+		return this;
+	}
+
 	Widget *w;
 	if(child && (w = child->handle_event(event))) {
 		return w;
@@ -62,6 +70,21 @@ void Window::sink()
 	}
 }
 
+void Window::set_win_focus(Widget *w)
+{
+	win_focus = w;
+}
+
+Widget *Window::get_win_focus()
+{
+	return win_focus;
+}
+
+const Widget *Window::get_win_focus() const
+{
+	return win_focus;
+}
+
 void Window::draw() const
 {
 	IVec2 gpos = get_global_pos();
@@ -80,6 +103,7 @@ WinFrame::WinFrame(Widget *child)
 	Window *win;
 
 	set_color(128, 130, 200);
+	unfocused_col = Color(100, 110, 130);
 	shaded = false;
 
 	if((win = dynamic_cast<Window*>(child))) {
@@ -187,7 +211,13 @@ void WinFrame::draw() const
 	int bord = child->get_border();
 	int third = bord / 3;
 
-	gfx::color_clamp(color.r, color.g, color.b, color.a);
+	int alpha = child->get_color().a;
+
+	if(child->focused) {
+		gfx::color_clamp(color.r, color.g, color.b, alpha);
+	} else {
+		gfx::color_clamp(unfocused_col.r, unfocused_col.g, unfocused_col.b, alpha);
+	}
 
 	Rect out(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 	Rect in(gpos.x + bord - third, gpos.y + bord - third, gpos.x + size.x - bord + third, gpos.y + size.y - bord + third);
@@ -195,8 +225,9 @@ void WinFrame::draw() const
 	if(bord < 3) {
 		gfx::bevel(out.x1, out.y1, out.x2, out.y2, 0, bord);
 	} else {
-		bevel(out.x1, out.y1, out.x2, out.y2, gfx::BEVEL_FILLBG, third);
-		gfx::bevel(in.x1, in.y1, in.x2, in.y2, gfx::BEVEL_FILLBG | gfx::BEVEL_INSET, third);
+		gfx::frame(out.x1, out.y1, out.x2, out.y2, bord);
+		gfx::bevel(out.x1, out.y1, out.x2, out.y2, 0, third);
+		gfx::bevel(in.x1, in.y1, in.x2, in.y2, gfx::BEVEL_INSET, third);
 	}
 
 	bevel(gpos.x + bord, gpos.y + bord, gpos.x + size.x - bord, gpos.y + bord + child->tbar_height, gfx::BEVEL_FILLBG, MAX(1, third));

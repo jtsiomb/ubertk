@@ -122,6 +122,16 @@ void color_clamp(int r, int g, int b, int a)
 	gfx::color(cur_col.r, cur_col.g, cur_col.b, cur_col.a);
 }
 
+void frame(int x1, int y1, int x2, int y2, int thickness)
+{
+	for(int i=0; i<thickness; i++) {
+		gfx::rect(x1 + i, y1 + i, x2 - i, y1 + 1 + i);
+		gfx::rect(x1 + i, y1 + i, x1 + 1 + i, y2 - i);
+		gfx::rect(x1 + i, y2 - 1 - i, x2 - i, y2 - i);
+		gfx::rect(x2 - 1 - i, y1 + i, x2 - i, y2 - i);
+	}
+}
+
 void bevel(int x1, int y1, int x2, int y2, unsigned int flags, int thickness)
 {
 	Color light_color = lighter_color(cur_col);

@@ -1,3 +1,9 @@
+#include <string.h>
+#include <errno.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
 #include "ubertk.h"
 #include "utk_dialog.h"
 #include "utk_common.h"
@@ -101,14 +107,72 @@ Widget *message_dialog(const char *msg, unsigned int type, Callback func, void *
 	return message_dialog(msg, type, bn_mask, func, cdata);
 }
 
+static bool is_dir(const char *name, const char *path)
+{
+	char *full_name;
+	
+	if(!(full_name = (char*)malloc(strlen(name) + strlen(path) + 2))) {
+		utk_error("malloc failed");
+		return false;
+	}
+	sprintf(full_name, "%s/%s", path, name);
+
+#if defined(unix) || defined(__unix__)
+	struct stat st;
+	stat(full_name, &st);
+	free(full_name);
+
+	return S_ISDIR(st.st_mode);
+#else
+	DIR *dir = opendir(full_name);
+	free(full_name);
+	if(dir) {
+		closedir(dir);
+		return true;
+	}
+#endif
+	return false;
+}
+
+static int fill_filelist(ListBox *listbox, const char *path, const char *filter, bool show_hidden)
+{
+	char name[NAME_MAX];
+	DIR *dir;
+	if(!(dir = opendir(path))) {
+		utk_error("opendir failed on %s: %s\n", path, strerror(errno));
+		return -1;
+	}
+
+	struct dirent *ent;
+	while((ent = readdir(dir))) {
+		strcpy(name, ent->d_name);
+		if(is_dir(name, path)) {
+			strcat(name, "/");
+		}
+
+		bool match = true;
+		if((show_hidden || name[0] != '.') && (!filter || match)) {
+			listbox->add_item(name);
+		}
+	}
+	closedir(dir);
+
+	return 0;
+}
+
 Widget *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func, void *cdata)
 {
-	char *cwd_pname = "/tmp";
+	static char buf[1024];
 	Widget *root = get_root_widget();
 	int width = 350;
 	int height = 400;
 	int x = (root->get_size().x - width) / 2;
 	int y = (root->get_size().y - height) / 2;
+
+	if(!start_dir) {
+		getcwd(buf, sizeof buf);
+		start_dir = buf;
+	}
 
 	Window *win = create_window(root, x, y, width, height, type == FILE_DIALOG_OPEN ? "open file" : "save file");
 	win->show();
@@ -116,26 +180,28 @@ Widget *file_dialog(unsigned int type, const char *fname, const char *filter, co
 
 	HBox *path_hbox = create_hbox(main_vbox);
 	create_label(path_hbox, "path:");
-	Entry *en_path = create_entry(path_hbox, cwd_pname, 150);	// TODO: also pass func to change the dir on modify
+	Entry *en_path = create_entry(path_hbox, start_dir, 290);	// TODO: also pass func to change the dir on modify
 
 	HBox *list_hbox = create_hbox(main_vbox);
 
 	VBox *bmark_vbox = create_vbox(list_hbox);
-	create_button(bmark_vbox, "go home");
-	create_button(bmark_vbox, "new dir");
-	create_button(bmark_vbox, "rename");
+	create_button(bmark_vbox, "up", 60);
+	create_button(bmark_vbox, "home", 60);
+	create_button(bmark_vbox, "mkdir", 60);
 
-	ListBox *listb = create_listbox(list_hbox, 200, 200);
-	// TODO: populate and add callbacks
-	
-
+	ListBox *listb = create_listbox(list_hbox, 270, 200);
+	if(fill_filelist(listb, start_dir, filter, false) == -1) {
+		destroy_window(win);
+		return 0;
+	}
+		
 	HBox *fname_hbox = create_hbox(main_vbox);
 	create_label(fname_hbox, "filename:");
-	create_entry(fname_hbox, "", 100);
+	create_entry(fname_hbox, "", 250);
 
 	HBox *filter_hbox = create_hbox(main_vbox);
 	create_label(filter_hbox, "filter:");
-	create_entry(filter_hbox, "", 100);
+	create_entry(filter_hbox, "", 280);
 
 	HBox *bn_hbox = create_hbox(main_vbox);
 	create_button(bn_hbox, type == FILE_DIALOG_OPEN ? "open" : "save");

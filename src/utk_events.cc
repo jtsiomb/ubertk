@@ -4,10 +4,11 @@
 
 namespace utk {
 
+static int focus_follows_mouse = 1;
 static int mouse_button_state = -1;
 static int last_press_x, last_press_y;
 static Widget *mouse_press_widget;
-static Widget *focused_widget;
+static Widget *focused_window;
 static IVec2 last_drag;
 static IVec2 mouse_pos;
 
@@ -105,8 +106,8 @@ static void handle_event(Event *e)
 
 	KeyboardEvent *kev;
 	if((kev = dynamic_cast<KeyboardEvent*>(e))) {
-		if(focused_widget) {
-			focused_widget->handle_event(e);
+		if(focused_window) {
+			focused_window->handle_event(e);
 		}
 		return;
 	}
@@ -121,6 +122,20 @@ static void handle_event(Event *e)
 		if(mouse_button_state >= 0) {
 			last_drag.x = mev->x;
 			last_drag.y = mev->y;
+		} else {
+
+			if(focus_follows_mouse) {
+				Container *root = (Container*)get_root_widget();
+				Container::iterator iter = root->begin();
+				while(iter != root->end()) {
+					Widget *w = *iter++;
+					if(w->hit_test(mev->x, mev->y)) {
+						grab_focus(w);
+						break;
+					}
+				}
+			}
+
 		}
 		return;
 	}
@@ -158,6 +173,16 @@ static void handle_event(Event *e)
 	}
 }
 
+void set_focus_mode(unsigned int fmode)
+{
+	focus_follows_mouse = (fmode == FOCUS_POINT);
+}
+
+unsigned int get_focus_mode()
+{
+	return focus_follows_mouse ? FOCUS_POINT : FOCUS_CLICK;
+}
+
 int get_button_state()
 {
 	return mouse_button_state;
@@ -180,7 +205,19 @@ IVec2 get_last_drag_pos()
 
 void grab_focus(Widget *w)
 {
-	focused_widget = w;
+	FocusEvent fev;
+
+	if(focused_window) {
+		fev.focus = false;
+		fev.widget = w;
+		focused_window->handle_event(&fev);
+	}
+
+	fev.focus = true;
+	fev.widget = focused_window;
+
+	focused_window = w;
+	focused_window->handle_event(&fev);
 }
 
 }	// namespace utk end
