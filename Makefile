@@ -1,5 +1,5 @@
 ccsrc = $(wildcard src/*.cc)
-csrc = $(wildcard src/*.c)					  
+csrc = $(wildcard src/*.c) $(wildcard src/pcre/*.c)
 ccobj = $(ccsrc:.cc=.o)
 cobj = $(csrc:.c=.o)
 obj = $(cobj) $(ccobj)

@@ -12,15 +12,22 @@ class CheckBox : public Drawable {
 protected:
 	bool checked;
 public:
-	CheckBox(char *text = 0, utk::Callback cb = 0);
+	CheckBox(const char *text = 0);
 	virtual ~CheckBox();
 
 	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
 
-	bool is_checked() const;
+	virtual void check();
+	virtual void uncheck();
+	virtual void set_checked(bool checked);
+	virtual bool is_checked() const;
 };
+
+CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callback func = 0, void *cdata = 0);
+CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, bool *link);
+void destroy_checkbox(CheckBox *cbox);
 
 }
 

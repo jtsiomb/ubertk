@@ -96,6 +96,21 @@ const char *ListBox::get_selected_text() const
 	return 0;
 }
 
+void ListBox::set_spacing(int sp)
+{
+	vbox->set_spacing(sp);
+}
+
+int ListBox::get_spacing() const
+{
+	return vbox->get_spacing();
+}
+
+void ListBox::clear()
+{
+	vbox->clear();
+}
+
 void ListBox::draw() const
 {
 	ScrollWin::draw();

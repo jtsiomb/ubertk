@@ -5,25 +5,19 @@
 
 namespace utk {
 
-CheckBox::CheckBox(char *text, utk::Callback cb)
+CheckBox::CheckBox(const char *text)
 {
-	this->text = text;
-		if (text)
-	{
+	this->text = std::string(text);
+	if(text) {
 		this->size.x = gfx::text_width(text, 18) + gfx::text_spacing();
 		this->size.y = gfx::text_spacing();
-	}
-	else
-	{
+	} else {
 		size.x = size.y = gfx::text_spacing();
 	}
 	checked = false;
 }
 
-CheckBox::~CheckBox()
-{
-
-}
+CheckBox::~CheckBox() {}
 
 Widget *CheckBox::handle_event(Event *event)
 {
@@ -67,9 +61,45 @@ void CheckBox::draw() const
 	Widget::draw();
 }
 
+void CheckBox::check()
+{
+	checked = true;
+}
+
+void CheckBox::uncheck()
+{
+	checked = false;
+}
+
+void CheckBox::set_checked(bool checked)
+{
+	this->checked = checked;
+}
+
 bool CheckBox::is_checked() const
 {
 	return checked;
 }
+
+
+CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callback func, void *cdata)
+{
+	CheckBox *cbox = new CheckBox(text);
+	cbox->set_callback(EVENT_MODIFY, func, cdata);
+	parent->add_child(cbox);
+	return cbox;
+}
+
+CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, bool *link)
+{
+	// TODO
+	return 0;
+}
+
+void destroy_checkbox(CheckBox *cbox)
+{
+	delete cbox;
+}
+
 
 } // end namespace utk

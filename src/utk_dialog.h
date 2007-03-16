@@ -5,6 +5,28 @@
 
 namespace utk {
 
+class Dialog : public Window {
+public:
+	Dialog();
+	virtual ~Dialog();
+};
+
+class FileDialog : public Dialog {
+	void *regexp;	// opaque, because I don't want to expose the regexp lib in the header
+	bool show_hidden;
+
+	const char *path;
+	ListBox *listb;
+
+	bool fill_filelist();
+
+public:
+	FileDialog();
+	virtual ~FileDialog();
+
+	friend FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func, void *cdata);
+};
+
 enum {
 	MSG_BN_OK			= 1, // 0001
 	MSG_BN_CANCEL		= 2, // 0010
@@ -28,12 +50,13 @@ enum {
 
 enum { DLG_MODAL = (1 << 15) };
 
-Widget *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0, void *cdata = 0);
-Widget *message_dialog(const char *msg, unsigned int type, Callback func = 0, void *cdata = 0);
+Dialog *create_dialog(Widget *parent, int x, int y, int w, int h, const char *title);
+void destroy_dialog(Widget *w);
 
-Widget *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func = 0, void *cdata = 0);
+Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0, void *cdata = 0);
+Dialog *message_dialog(const char *msg, unsigned int type, Callback func = 0, void *cdata = 0);
 
-void destory_dialog(Widget *w);
+FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func = 0, void *cdata = 0);
 
 } // end utk namespace
 

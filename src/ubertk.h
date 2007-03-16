@@ -23,6 +23,7 @@
 #include <utk_scrollwin.h>
 #include <utk_listbox.h>
 #include <utk_dialog.h>
+#include <utk_align.h>
 
 namespace utk {
 

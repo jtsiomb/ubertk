@@ -47,7 +47,10 @@ public:
 	virtual Widget *operator[](int idx);
 	virtual const Widget *operator[](int idx) const;
 
+	virtual void clear();
+
 	virtual size_t size() const;
+	virtual bool empty() const;
 
 	virtual void draw() const;	// just calls the draw() of each contained widget
 };

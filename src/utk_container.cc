@@ -171,9 +171,21 @@ const Widget *Container::operator[](int idx) const
 	return iter == cont.end() ? 0 : *iter;
 }
 
+void Container::clear()
+{
+	while(!cont.empty()) {
+		remove_child(*cont.begin());
+	}
+}
+
 size_t Container::size() const
 {
 	return cont.size();
+}
+
+bool Container::empty() const
+{
+	return cont.empty();
 }
 
 // EDO EINAI I DRAW FUNCTION !!!111oneoneeleven

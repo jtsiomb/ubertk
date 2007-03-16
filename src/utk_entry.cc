@@ -47,6 +47,10 @@ Widget *Entry::handle_event(Event *event)
 				text += "    ";
 				break;
 
+			case '\n':
+			case '\r':
+				break;
+
 			default:
 				text += (char)kev->key;
 			}

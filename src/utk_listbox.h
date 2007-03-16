@@ -10,8 +10,8 @@ namespace utk {
 
 class ListBox : public ScrollWin {
 protected:
-	VBox *vbox;
 	int sel;
+	VBox *vbox;
 
 public:
 	ListBox();
@@ -27,6 +27,11 @@ public:
 	virtual void select(const char *str);
 	virtual int get_selected() const;
 	virtual const char *get_selected_text() const;
+
+	virtual void set_spacing(int sp);
+	virtual int get_spacing() const;
+
+	virtual void clear();
 
 	virtual void draw() const;
 };
