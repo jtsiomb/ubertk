@@ -15,7 +15,7 @@ class FileDialog : public Dialog {
 	void *regexp;	// opaque, because I don't want to expose the regexp lib in the header
 	bool show_hidden;
 
-	const char *path;
+	char *path;
 	ListBox *listb;
 
 	bool fill_filelist();

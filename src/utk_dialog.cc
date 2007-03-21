@@ -146,9 +146,19 @@ FileDialog::FileDialog()
 {
 	regexp = 0;
 	show_hidden = false;
+	path = 0;
+	listb = 0;
 }
 
-FileDialog::~FileDialog() {}
+FileDialog::~FileDialog()
+{
+	delete [] path;
+	if(listb) {
+		printf("foo\n");
+		destroy_listbox(listb);
+		printf("bar\n");
+	}
+}
 
 bool FileDialog::fill_filelist()
 {
@@ -190,10 +200,13 @@ bool FileDialog::fill_filelist()
 		listb->add_item(file_list[i].c_str());
 	}
 
-	return 0;
+	return true;
 }
 
 
+#if defined(WIN32) || defined(__WIN32__)
+#define getcwd(a, b)	_getcwd(a, b)
+#endif
 
 FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func, void *cdata)
 {
@@ -222,12 +235,12 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 	HBox *list_hbox = create_hbox(main_vbox);
 
 	VBox *bmark_vbox = create_vbox(list_hbox);
-	create_button(bmark_vbox, "up", 60);
-	create_button(bmark_vbox, "home", 60);
-	create_button(bmark_vbox, "mkdir", 60);
-	create_checkbox(bmark_vbox, "show hidden", false);
+	create_button(bmark_vbox, "up", 65);
+	create_button(bmark_vbox, "home", 65);
+	create_button(bmark_vbox, "mkdir", 65);
+	create_checkbox(bmark_vbox, "hidden", false);
 
-	dlg->listb = create_listbox(list_hbox, 270, 200);
+	dlg->listb = create_listbox(list_hbox, 258, 200);
 	dlg->listb->set_spacing(0);
 
 
@@ -235,6 +248,8 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 		getcwd(buf, sizeof buf);
 		start_dir = buf;
 	}
+	dlg->path = new char[strlen(start_dir) + 1];
+	strcpy(dlg->path, start_dir);
 
 	if(filter && *filter) {
 		const char *err_str;

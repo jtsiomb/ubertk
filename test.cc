@@ -314,7 +314,7 @@ void keyb(unsigned char key, int x, int y)
 		
 	case 'f':
 		file_dialog(utk::FILE_DIALOG_OPEN, 0, 0, 0);
-		break;
+		return;
 
 	default:
 		break;
