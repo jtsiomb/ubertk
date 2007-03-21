@@ -3,10 +3,19 @@
 #include <algorithm>
 #include <string.h>
 #include <errno.h>
+
+#if defined(unix) || defined(__unix__)
 #include <unistd.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#elif defined(WIN32) || defined(__WIN32__)
+#include <direct.h>
+#include "w32_dirent.h"
+#else
+#error "your OS is not supported currently, or OS detection failed"
+#endif
+
 #include "ubertk.h"
 #include "utk_dialog.h"
 #include "utk_common.h"
@@ -141,6 +150,7 @@ Dialog *message_dialog(const char *msg, unsigned int type, Callback func, void *
 // -------------------- file dialogs --------------------
 static bool is_dir(const char *name, const char *path);
 static void entry_modify_handler(Event *event, void *data);
+static void bn_handler(Event *event, void *data);
 
 FileDialog::FileDialog()
 {
@@ -226,6 +236,13 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 	dlg->rise();
 	dlg->show();
 
+	if(!start_dir) {
+		getcwd(buf, sizeof buf);
+		start_dir = buf;
+	}
+	dlg->path = new char[strlen(start_dir) + 1];
+	strcpy(dlg->path, start_dir);
+
 	VBox *main_vbox = create_vbox(dlg);
 
 	HBox *path_hbox = create_hbox(main_vbox);
@@ -243,13 +260,6 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 	dlg->listb = create_listbox(list_hbox, 258, 200);
 	dlg->listb->set_spacing(0);
 
-
-	if(!start_dir) {
-		getcwd(buf, sizeof buf);
-		start_dir = buf;
-	}
-	dlg->path = new char[strlen(start_dir) + 1];
-	strcpy(dlg->path, start_dir);
 
 	if(filter && *filter) {
 		const char *err_str;
@@ -318,5 +328,9 @@ static void entry_modify_handler(Event *event, void *data)
 	}
 }
 
+static void bn_handler(Event *event, void *data)
+{
+	
+}
 
 } // end of utk namespace

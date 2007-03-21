@@ -7,6 +7,10 @@
 
 #define TEXT_PT_SIZE	18
 
+#ifndef GL_BGRA
+#define GL_BGRA		0x80E1
+#endif	// GL_BGRA
+
 void redraw(void);
 void idle_handler(void);
 void draw_grid(float spacing, float sz);

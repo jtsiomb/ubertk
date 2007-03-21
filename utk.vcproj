@@ -118,24 +118,6 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath=".\test_text.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
-		</Filter>
-		<Filter
 			Name="utk"
 			Filter="">
 			<File
@@ -146,6 +128,12 @@
 			</File>
 			<File
 				RelativePath=".\src\ubertk.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_align.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_align.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_button.cc">
@@ -176,6 +164,12 @@
 			</File>
 			<File
 				RelativePath=".\src\utk_container.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_dialog.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_dialog.h">
 			</File>
 			<File
 				RelativePath=".\src\utk_drawable.cc">
@@ -285,12 +279,109 @@
 			<File
 				RelativePath=".\src\utk_win.h">
 			</File>
+			<File
+				RelativePath=".\src\w32_dirent.c">
+			</File>
+			<File
+				RelativePath=".\src\w32_dirent.h">
+			</File>
+			<Filter
+				Name="pcre"
+				Filter="">
+				<File
+					RelativePath=".\src\pcre\chartables.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\config.h">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre.h">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_compile.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_config.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_dfa_exec.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_exec.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_fullinfo.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_get.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_globals.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_info.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_internal.h">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_maketables.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_newline.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_ord2utf8.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_refcount.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_study.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_tables.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_try_flipped.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_ucp_searchfuncs.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_valid_utf8.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_version.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcre_xclass.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcreposix.c">
+				</File>
+				<File
+					RelativePath=".\src\pcre\pcreposix.h">
+				</File>
+				<File
+					RelativePath=".\src\pcre\ucp.h">
+				</File>
+				<File
+					RelativePath=".\src\pcre\ucpinternal.h">
+				</File>
+				<File
+					RelativePath=".\src\pcre\ucptable.h">
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\test.cc">
 		</File>
 		<File
 			RelativePath=".\test_text.cc">
+		</File>
+		<File
+			RelativePath=".\test_text.h">
 		</File>
 	</Files>
 	<Globals>
