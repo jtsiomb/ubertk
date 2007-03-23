@@ -17,6 +17,21 @@ enum {
 };
 #define MOUSE_NONE		(-1)
 
+// these correspond to X11 keysyms
+enum {
+	KEY_ESCAPE		= 27,
+	KEY_DELETE		= 127,
+	KEY_UP			= 273,
+	KEY_DOWN		= 274,
+	KEY_RIGHT		= 275,
+	KEY_LEFT		= 276,
+	KEY_INSERT		= 277,
+	KEY_HOME		= 278,
+	KEY_END			= 279,
+	KEY_PAGEUP		= 280,
+	KEY_PAGEDOWN	= 281
+};
+
 enum {
 	EVENT_NULL = 0,
 	EVENT_MMOTION,

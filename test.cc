@@ -17,6 +17,8 @@ void draw_grid(float spacing, float sz);
 void reshape(int x, int y);
 void keyb(unsigned char key, int x, int y);
 void keyb_up(unsigned char key, int x, int y);
+void skeyb(int key, int x, int y);
+void skeyb_up(int key, int x, int y);
 void mouse_button(int bn, int state, int x, int y);
 void mouse_motion(int x, int y);
 
@@ -76,6 +78,8 @@ int main(int argc, char **argv)
 	glutIdleFunc(idle_handler);
 	glutKeyboardFunc(keyb);
 	glutKeyboardUpFunc(keyb_up);
+	glutSpecialFunc(skeyb);
+	glutSpecialUpFunc(skeyb_up);
 	glutMouseFunc(mouse_button);
 	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mouse_motion);
@@ -110,8 +114,6 @@ int main(int argc, char **argv)
 	utk::gfx::text = utk_text;
 	utk::gfx::text_spacing = utk_text_spacing;
 	utk::gfx::text_width = utk_text_width;
-
-	melaxrines = new utk::Label("kai m'aresoun oi melaxrines ...");
 
 	// create the windows
 	utkroot = utk::init(xsz, ysz);
@@ -302,19 +304,19 @@ void keyb(unsigned char key, int x, int y)
 
 	case '1':
 		message_dialog("is this a dialog?", utk::MSG_TYPE_QUESTION);
-		break;
+		return;
 
 	case '2':
 		message_dialog("this is a dialog", utk::MSG_TYPE_INFO);
-		break;
+		return;
 
 	case '3':
 		message_dialog("Consider yourself warned\ndude...", utk::MSG_TYPE_WARNING);
-		break;
+		return;
 
 	case '4':
 		message_dialog("Everything is lost!\nRun for the hills!", utk::MSG_TYPE_ERROR);
-		break;
+		return;
 		
 	case 'f':
 		file_dialog(utk::FILE_DIALOG_OPEN, 0, 0, 0);
@@ -337,6 +339,58 @@ void keyb_up(unsigned char key, int x, int y)
 	e.key = key;
 	e.pressed = false;
 
+	event(&e);
+}
+
+int glut_skey_to_keysym(int key)
+{
+	switch(key) {
+	case GLUT_KEY_LEFT:
+		return utk::KEY_LEFT;
+
+	case GLUT_KEY_RIGHT:
+		return utk::KEY_RIGHT;
+
+	case GLUT_KEY_UP:
+		return utk::KEY_UP;
+
+	case GLUT_KEY_DOWN:
+		return utk::KEY_DOWN;
+
+	case GLUT_KEY_HOME:
+		return utk::KEY_HOME;
+
+	case GLUT_KEY_END:
+		return utk::KEY_END;
+
+	default:
+		break;
+	}
+
+	return 0;
+}
+
+void skeyb(int key, int x, int y)
+{
+	if(!(key = glut_skey_to_keysym(key))) {
+		return;
+	}
+
+	utk::KeyboardEvent e;
+	e.key = key;
+	e.pressed = true;
+	event(&e);
+}
+
+void skeyb_up(int key, int x, int y)
+{
+	if(!(key = glut_skey_to_keysym(key))) {
+		return;
+	}
+
+	utk::KeyboardEvent e;
+	e.key = key;
+	e.pressed = false;
 	event(&e);
 }
 

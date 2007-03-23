@@ -25,7 +25,7 @@ Widget *CheckBox::handle_event(Event *event)
 	if((ce = dynamic_cast<ClickEvent*>(event)) && hit_test(ce->x, ce->y))
 	{
 		checked = !checked;
-		return this;
+		return ce->widget = this;
 	}
 
 	return 0;

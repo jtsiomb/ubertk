@@ -26,37 +26,50 @@ Widget *Entry::handle_event(Event *event)
 	KeyboardEvent *kev;
 	if((kev = dynamic_cast<KeyboardEvent*>(event))) {
 		if(kev->pressed) {
+			std::string tmp_str;
+
 			switch(kev->key) {
 			case '\b':
 				if(!text.empty()) {
 					text.erase(text.end() - 1);
-
-					if(vfirst >= (int)text.size() && vfirst > 0) {
-						vfirst--;
-						std::string view_str(text, vfirst);
-						while(vfirst > 0 && gfx::text_width(view_str.c_str(), 18) < size.x) {
-							vfirst--;
-							view_str = std::string(text, vfirst);
-						}
-						if(vfirst > 0) vfirst++;
-					}
 				}
+
+			case KEY_LEFT:
+				if(vfirst >= (int)text.length() && vfirst > 0) {
+					vfirst--;
+					std::string view_str(text, vfirst);
+					while(vfirst > 0 && gfx::text_width(view_str.c_str(), 18) < size.x) {
+						vfirst--;
+						view_str = std::string(text, vfirst);
+					}
+					if(vfirst > 0) vfirst++;
+				}
+				cursor--;
+				if(cursor < 0) cursor = 0;
 				break;
 
-			case '\t':
 				text += "    ";
+				cursor += 4;
 				break;
 
 			case '\n':
 			case '\r':
 				break;
 
+			case '\t':
+				tmp_str = std::string("    ");
+				if(0) {
 			default:
-				text += (char)kev->key;
+					tmp_str = std::string(1,  (char)kev->key);
+				}
+				if(cursor < (int)text.length()) {
+					text = std::string(text, 0, cursor) + tmp_str + std::string(text, cursor);
+				} else {
+					text += tmp_str;
+				}
+				cursor += tmp_str.length();
 			}
 
-			cursor++;
-			
 			std::string view_str(text, vfirst);
 			while(gfx::text_width(view_str.c_str(), 18) > size.x) {
 				vfirst++;
@@ -89,20 +102,11 @@ void Entry::draw() const
 	int border = focus ? 2 : 1;
 
 	gfx::color_clamp(color.r, color.g, color.b, color.a);
-	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_INSET | gfx::BEVEL_FILLBG, 1);
-	/*
-	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
-
-	gfx::color((int)(color.r * 1.25), (int)(color.g * 1.25), (int)(color.b * 1.25), color.a);
-	gfx::line(gpos.x, gpos.y, gpos.x + size.x, gpos.y, border);
-	gfx::line(gpos.x, gpos.y + size.y, gpos.x + size.x, gpos.y + size.y, border);
-	gfx::line(gpos.x, gpos.y, gpos.x, gpos.y + size.y, border);
-	gfx::line(gpos.x + size.x, gpos.y, gpos.x + size.x, gpos.y + size.y, border);
-	*/
+	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_INSET | gfx::BEVEL_FILLBG, border);
 
 	std::string view_text(text, vfirst);
 
-	if(text.size()) {
+	if(text.length()) {
 		gfx::clip(gpos.x + border, gpos.y + border, gpos.x + size.x - border, gpos.y + size.y - border);
 		gfx::color(0, 0, 0, color.a);
 		gfx::text(gpos.x + border, gpos.y + size.y, view_text.c_str(), 18);
@@ -112,8 +116,8 @@ void Entry::draw() const
 	if(focus) {
 		int cur_pos = 0;
 
-		if(text.size()) {
-			cur_pos = gfx::text_width(view_text.c_str(), 18);
+		if(text.length()) {
+			cur_pos = gfx::text_width(std::string(view_text, vfirst, cursor - vfirst).c_str(), 18);
 		}
 
 		gfx::clip(gpos.x + border, gpos.y + border, gpos.x + size.x - border, gpos.y + size.y - border);
