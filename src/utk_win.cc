@@ -13,10 +13,12 @@ Window::Window()
 {
 	visible = false;
 	focused = false;
+	win_focus = 0;
 	set_color(128, 128, 128, 255);
 	border = 3;
 	padding = 4;
 	tbar_height = 20;
+	grab_focus(this);
 }
 
 Window::~Window() {}
@@ -28,6 +30,17 @@ Widget *Window::handle_event(Event *event)
 		focused = fev->focus;
 		callback(fev, EVENT_FOCUS);
 		return this;
+	}
+
+	KeyboardEvent *kev;
+	if((kev = dynamic_cast<KeyboardEvent*>(event))) {
+		if(win_focus) {
+			Widget *w;
+			if((w = win_focus->handle_event(event))) {
+				return w;
+			}
+		}
+		return 0;	/* keyboard events should not be propagated */
 	}
 
 	Widget *w;
@@ -72,7 +85,11 @@ void Window::sink()
 
 void Window::set_win_focus(Widget *w)
 {
+	if(win_focus) {
+		win_focus->set_focus(false);
+	}
 	win_focus = w;
+	win_focus->set_focus(true);
 }
 
 Widget *Window::get_win_focus()

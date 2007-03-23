@@ -16,6 +16,7 @@ protected:
 
 	Widget *child, *parent;
 	bool visible;
+	bool focused;
 
 	bool herod_mode;
 
@@ -53,6 +54,9 @@ public:
 	virtual void show();
 	virtual void hide();
 	virtual bool is_visible() const;
+
+	virtual void set_focus(bool f);
+	virtual bool get_focus() const;
 
 	virtual void add_child(Widget *w);
 	virtual Widget *get_child();

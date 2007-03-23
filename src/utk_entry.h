@@ -8,7 +8,6 @@ namespace utk {
 
 class Entry : public Drawable {
 protected:
-	bool focus;
 	int cursor;
 	int vfirst;
 

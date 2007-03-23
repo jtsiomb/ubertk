@@ -50,7 +50,7 @@ protected:
 	int event_id;
 
 public:
-	Widget *widget;	// only valid for high level events
+	Widget *widget;
 
 	Event();
 	virtual ~Event();
@@ -124,6 +124,7 @@ IVec2 get_mouse_pos();
 IVec2 get_last_drag_pos();
 
 void grab_focus(Widget *w);
+void grab_win_focus(Widget *w);
 
 typedef void (*Callback)(Event*, void*);
 

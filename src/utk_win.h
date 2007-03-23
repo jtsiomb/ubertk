@@ -10,7 +10,6 @@ class Window : public Drawable {
 protected:
 	int tbar_height;
 	bool shaded;
-	bool focused;
 	Widget *win_focus;
 
 public:

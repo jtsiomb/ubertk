@@ -220,4 +220,20 @@ void grab_focus(Widget *w)
 	focused_window->handle_event(&fev);
 }
 
+void grab_win_focus(Widget *w)
+{
+	if(dynamic_cast<Window*>(w) || dynamic_cast<WinFrame*>(w)) {
+		return;
+	}
+
+	Widget *par = w;
+	while((par = par->get_parent())) {
+		Window *win = dynamic_cast<Window*>(par);
+		if(win) {
+			win->set_win_focus(w);
+			return;
+		}
+	}
+}
+
 }	// namespace utk end

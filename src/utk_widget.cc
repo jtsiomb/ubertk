@@ -9,6 +9,7 @@ Widget::Widget()
 {
 	padding = 0;
 	visible = true;
+	focused = false;
 	child = parent = 0;
 	herod_mode = true;
 	name = 0;
@@ -176,6 +177,16 @@ void Widget::hide()
 bool Widget::is_visible() const
 {
 	return visible;
+}
+
+void Widget::set_focus(bool f)
+{
+	focused = f;
+}
+
+bool Widget::get_focus() const
+{
+	return focused;
 }
 
 void Widget::add_child(Widget *w)

@@ -7,7 +7,8 @@ namespace utk {
 
 Entry::Entry(const char *txt, utk::Callback cb)
 {
-	focus = false;
+	focused = false;
+	cursor = 0;
 	set_text(txt);
 	set_callback(EVENT_MODIFY, cb);
 
@@ -60,7 +61,8 @@ Widget *Entry::handle_event(Event *event)
 				tmp_str = std::string("    ");
 				if(0) {
 			default:
-					tmp_str = std::string(1,  (char)kev->key);
+					tmp_str = std::string("") + (char)kev->key;
+					printf("aaaa: %s\n", tmp_str.c_str());
 				}
 				if(cursor < (int)text.length()) {
 					text = std::string(text, 0, cursor) + tmp_str + std::string(text, cursor);
@@ -84,8 +86,9 @@ Widget *Entry::handle_event(Event *event)
 
 	ClickEvent *cev;
 	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y)) {
-		focus = true;
-		grab_focus(this);
+		grab_win_focus(this);
+
+		cev->widget = this;
 
 		on_click(cev);
 		callback(cev, EVENT_CLICK);
@@ -99,7 +102,7 @@ void Entry::draw() const
 {
 	IVec2 gpos = get_global_pos();
 
-	int border = focus ? 2 : 1;
+	int border = focused ? 2 : 1;
 
 	gfx::color_clamp(color.r, color.g, color.b, color.a);
 	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_INSET | gfx::BEVEL_FILLBG, border);
@@ -113,7 +116,7 @@ void Entry::draw() const
 		gfx::clip(0, 0, 0, 0);
 	}
 
-	if(focus) {
+	if(focused) {
 		int cur_pos = 0;
 
 		if(text.length()) {
