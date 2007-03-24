@@ -63,6 +63,11 @@ Widget *Entry::handle_event(Event *event)
 			default:
 					tmp_str = std::string("") + (char)kev->key;
 				}
+				
+				// filter out non-character keys
+				if (kev->key != '\t' && (kev->key < 32 || kev->key > 126))
+					break;
+					
 				if(cursor < (int)text.length()) {
 					text = std::string(text, 0, cursor) + tmp_str + std::string(text, cursor);
 				} else {
