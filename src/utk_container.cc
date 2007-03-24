@@ -48,29 +48,6 @@ void Container::layout()
 	}
 }
 
-Widget *Container::handle_event(Event *event)
-{
-	return 0;
-	/*
-	Widget *res = 0;
-
-	const MouseEvent *mev;
-	if((mev = dynamic_cast<const MouseEvent*>(event))) {
-		iterator iter = begin();
-		while(iter != end()) {
-			Widget *w = *iter++;
-
-			if(!res) {
-				res = w->handle_event(event);
-			} else {
-				w->handle_event(event);
-			}
-		}
-	}
-	return res;
-	*/
-}
-
 void Container::add_child(Widget *w)
 {
 	cont.push_back(w);

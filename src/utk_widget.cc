@@ -10,6 +10,7 @@ Widget::Widget()
 	padding = 0;
 	visible = true;
 	focused = false;
+	hover = false;
 	child = parent = 0;
 	herod_mode = true;
 	name = 0;
@@ -24,9 +25,7 @@ Widget::Widget()
 
 Widget::~Widget()
 {
-	if (focused_window == this) {
-		focused_window = NULL;
-	}
+	invalidate_widget(this);
 	
 	if(herod_mode) {
 		delete child;
@@ -102,9 +101,6 @@ const char *Widget::class_name() const
 
 Widget *Widget::handle_event(Event *event)
 {
-	if(child) {
-		return child->handle_event(event);
-	}
 	return 0;
 }
 

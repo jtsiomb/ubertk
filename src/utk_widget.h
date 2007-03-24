@@ -17,6 +17,7 @@ protected:
 	Widget *child, *parent;
 	bool visible;
 	bool focused;
+	bool hover;
 
 	bool herod_mode;
 
@@ -93,6 +94,8 @@ public:
 	virtual void on_click(Event *event);
 	virtual void on_focus(Event *event);
 	virtual void on_modify(Event *event);
+	
+	inline void set_hover(bool hover) { this->hover = hover; }
 };
 
 }

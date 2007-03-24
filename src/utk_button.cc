@@ -23,7 +23,7 @@ Button::~Button()
 Widget *Button::handle_event(Event *event)
 {
 	ClickEvent *cev;
-	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y)) {
+	if((cev = dynamic_cast<ClickEvent*>(event)) && hover) {
 		pressed = false;
 		cev->widget = this;
 
@@ -52,9 +52,15 @@ Widget *Button::handle_event(Event *event)
 void Button::draw() const
 {
 	IVec2 gpos = get_global_pos();
+	int r = color.r, g = color.g, b = color.b;
 
-	gfx::color_clamp(color.r, color.g, color.b, color.a);
-	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | (pressed ? gfx::BEVEL_INSET : 0), 2);
+	if (pressed || hover) {
+		r += 16;
+		g += 16;
+		b += 16;
+	}
+	gfx::color_clamp(r, g, b, color.a);
+	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | ((pressed && hover) ? gfx::BEVEL_INSET : 0), 2);
 
 	if(text.size()) {
 		const char *txt = get_text();

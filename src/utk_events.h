@@ -36,6 +36,7 @@ enum {
 	EVENT_NULL = 0,
 	EVENT_MMOTION,
 	EVENT_MBUTTON,
+	EVENT_MHOVER,
 	EVENT_KEYBOARD,
 
 	EVENT_CLICK = 100,
@@ -78,6 +79,16 @@ public:
 	int press_x, press_y;	// for depress events, the press coordinates
 
 	MButtonEvent(int bn = 0, int x = 0, int y = 0);
+};
+
+class MHoverEvent : public MouseEvent {
+public:
+	bool enter;
+	// for enter, this is the widget that lost the mouse.
+	// for leave, this is the widget that got the mouse.
+	Widget *other;
+	
+	MHoverEvent(bool enter, Widget *other, int x = 0, int y = 0);
 };
 
 
@@ -127,6 +138,8 @@ void grab_mouse(Widget *e);
 void grab_focus(Widget *w);
 void grab_win_focus(Widget *w);
 
+void invalidate_widget(Widget *w);
+
 typedef void (*Callback)(Event*, void*);
 
 struct CallbackClosure {
@@ -136,7 +149,6 @@ struct CallbackClosure {
 
 
 extern std::list<Widget*> destruct_queue;
-extern Widget *focused_window;
 
 }	// end namespace utk
 

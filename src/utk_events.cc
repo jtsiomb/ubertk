@@ -7,13 +7,14 @@ namespace utk {
 static int focus_follows_mouse = 1;
 static int mouse_button_state = -1;
 static int last_press_x, last_press_y;
-static Widget *mouse_press_widget = 0;
-static Widget *mouse_grab_widget = 0;
+static Widget *mouse_press_widget;
+static Widget *mouse_grab_widget;
+static Widget *focused_window;
+static Widget *last_hover_widget;
 static IVec2 last_drag;
 static IVec2 mouse_pos;
 
 std::list<Widget*> destruct_queue;
-Widget *focused_window = NULL;
 
 static void handle_event(Event *e);
 
@@ -48,6 +49,14 @@ MButtonEvent::MButtonEvent(int bn, int x, int y)
 {
 	event_id = EVENT_MBUTTON;
 	button = bn;
+}
+
+MHoverEvent::MHoverEvent(bool enter, Widget *other, int x, int y)
+	: MouseEvent(x, y)
+{
+	event_id = EVENT_MHOVER;
+	this->enter = enter;
+	this->other = other;
 }
 
 KeyboardEvent::KeyboardEvent(int key)
@@ -125,13 +134,29 @@ static void handle_event(Event *e)
 	
 	MMotionEvent *mev;
 	if((mev = dynamic_cast<MMotionEvent*>(e))) {
-		receiver = mouse_grab_widget?mouse_grab_widget:root->get_child_at(mev->x, mev->y);
+		Widget *widget_under_mouse = root->get_child_at(mev->x, mev->y);
+		receiver = mouse_grab_widget?mouse_grab_widget:widget_under_mouse;
 		
 		mouse_pos.x = mev->x;
 		mouse_pos.y = mev->y;
 
 		deliver_event(receiver, mev);
-//		root->handle_event(e);
+
+		if (widget_under_mouse != last_hover_widget) {
+			MHoverEvent hev(true, last_hover_widget, mev->x, mev->y);
+			if (widget_under_mouse) {
+				deliver_event(widget_under_mouse, &hev);
+				widget_under_mouse->set_hover(true);
+			}
+			if (last_hover_widget) {
+				hev.widget = NULL;
+				hev.enter = false;
+				hev.other = widget_under_mouse;
+				deliver_event(last_hover_widget, &hev);
+				last_hover_widget->set_hover(false);
+			}
+			last_hover_widget = widget_under_mouse;
+		}
 
 		if(mouse_button_state >= 0) {
 			last_drag.x = mev->x;
@@ -164,7 +189,6 @@ static void handle_event(Event *e)
 			last_drag.y = bev->y;
 			last_press_x = bev->x;
 			last_press_y = bev->y;
-			//mouse_press_widget = root->handle_event(e);
 			mouse_press_widget = deliver_event(receiver, e);
 			if (bev->button == MOUSE_LEFT)
 				mouse_grab_widget = receiver;
@@ -185,14 +209,12 @@ static void handle_event(Event *e)
 				cev.x = bev->x;
 				cev.y = bev->y;
 				cev.time = get_msec();
-				//root->handle_event(&cev);
 				deliver_event(receiver, &cev);
 				return;	// don't generate both a click and a mouse-button event(?)
 			}
 		}
 
 		deliver_event(receiver, e);
-		//root->handle_event(e);
 		return;
 	}
 }
@@ -262,6 +284,22 @@ void grab_win_focus(Widget *w)
 			win->set_win_focus(w);
 			return;
 		}
+	}
+}
+
+void invalidate_widget(Widget *w)
+{
+	if (focused_window == w) {
+		focused_window = NULL;
+	}
+	if (mouse_press_widget == w) {
+		mouse_press_widget = NULL;
+	}
+	if (focused_window == w) {
+		focused_window = NULL;
+	}
+	if (last_hover_widget == w) {
+		last_hover_widget = NULL;
 	}
 }
 
