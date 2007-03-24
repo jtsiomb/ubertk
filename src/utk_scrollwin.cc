@@ -9,8 +9,10 @@ static void hbar_handler(Event *ev, void *data);
 
 ScrollWin::ScrollWin()
 {
-	vbar = new Scrollbar(VERTICAL);
-	hbar = new Scrollbar(HORIZONTAL);
+	vbar = new Scrollbar;
+	hbar = new Scrollbar;
+	vbar->set_orientation(VERTICAL);
+	hbar->set_orientation(HORIZONTAL);
 	vbar->set_callback(EVENT_MODIFY, vbar_handler, this);
 	hbar->set_callback(EVENT_MODIFY, hbar_handler, this);
 	vbar->set_parent(this);	// to get positioning right
@@ -48,10 +50,10 @@ bool ScrollWin::check_vscroll_vis() const
 Widget *ScrollWin::handle_event(Event *event)
 {
 	if(child) {
-		/*Widget *w;
+		Widget *w;
 		if((w = child->handle_event(event))) {
 			return w;
-		}*/
+		}
 
 		if(hbar->handle_event(event)) {
 			return hbar;
@@ -81,11 +83,6 @@ Widget *ScrollWin::handle_event(Event *event)
 				vbar->set_value(get_vscroll());
 				return this;
 			}
-		}
-
-		MButtonEvent *bev;
-		if((bev = dynamic_cast<MButtonEvent*>(event)) && hit_test(bev->x, bev->y)) {
-			return this;
 		}
 	}
 

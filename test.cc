@@ -39,7 +39,7 @@ int xsz, ysz;
 
 utk::Container *utkroot;
 utk::Window *win, *win2;
-utk::Scrollbar *r, *g, *b;
+utk::Slider *slider;
 utk::Label *melaxrines;
 utk::CheckBox *ninja;
 utk::Container *vbox;
@@ -122,19 +122,9 @@ int main(int argc, char **argv)
 	win->set_alpha(220);
 	win->show();
 
-	vbox = new utk::VBox;
-	win->add_child(vbox);
+	vbox = utk::create_vbox(win);
 
 	vbox->add_child(new utk::Label("a label"));
-
-	r = new utk::Scrollbar;
-	//g = new utk::ScrollBar;
-	//r = new utk::Slider(0, 1);
-	//g = new utk::Slider(0, 1);
-	b = new utk::Slider(0, 1);
-	//vbox->add_child(r);
-	//vbox->add_child(g);
-	//vbox->add_child(b);
 
 	vbox->add_child(new utk::RadioBox("check me"));
 	vbox->add_child(new utk::RadioBox("check me out"));
@@ -150,7 +140,7 @@ int main(int argc, char **argv)
 	hue = new utk::HueBox();
 	vbox->add_child(hue);
 
-	vbox->add_child(b);
+	slider = utk::create_slider(vbox, 0, 1); 
 
 	tball = new utk::TrackBall(50, 50);
 	vbox->add_child(tball);
@@ -199,7 +189,7 @@ void redraw(void)
 	float h = hue->get_h();
 	cbox->set_h(h);
 
-	pbar->set_value(b->get_value());
+	pbar->set_value(slider->get_value());
 
 	float s = cbox->get_s();
 	float v = cbox->get_v();

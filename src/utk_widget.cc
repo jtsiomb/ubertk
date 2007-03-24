@@ -14,6 +14,11 @@ Widget::Widget()
 	herod_mode = true;
 	name = 0;
 
+	link_int = 0;
+	link_flt = 0;
+	link_str = 0;
+	link_str_width = 0;
+
 	memset(callbacks, 0, EVENT_COUNT * sizeof *callbacks);
 }
 
@@ -267,6 +272,22 @@ void Widget::draw() const
 		child->draw();
 		gfx::pop_clip();
 	}
+}
+
+void Widget::set_link(int *ptr)
+{
+	link_int = ptr;
+}
+
+void Widget::set_link(float *ptr)
+{
+	link_flt = ptr;
+}
+
+void Widget::set_link(char *ptr, int width)
+{
+	link_str = ptr;
+	link_str_width = width;
 }
 
 void Widget::set_callback(int event_type, Callback cbfunc, void *data)

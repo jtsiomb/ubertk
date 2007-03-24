@@ -3,42 +3,63 @@
 
 namespace utk {
 
-void Slider::initialize()
+Slider::Slider()
 {
 	cursor_width = 10;
 	start = end = 0;
 	vis_decimal = 2;
 	show_value = true;
-	link_int = 0;
 
 	set_size(size.x, size.y);
 }
 
-Slider::Slider(float start, float end, utk::Callback cb)
-	: Scrollbar(cb)
-{
-	initialize();
-	this->start = start;
-	this->end = end;
-}
-
-Slider::Slider(float start, float end, float *link)
-	: Scrollbar(link)
-{
-	initialize();
-	this->start = start;
-	this->end = end;
-}
-
-Slider::Slider(float start, float end, int *link)
-{
-	initialize();
-	this->start = start;
-	this->end = end;
-	link_int = link;
-}
-
 Slider::~Slider() {}
+
+
+Widget *Slider::handle_event(Event *event)
+{
+	Widget *ret = Scrollbar::handle_event(event);
+	if(ret) {
+		set_value(get_value());	// this will call the handlers, update links, blah, blah...
+	}
+	return ret;
+}
+
+void Slider::set_min(float start)
+{
+	this->start = start;
+}
+
+void Slider::set_max(float end)
+{
+	this->end = end;
+}
+
+void Slider::set_range(float start, float end)
+{
+	this->start = start;
+	this->end = end;
+}
+
+float Slider::get_min() const
+{
+	return start;
+}
+
+float Slider::get_max() const
+{
+	return end;
+}
+
+void Slider::set_vis_decimal(int count)
+{
+	vis_decimal = count;
+}
+
+int Slider::get_vis_decimal() const
+{
+	return vis_decimal;
+}
 
 
 void Slider::set_value(float val)
@@ -59,17 +80,6 @@ void Slider::operator=(float val)
 Slider::operator float() const
 {
 	return get_value();
-}
-
-Widget *Slider::handle_event(Event *event)
-{
-	Widget *ret = Scrollbar::handle_event(event);
-
-	if(link_int) {
-		*link_int = (int)get_value();
-	}
-
-	return ret;
 }
 
 void Slider::draw() const
@@ -113,5 +123,55 @@ void Slider::draw() const
 
 	Widget::draw();
 }
+
+void Slider::on_modify(Event *event)
+{
+	float val = get_value();
+
+	if(link_flt) {
+		*link_flt = val;
+	}
+	if(link_int) {
+		*link_int = (int)val;
+	}
+	if(link_str) {
+		char fmt[8];
+		sprintf(fmt, vis_decimal ? "%%.%df" : "%%d", vis_decimal);
+		snprintf(link_str, link_str_width, fmt, val);
+	}
+
+	callback(event, EVENT_MODIFY);
+}
+
+Slider *create_slider(Widget *parent, float start, float end, Callback cb, void *cdata)
+{
+	Slider *slider = new Slider;
+	slider->set_range(start, end);
+	slider->set_callback(EVENT_MODIFY, cb, cdata);
+	parent->add_child(slider);
+	return slider;
+}
+
+Slider *create_slider(Widget *parent, float start, float end, float *link)
+{
+	Slider *slider = create_slider(parent, start, end);
+	slider->set_link(link);
+	return slider;
+}
+
+Slider *create_slider(Widget *parent, float start, float end, int *link)
+{
+	Slider *slider = create_slider(parent, start, end);
+	slider->set_link(link);
+	return slider;
+}
+
+Slider *create_slider(Widget *parent, float start, float end, char *link, int bufsz)
+{
+	Slider *slider = create_slider(parent, start, end);
+	slider->set_link(link, bufsz);
+	return slider;
+}
+
 
 }	// end namespace utk

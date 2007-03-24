@@ -62,7 +62,6 @@ Widget *Entry::handle_event(Event *event)
 				if(0) {
 			default:
 					tmp_str = std::string("") + (char)kev->key;
-					printf("aaaa: %s\n", tmp_str.c_str());
 				}
 				if(cursor < (int)text.length()) {
 					text = std::string(text, 0, cursor) + tmp_str + std::string(text, cursor);

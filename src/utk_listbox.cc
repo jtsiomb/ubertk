@@ -19,6 +19,39 @@ ListBox::~ListBox()
 
 Widget *ListBox::handle_event(Event *event)
 {
+	// handle keyboard up/down for selection change
+	KeyboardEvent *kev;
+	if((kev = dynamic_cast<KeyboardEvent*>(event)) && kev->pressed) {
+		switch(kev->key) {
+		case KEY_UP:
+			if(sel > 0) {
+				select(sel - 1);
+			}
+			kev->widget = this;
+			return this;
+
+		case KEY_DOWN:
+			if(sel < vbox->size() - 1) {
+				select(sel + 1);
+			}
+			kev->widget = this;
+			return this;
+		}
+
+		return 0;
+	}
+
+	// grab the window focus if a mouse button is pressed over the listbox
+	MButtonEvent *bev;
+	if((bev = dynamic_cast<MButtonEvent*>(event)) && hit_test(bev->x, bev->y)
+			&& !hbar->hit_test(bev->x, bev->y) && !vbar->hit_test(bev->x, bev->y)
+			&& bev->pressed && !bev->widget)
+	{
+		grab_win_focus(this);
+		return this;
+	}
+
+	// select by clicking
 	ClickEvent *cev;
 	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y) && !cev->widget) {
 		int i = 0;
@@ -28,9 +61,6 @@ Widget *ListBox::handle_event(Event *event)
 				select(i);
 
 				cev->widget = this;
-				callback(cev, EVENT_MODIFY);
-				on_modify(cev);
-
 				return this;
 			}
 			iter++;
@@ -61,13 +91,19 @@ void ListBox::remove_item(int pos)
 
 void ListBox::select(int pos)
 {
-	if(pos < 0) {
-		sel = -1;
-	} else if(pos >= (int)vbox->size()) {
-		sel = vbox->size() - 1;
-	} else {
-		sel = pos;
+	if(pos < 0) pos = -1;
+	if(pos >= (int)vbox->size()) {
+		pos = vbox->size() - 1;
 	}
+
+	sel = pos;
+
+	Event ev;
+	ev.widget = this;
+	callback(&ev, EVENT_MODIFY);
+	on_modify(&ev);
+
+	// TODO: do something to keep the selection on screen ...
 }
 
 void ListBox::select(const char *str)
@@ -75,11 +111,11 @@ void ListBox::select(const char *str)
 	for(size_t i=0; i<vbox->size(); i++) {
 		Drawable *w = dynamic_cast<Drawable*>((*vbox)[i]);
 		if(w && strcmp(w->get_text(), str) == 0) {
-			sel = i;
+			select(i);
 			break;
 		}
 	}
-	sel = -1;
+	select(-1);
 }
 
 int ListBox::get_selected() const

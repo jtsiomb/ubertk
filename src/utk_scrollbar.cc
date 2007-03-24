@@ -34,7 +34,7 @@ IVec2 Scrollbar::get_cursor_br() const
 	return rel + get_global_pos();
 }
 
-void Scrollbar::initialize()
+Scrollbar::Scrollbar()
 {
 	dragging = false;
 	cursor_width = 20;
@@ -43,25 +43,6 @@ void Scrollbar::initialize()
 	set_size(100 + border * 2 + cursor_width, 20 + border * 2);
 	set_color(128, 100, 80);
 	orient = HORIZONTAL;
-	link_float = 0;
-}
-
-Scrollbar::Scrollbar(utk::Callback cb)
-{
-	initialize();
-	set_callback(EVENT_MODIFY, cb);
-}
-
-Scrollbar::Scrollbar(int orient, utk::Callback cb)
-{
-	initialize();
-	this->orient = orient;
-}
-
-Scrollbar::Scrollbar(float *link)
-{
-	initialize();
-	link_float = link;
 }
 
 Scrollbar::~Scrollbar() {}
@@ -85,6 +66,7 @@ Widget *Scrollbar::handle_event(Event *event)
 				if (rect_test(get_cursor_tl(), get_cursor_br(), IVec2(mb->x, mb->y)))
 					dragging = true;
 			}
+			mb->widget = this;
 			return this;
 		}
 	}
@@ -93,6 +75,8 @@ Widget *Scrollbar::handle_event(Event *event)
 	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
 		if(dragging) {
 			int dx;
+
+			mmev->widget = this;
 			
 			if(orient == HORIZONTAL) {
 				dx = mmev->x - get_last_drag_pos().x;
@@ -108,8 +92,8 @@ Widget *Scrollbar::handle_event(Event *event)
 				cursor_pos += dx;
 				cursor_pos = cursor_pos < 0 ? 0 : (cursor_pos > track_len ? track_len : cursor_pos);
 
-				if(link_float) {
-					*link_float = get_value();
+				if(link_flt) {
+					*link_flt = get_value();
 				}
 
 				on_modify(mmev);
@@ -136,6 +120,16 @@ void Scrollbar::set_border(int border)
 	track_len = (orient == HORIZONTAL ? size.x : size.y) - border * 2 - cursor_width;
 }
 
+void Scrollbar::set_orientation(int orient)
+{
+	this->orient = orient;
+}
+
+int Scrollbar::get_orientation() const
+{
+	return orient;
+}
+
 void Scrollbar::set_cursor_width(int width)
 {
 	int max_width = (orient == HORIZONTAL ? size.x : size.y) - border * 2;
@@ -156,8 +150,20 @@ int Scrollbar::get_cursor_width() const
 
 void Scrollbar::set_value(float val)
 {
+	val = val > 1.0 ? 1.0 : (val < 0.0 ? 0.0 : val);
 	cursor_pos = (int)(val * track_len);
-	// TODO: modify event
+
+	// on set_value() the link should definitely be updated, but...
+	if(link_flt) {
+		*link_flt = val;
+	}
+
+	// ... should we also call the handlers?
+	/*Event ev;
+	ev.widget = this;
+
+	on_modify(&ev);
+	callback(&ev, EVENT_MODIFY);*/
 }
 
 float Scrollbar::get_value() const

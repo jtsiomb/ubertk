@@ -22,6 +22,11 @@ protected:
 
 	CallbackClosure callbacks[EVENT_COUNT];
 
+	int *link_int;
+	float *link_flt;
+	char *link_str;
+	int link_str_width;
+
 public:
 	Widget();
 	virtual ~Widget();
@@ -73,6 +78,10 @@ public:
 	virtual bool hit_test(int x, int y) const;
 
 	virtual void draw() const;
+
+	virtual void set_link(int *ptr);
+	virtual void set_link(float *ptr);
+	virtual void set_link(char *ptr, int width);
 
 	virtual void set_callback(int event_type, Callback cbfunc, void *data = 0);
 	virtual Callback get_callback(int event_type) const;
