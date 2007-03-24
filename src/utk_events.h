@@ -140,6 +140,9 @@ void grab_win_focus(Widget *w);
 
 void invalidate_widget(Widget *w);
 
+void modalize_window(class Window *w);
+void close_last_modal_window();
+
 typedef void (*Callback)(Event*, void*);
 
 struct CallbackClosure {

@@ -73,6 +73,7 @@ public:
 	virtual void set_parent(Widget *w);
 	virtual Widget *get_parent();
 	virtual const Widget *get_parent() const;
+	virtual class Window *get_window();
 
 	virtual void rise();
 	virtual void sink();

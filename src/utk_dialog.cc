@@ -23,7 +23,10 @@
 
 namespace utk {
 
-Dialog::Dialog() {}
+Dialog::Dialog()
+{
+	modal = true;
+}
 Dialog::~Dialog() {}
 
 
@@ -51,9 +54,7 @@ void destroy_dialog(Widget *w)
 static void def_dialog_handler(Event *event, void *data)
 {
 	Widget *w = event->widget;
-	while(w && !dynamic_cast<Window*>(w)) {
-		w = w->get_parent();
-	}
+	if(w) w = w->get_window();
 
 	if(w) {
 		destroy_window(w);
@@ -163,11 +164,6 @@ FileDialog::FileDialog()
 FileDialog::~FileDialog()
 {
 	delete [] path;
-	if(listb) {
-		printf("foo\n");
-		destroy_listbox(listb);
-		printf("bar\n");
-	}
 }
 
 bool FileDialog::fill_filelist()
@@ -217,6 +213,16 @@ bool FileDialog::fill_filelist()
 #if defined(WIN32) || defined(__WIN32__)
 #define getcwd(a, b)	_getcwd(a, b)
 #endif
+
+static void filedialog_cancel_handler(Event *event, void *data)
+{
+	Widget *w = event->widget;
+	if(w) w = w->get_window();
+
+	if(w) {
+		destroy_dialog((Dialog*)w);
+	}
+}
 
 FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func, void *cdata)
 {
@@ -289,7 +295,7 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 	create_spacer(bn_hbox, 50);
 	create_button(bn_hbox, type == FILE_DIALOG_OPEN ? "open" : "save");
 	create_spacer(bn_hbox, 8);
-	create_button(bn_hbox, "cancel");
+	create_button(bn_hbox, "cancel", filedialog_cancel_handler);
 
 	return dlg;
 }

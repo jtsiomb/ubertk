@@ -14,7 +14,7 @@ ListBox::ListBox()
 
 ListBox::~ListBox()
 {
-	delete vbox;	// vbox will delete its children in herod mode (default)
+	//delete vbox;	// vbox will delete its children in herod mode (default)
 }
 
 Widget *ListBox::handle_event(Event *event)

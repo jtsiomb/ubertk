@@ -13,6 +13,8 @@ Window::Window()
 {
 	visible = false;
 	focused = false;
+	shaded = false;
+	modal = false;
 	win_focus = 0;
 	set_color(128, 128, 128, 255);
 	border = 3;
@@ -21,7 +23,11 @@ Window::Window()
 	grab_focus(this);
 }
 
-Window::~Window() {}
+Window::~Window()
+{
+	if (modal)
+		close_last_modal_window();
+}
 
 Widget *Window::handle_event(Event *event)
 {
@@ -48,6 +54,13 @@ Widget *Window::handle_event(Event *event)
 		return w;
 	}
 	return 0;
+}
+
+void Window::show()
+{
+	if (modal)
+		modalize_window(this);
+	Drawable::show();
 }
 
 void Window::set_size(int w, int h)
@@ -120,6 +133,7 @@ WinFrame::WinFrame(Widget *child)
 	Window *win;
 
 	set_color(128, 130, 200);
+	modal_col = Color(140, 110, 110);
 	unfocused_col = Color(100, 110, 130);
 	shaded = false;
 
@@ -229,7 +243,9 @@ void WinFrame::draw() const
 
 	int alpha = child->get_color().a;
 
-	if(child->focused) {
+	if(child->modal) {
+		gfx::color_clamp(modal_col.r, modal_col.g, modal_col.b, alpha);
+	} else if(child->focused) {
 		gfx::color_clamp(color.r, color.g, color.b, alpha);
 	} else {
 		gfx::color_clamp(unfocused_col.r, unfocused_col.g, unfocused_col.b, alpha);
@@ -244,6 +260,12 @@ void WinFrame::draw() const
 		gfx::frame(out.x1, out.y1, out.x2, out.y2, bord);
 		gfx::bevel(out.x1, out.y1, out.x2, out.y2, 0, third);
 		gfx::bevel(in.x1, in.y1, in.x2, in.y2, gfx::BEVEL_INSET, third);
+	}
+
+	if(child->focused) {
+		gfx::color_clamp(color.r, color.g, color.b, alpha);
+	} else {
+		gfx::color_clamp(unfocused_col.r, unfocused_col.g, unfocused_col.b, alpha);
 	}
 
 	bevel(gpos.x + bord, gpos.y + bord, gpos.x + size.x - bord, gpos.y + bord + child->tbar_height, gfx::BEVEL_FILLBG, MAX(1, third));

@@ -1,6 +1,7 @@
 #include <typeinfo>
 #include "utk_widget.h"
 #include "utk_container.h"
+#include "utk_win.h"
 #include "utk_gfx.h"
 
 namespace utk {
@@ -243,6 +244,14 @@ Widget *Widget::get_parent()
 const Widget *Widget::get_parent() const
 {
 	return parent;
+}
+
+Window *Widget::get_window()
+{
+	Window *win = dynamic_cast<Window*>(parent);
+	if (win)
+		return win;
+	return parent?parent->get_window():NULL;
 }
 
 void Widget::rise()

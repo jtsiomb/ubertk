@@ -1,4 +1,5 @@
 #include <list>
+#include <stack>
 #include "ubertk.h"
 #include "utk_events.h"
 
@@ -13,7 +14,10 @@ static Widget *focused_window;
 static Widget *last_hover_widget;
 static IVec2 last_drag;
 static IVec2 mouse_pos;
+static std::stack<Window*> modal_windows;
+static Window *current_modal_window;
 
+static bool lock_destruct_queue;
 std::list<Widget*> destruct_queue;
 
 static void handle_event(Event *e);
@@ -89,6 +93,7 @@ void event(Event *e)
 	handle_event(e);
 	
 	if(!destruct_queue.empty()) {
+		lock_destruct_queue = true;
 		std::list<Widget*>::iterator iter = destruct_queue.begin();
 		while(iter != destruct_queue.end()) {
 			Widget *w = *iter++;
@@ -105,7 +110,8 @@ void event(Event *e)
 				}
 			}
 		}
-
+		lock_destruct_queue = false;
+		
 		destruct_queue.clear();
 	}
 }
@@ -140,6 +146,9 @@ static void handle_event(Event *e)
 		mouse_pos.x = mev->x;
 		mouse_pos.y = mev->y;
 
+		if (current_modal_window && receiver->get_window() != current_modal_window)
+			return;
+
 		deliver_event(receiver, mev);
 
 		if (widget_under_mouse != last_hover_widget) {
@@ -163,7 +172,7 @@ static void handle_event(Event *e)
 			last_drag.y = mev->y;
 		} else {
 
-			if(focus_follows_mouse) {
+			if(!current_modal_window && focus_follows_mouse) {
 				Container *root = (Container*)get_root_widget();
 				Container::iterator iter = root->begin();
 				while(iter != root->end()) {
@@ -183,6 +192,9 @@ static void handle_event(Event *e)
 	if((bev = dynamic_cast<MButtonEvent*>(e))) {
 		receiver = mouse_grab_widget?mouse_grab_widget:root->get_child_at(bev->x, bev->y);
 		
+		if (current_modal_window && receiver->get_window() != current_modal_window)
+			return;
+
 		if(bev->pressed) {
 			mouse_button_state = bev->button;
 			last_drag.x = bev->x;
@@ -301,6 +313,26 @@ void invalidate_widget(Widget *w)
 	if (last_hover_widget == w) {
 		last_hover_widget = NULL;
 	}
+	if (!lock_destruct_queue)
+		destruct_queue.remove(w);
+}
+
+void modalize_window(Window *w)
+{
+	w->set_modal(true);
+	modal_windows.push(w);
+	current_modal_window = w;
+	grab_focus(w);
+}
+
+void close_last_modal_window()
+{
+	if (modal_windows.empty())	// sanity check
+		return;
+	modal_windows.pop();
+	current_modal_window = modal_windows.empty()?NULL:modal_windows.top();
+	if (current_modal_window)
+		grab_focus(current_modal_window);
 }
 
 }	// namespace utk end

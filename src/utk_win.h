@@ -10,6 +10,7 @@ class Window : public Drawable {
 protected:
 	int tbar_height;
 	bool shaded;
+	bool modal;
 	Widget *win_focus;
 
 public:
@@ -17,6 +18,8 @@ public:
 	virtual ~Window();
 
 	virtual Widget *handle_event(Event *event);
+	
+	virtual void show();
 
 	virtual void set_size(int w, int h);
 	virtual void set_size(IVec2 sz);
@@ -29,6 +32,8 @@ public:
 	virtual const Widget *get_win_focus() const;
 
 	virtual void draw() const;
+	
+	inline void set_modal(bool modal) { this->modal = modal; }
 
 	friend class WinFrame;
 };
@@ -36,6 +41,7 @@ public:
 
 class WinFrame : public Drawable {
 protected:
+	Color modal_col;
 	Color unfocused_col;
 	unsigned int last_click; // to detect double-clicks
 	bool shaded;
