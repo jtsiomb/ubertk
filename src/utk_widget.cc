@@ -24,6 +24,10 @@ Widget::Widget()
 
 Widget::~Widget()
 {
+	if (focused_window == this) {
+		focused_window = NULL;
+	}
+	
 	if(herod_mode) {
 		delete child;
 	}

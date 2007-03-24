@@ -8,11 +8,11 @@ static int focus_follows_mouse = 1;
 static int mouse_button_state = -1;
 static int last_press_x, last_press_y;
 static Widget *mouse_press_widget;
-static Widget *focused_window;
 static IVec2 last_drag;
 static IVec2 mouse_pos;
 
 std::list<Widget*> destruct_queue;
+Widget *focused_window = NULL;
 
 static void handle_event(Event *e);
 

@@ -135,6 +135,7 @@ struct CallbackClosure {
 
 
 extern std::list<Widget*> destruct_queue;
+extern Widget *focused_window;
 
 }	// end namespace utk
 
