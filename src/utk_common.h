@@ -5,6 +5,27 @@
 #define MAX(a, b)		((a) > (b) ? (a) : (b))
 #define CLAMP(x, a, b)	MIN(MAX(x, a), b)
 
+#if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+
+#if  defined(__i386__) || defined(__ia64__) || defined(WIN32) || \
+    (defined(__alpha__) || defined(__alpha)) || \
+     defined(__arm__) || \
+    (defined(__mips__) && defined(__MIPSEL__)) || \
+     defined(__SYMBIAN32__) || \
+     defined(__x86_64__) || \
+     defined(__LITTLE_ENDIAN__)
+	
+/* little endian */
+#define LITTLE_ENDIAN
+
+#else
+/* big endian */	
+#define BIG_ENDIAN
+
+#endif	/* endian check */
+#endif	/* !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN) */
+
+
 /* 32bit color shift values */
 #if defined(LITTLE_ENDIAN) || defined(__LITTLE_ENDIAN__)
 #define ALPHA_SHIFT32	24
