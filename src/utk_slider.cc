@@ -137,7 +137,11 @@ void Slider::on_modify(Event *event)
 	if(link_str) {
 		char fmt[8];
 		sprintf(fmt, vis_decimal ? "%%.%df" : "%%d", vis_decimal);
+		#if (defined(WIN32) && !defined(_GNUC_))	// assume msvc
+		sprintf(link_str, fmt, val);
+		#else
 		snprintf(link_str, link_str_width, fmt, val);
+		#endif
 	}
 
 	callback(event, EVENT_MODIFY);
