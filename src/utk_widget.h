@@ -65,6 +65,7 @@ public:
 
 	virtual void add_child(Widget *w);
 	virtual Widget *get_child();
+	virtual Widget *get_child_at(int x, int y);
 	virtual const Widget *get_child() const;
 	virtual bool remove_child(Widget *w = 0);
 

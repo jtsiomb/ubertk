@@ -49,11 +49,6 @@ Scrollbar::~Scrollbar() {}
 
 Widget *Scrollbar::handle_event(Event *event)
 {
-	Widget *w;
-	if(child && (w = child->handle_event(event))) {
-		return w;
-	}
-
 	// no child handled the event, either we do or return 0
 	MButtonEvent *mb;
 	if((mb = dynamic_cast<MButtonEvent*>(event)))
@@ -69,6 +64,13 @@ Widget *Scrollbar::handle_event(Event *event)
 			mb->widget = this;
 			return this;
 		}
+	}
+	
+	if (dynamic_cast<ClickEvent*>(event))
+	{
+		event->widget = this;
+		dragging = false;
+		return this;
 	}
 
 	MMotionEvent *mmev;

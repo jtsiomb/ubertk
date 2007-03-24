@@ -33,6 +33,7 @@ public:
 	virtual ~ScrollWin();
 
 	virtual Widget *handle_event(Event *event);
+	virtual Widget *get_child_at(int x, int y);
 
 	virtual void set_size(int w, int h);
 	virtual void set_size(IVec2 sz);

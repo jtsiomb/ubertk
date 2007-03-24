@@ -50,6 +50,8 @@ void Container::layout()
 
 Widget *Container::handle_event(Event *event)
 {
+	return 0;
+	/*
 	Widget *res = 0;
 
 	const MouseEvent *mev;
@@ -66,6 +68,7 @@ Widget *Container::handle_event(Event *event)
 		}
 	}
 	return res;
+	*/
 }
 
 void Container::add_child(Widget *w)
@@ -87,6 +90,18 @@ bool Container::remove_child(Widget *w)
 	cont.erase(iter);
 	layout();
 	return true;
+}
+
+Widget *Container::get_child_at(int x, int y)
+{
+	iterator iter = cont.begin();
+	while (iter != cont.end()) {
+		Widget	*w = *iter++;
+		if (w->hit_test(x, y)) {
+			return w->get_child_at(x, y);
+		}
+	}
+	return this;
 }
 
 void Container::raise_child(Widget *w)

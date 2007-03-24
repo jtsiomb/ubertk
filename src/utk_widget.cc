@@ -212,6 +212,13 @@ Widget *Widget::get_child()
 	return child;
 }
 
+Widget *Widget::get_child_at(int x, int y)
+{
+	if (child)
+		return child->get_child_at(x, y);
+	return this;
+}
+
 const Widget *Widget::get_child() const
 {
 	return child;

@@ -40,6 +40,11 @@ Widget *Button::handle_event(Event *event)
 			if(pressed) return this;
 		}
 	}
+	
+	if (dynamic_cast<MMotionEvent*>(event)) {
+		event->widget = this;
+		return this;
+	}
 
 	return 0;
 }

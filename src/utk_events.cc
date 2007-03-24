@@ -7,7 +7,8 @@ namespace utk {
 static int focus_follows_mouse = 1;
 static int mouse_button_state = -1;
 static int last_press_x, last_press_y;
-static Widget *mouse_press_widget;
+static Widget *mouse_press_widget = 0;
+static Widget *mouse_grab_widget = 0;
 static IVec2 last_drag;
 static IVec2 mouse_pos;
 
@@ -100,9 +101,19 @@ void event(Event *e)
 	}
 }
 
+static Widget *deliver_event(Widget *w, Event *e)
+{
+	if (!e || !w)
+		return NULL;
+	for (e->widget=NULL; w && !e->widget; w=w->get_parent())
+		w->handle_event(e);
+	return w;
+}
+
 static void handle_event(Event *e)
 {
 	Widget *root = get_root_widget();
+	Widget *receiver;
 
 	KeyboardEvent *kev;
 	if((kev = dynamic_cast<KeyboardEvent*>(e))) {
@@ -111,13 +122,16 @@ static void handle_event(Event *e)
 		}
 		return;
 	}
-
+	
 	MMotionEvent *mev;
 	if((mev = dynamic_cast<MMotionEvent*>(e))) {
+		receiver = mouse_grab_widget?mouse_grab_widget:root->get_child_at(mev->x, mev->y);
+		
 		mouse_pos.x = mev->x;
 		mouse_pos.y = mev->y;
 
-		root->handle_event(e);
+		deliver_event(receiver, mev);
+//		root->handle_event(e);
 
 		if(mouse_button_state >= 0) {
 			last_drag.x = mev->x;
@@ -142,18 +156,26 @@ static void handle_event(Event *e)
 
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(e))) {
+		receiver = mouse_grab_widget?mouse_grab_widget:root->get_child_at(bev->x, bev->y);
+		
 		if(bev->pressed) {
 			mouse_button_state = bev->button;
 			last_drag.x = bev->x;
 			last_drag.y = bev->y;
 			last_press_x = bev->x;
 			last_press_y = bev->y;
-			mouse_press_widget = root->handle_event(e);
+			//mouse_press_widget = root->handle_event(e);
+			mouse_press_widget = deliver_event(receiver, e);
+			if (bev->button == MOUSE_LEFT)
+				mouse_grab_widget = receiver;
 			return;
 		} else {
 			mouse_button_state = -1;
 			bev->press_x = last_press_x;
 			bev->press_y = last_press_y;
+			mouse_press_widget = 0;
+			
+			mouse_grab_widget = 0;	// note: grabbing is released on mouse release
 
 			// houston, we have a click!
 			if(bev->button >= MOUSE_LEFT && bev->button < MOUSE_RIGHT &&
@@ -163,12 +185,14 @@ static void handle_event(Event *e)
 				cev.x = bev->x;
 				cev.y = bev->y;
 				cev.time = get_msec();
-				root->handle_event(&cev);
+				//root->handle_event(&cev);
+				deliver_event(receiver, &cev);
 				return;	// don't generate both a click and a mouse-button event(?)
 			}
 		}
 
-		root->handle_event(e);
+		deliver_event(receiver, e);
+		//root->handle_event(e);
 		return;
 	}
 }
@@ -201,6 +225,11 @@ IVec2 get_mouse_pos()
 IVec2 get_last_drag_pos()
 {
 	return last_drag;
+}
+
+void grab_mouse(Widget *e)
+{
+	mouse_grab_widget = e;
 }
 
 void grab_focus(Widget *w)

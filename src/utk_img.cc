@@ -40,6 +40,7 @@ Image::~Image()
 
 Widget *Image::handle_event(Event *event)
 {
+
 	ClickEvent *ce;
 	IVec2 pos = get_global_pos();
 	if((ce = dynamic_cast<ClickEvent*>(event)) && hit_test(ce->x, ce->y))
@@ -47,6 +48,7 @@ Widget *Image::handle_event(Event *event)
 		on_click(ce->x - pos.x, ce->y - pos.y);
 		upd = true;
 		dragging = false;
+		event->widget = this;
 		return this;
 	}
 
@@ -61,6 +63,7 @@ Widget *Image::handle_event(Event *event)
 				dragging = true;
 			}
 			upd = true;
+			event->widget = this;
 			return this;
 		}
 	}
@@ -79,6 +82,7 @@ Widget *Image::handle_event(Event *event)
 			on_motion(mmev->x, mmev->y);
 		}
 		upd = true;
+		event->widget = this;
 		return 0;
 	}
 

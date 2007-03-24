@@ -89,6 +89,15 @@ Widget *ScrollWin::handle_event(Event *event)
 	return 0;
 }
 
+Widget *ScrollWin::get_child_at(int x, int y)
+{
+	if (hbar->hit_test(x, y))
+		return hbar;
+	if (vbar->hit_test(x, y))
+		return vbar;
+	return Drawable::get_child_at(x, y);
+}
+
 void ScrollWin::set_size(int w, int h)
 {
 	Widget::set_size(w, h);

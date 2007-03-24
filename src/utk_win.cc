@@ -168,12 +168,11 @@ Widget *WinFrame::handle_event(Event *event)
 	if(!shaded && child && (w = child->handle_event(event))) {
 		return w;
 	}
-
-
+	
 	// no child handled the event, either we do or return false
 	MMotionEvent *mmev;
 	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
-		if(/*hit_test(mmev->x, mmev->y) &&*/ get_button_state() == MOUSE_LEFT && get_button_press_widget() == this) {
+		if(/*hit_test(mmev->x, mmev->y) &&*/ get_button_state() == MOUSE_LEFT) {
 		
 			int dx = mmev->x - get_last_drag_pos().x;
 			int dy = mmev->y - get_last_drag_pos().y;

@@ -32,6 +32,7 @@ public:
 
 	virtual void add_child(Widget *w);
 	virtual bool remove_child(Widget *w);
+	virtual Widget *get_child_at(int x, int y);
 
 	virtual void raise_child(Widget *w);
 	virtual void sink_child(Widget *w);

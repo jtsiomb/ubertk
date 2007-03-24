@@ -122,6 +122,7 @@ int get_button_state();
 Widget *get_button_press_widget();
 IVec2 get_mouse_pos();
 IVec2 get_last_drag_pos();
+void grab_mouse(Widget *e);
 
 void grab_focus(Widget *w);
 void grab_win_focus(Widget *w);
