@@ -5,22 +5,16 @@
 #include FT_FREETYPE_H
 #include "test_text.h"
 
-#if defined(WIN32) || defined(__WIN32__)
-#define GL_BGRA                           0x80E1
-typedef void (*foopointer)(const float*);
-foopointer glLoadTransposeMatrixf;
-#endif
-
 class Matrix4x4 {
 public:
 	float m[16];
 
 	Matrix4x4(float a, float b, float c, float d, float e, float f, float g, float h, float i, float j, float k, float l, float x, float n, float o, float p)
 	{
-		m[0] = a; m[1] = b; m[2] = c; m[3] = d;
-		m[4] = e; m[5] = f; m[6] = g; m[7] = h;
-		m[8] = i; m[9] = j; m[10] = k; m[11] = l;
-		m[12] = x; m[13] = n; m[14] = o; m[15] = p;
+		m[0] = a; m[1] = e; m[2] = i; m[3] = x;
+		m[4] = b; m[5] = f; m[6] = j; m[7] = n;
+		m[8] = c; m[9] = g; m[10] = k; m[11] = o;
+		m[12] = d; m[13] = h; m[14] = l; m[15] = p;
 	}
 };
 
@@ -70,10 +64,6 @@ static inline int NextPow2(int x)
 
 unsigned int CreateFont(const char *fname, int font_size)
 {
-#if defined(WIN32) || defined(__WIN32__)
-	glLoadTransposeMatrixf = (foopointer)wglGetProcAddress("glLoadTransposeMatrixf");
-#endif
-
 	if(!ft) {
 		if(FT_Init_FreeType(&ft) != 0) {
 			fprintf(stderr, "failed to initialize freetype\n");
@@ -100,7 +90,7 @@ unsigned int CreateFont(const char *fname, int font_size)
 
 	unsigned int *img;
 	img = new unsigned int[tex_xsz * tex_ysz];
-	memset(img, 0xff, tex_xsz * tex_ysz * sizeof *img);	// TODO: after debugging change this to 0
+	memset(img, 0, tex_xsz * tex_ysz * sizeof *img);
 
 	extern int xsz, ysz;
 	int vport_xsz = xsz, vport_ysz = ysz;
@@ -229,7 +219,6 @@ static void ImOverlay(const Vector2 &v1, const Vector2 &v2, const Color &col, un
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
-	/*glLoadTransposeMatrixf(OrthoProj(2, 2, 0, 10).m);*/
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -277,7 +266,7 @@ float PrintChar(char c)
 
 	glMatrixMode(GL_TEXTURE);
 	glPushMatrix();
-	glLoadTransposeMatrixf(mat.m);
+	glLoadMatrixf(mat.m);
 
 	Vector2 pos = text_pos + act_fnt->glyphs[(int)c].pos * act_fnt->scale;
 	ImOverlay(pos, pos + act_fnt->glyphs[(int)c].size * act_fnt->scale, text_color, act_fnt->tex_id);

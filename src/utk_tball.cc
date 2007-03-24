@@ -1,5 +1,6 @@
 #include <math.h>
 #include "utk_tball.h"
+#include "utk_common.h"
 
 namespace utk {
 
@@ -89,7 +90,7 @@ void TrackBall::update()
 					cint = (int)(255.0 * dot);
 				}
 
-				*pptr++ = 0xff000000 | (cint << 16) | (cint << 8) | cint;
+				*pptr++ = PACK_RGBA(cint, cint, cint, 0xff);
 			} else {
 				*pptr++ = 0;
 			}

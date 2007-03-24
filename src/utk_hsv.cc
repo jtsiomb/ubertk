@@ -1,5 +1,6 @@
 // utk_hsv.cc
 #include <math.h>
+#include "utk_common.h"
 
 namespace utk {
 
@@ -112,25 +113,17 @@ void hsv_to_rgb( float *r, float *g, float *b, float h, float s, float v )
 unsigned int pack_hsv(float h, float s, float v)
 {
 	float r, g, b;
+	int ir, ig, ib;
 	hsv_to_rgb(&r, &g, &b, h, s, v);
-	r = 255.0f * r + 0.5f;
-	g = 255.0f * g + 0.5f;
-	b = 255.0f * b + 0.5f;
+	ir = (int)(255.0f * r + 0.5f);
+	ig = (int)(255.0f * g + 0.5f);
+	ib = (int)(255.0f * b + 0.5f);
 
-	if (r < 0) r = 0;
-	if (g < 0) g = 0;
-	if (b < 0) b = 0;
+	ir = ir < 0 ? 0 : (ir > 255 ? 255 : ir);
+	ig = ig < 0 ? 0 : (ig > 255 ? 255 : ig);
+	ib = ib < 0 ? 0 : (ib > 255 ? 255 : ib);
 
-	if (r >= 256) r = 255;
-	if (g >= 256) g = 255;
-	if (b >= 256) b = 255;
-
-	unsigned int R, G, B;
-	R = (int) r;
-	G = (int) g;
-	B = (int) b;
-
-	return 0xFF000000 | (R << 16) | (G << 8) | B;
+	return PACK_RGBA(ir, ig, ib, 0xff);
 }
 
 } // end namespace utk
