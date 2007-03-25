@@ -4,6 +4,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "test_text.h"
+#include "utk_common.h"
 
 class Matrix4x4 {
 public:
@@ -148,7 +149,30 @@ unsigned int CreateFont(const char *fname, int font_size)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, tex_xsz, tex_ysz, 0, GL_BGRA, GL_UNSIGNED_BYTE, img);
+#ifdef BIG_ENDIAN
+#define PIXFMT	GL_ABGR_EXT
+#else
+#define PIXFMT	GL_BGRA
+#endif
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, tex_xsz, tex_ysz, 0, PIXFMT, GL_UNSIGNED_BYTE, img);
+
+#ifdef DUMP_FONT_IMG
+	FILE *fp;
+	unsigned int *ptr = img;
+
+	if((fp = fopen("fnt.ppm", "wb"))) {
+		fprintf(fp, "P6\n%d %d\n255\n", tex_xsz, tex_ysz);
+
+		for(int i=0; i<tex_xsz * tex_ysz; i++) {
+			fputc((*ptr >> 24) & 0xff, fp);
+			fputc((*ptr >> 24) & 0xff, fp);
+			fputc((*ptr >> 24) & 0xff, fp);
+			ptr++;
+		}
+		fclose(fp);
+	}
+#endif
+	
 	delete [] img;
 
 	act_fnt = fnt;
