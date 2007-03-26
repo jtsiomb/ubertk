@@ -104,11 +104,12 @@ Widget *Scrollbar::handle_event(Event *event)
 					callback(event, EVENT_MODIFY);
 				}
 			}
-			return this;
 		}
+		event->widget = this;
+		return this;
 	}
 
-	return 0;
+	return this;
 }
 
 void Scrollbar::set_size(int w, int h)

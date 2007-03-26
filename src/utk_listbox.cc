@@ -45,7 +45,7 @@ Widget *ListBox::handle_event(Event *event)
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(event)) && hit_test(bev->x, bev->y)
 			&& !hbar->hit_test(bev->x, bev->y) && !vbar->hit_test(bev->x, bev->y)
-			&& bev->pressed && !bev->widget)
+			&& bev->pressed && !bev->widget && bev->button == MOUSE_LEFT)
 	{
 		grab_win_focus(this);
 		return this;
@@ -53,7 +53,7 @@ Widget *ListBox::handle_event(Event *event)
 
 	// select by clicking
 	ClickEvent *cev;
-	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y) && !cev->widget) {
+	if((cev = dynamic_cast<ClickEvent*>(event)) && hit_test(cev->x, cev->y) && !cev->widget && cev->button == MOUSE_LEFT) {
 		int i = 0;
 		VBox::iterator iter = vbox->begin();
 		while(iter != vbox->end()) {
@@ -67,6 +67,7 @@ Widget *ListBox::handle_event(Event *event)
 			i++;
 		}
 	}
+	
 	return ScrollWin::handle_event(event);
 }
 

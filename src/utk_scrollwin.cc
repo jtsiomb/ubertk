@@ -22,6 +22,9 @@ ScrollWin::ScrollWin()
 	vbar_state = SCROLLBAR_AUTO;
 	hbar_state = SCROLLBAR_AUTO;
 
+	ignore_bars = false;
+	dragging = false;
+
 	sbar_width = 15;
 	
 	set_color(100, 100, 100);
@@ -50,39 +53,39 @@ bool ScrollWin::check_vscroll_vis() const
 Widget *ScrollWin::handle_event(Event *event)
 {
 	if(child) {
-		Widget *w;
-		if((w = child->handle_event(event))) {
-			return w;
-		}
-
-		if(hbar->handle_event(event)) {
-			return hbar;
-		}
-		if(vbar->handle_event(event)) {
-			return vbar;
-		}
-
 		MMotionEvent *mmev;
-		if((mmev = dynamic_cast<MMotionEvent*>(event))) {
-			if(hit_test(mmev->x, mmev->y) && get_button_state() == MOUSE_LEFT && get_button_press_widget() == this) {
-				int dx = mmev->x - get_last_drag_pos().x;
-				int dy = mmev->y - get_last_drag_pos().y;
+		if(dragging && (mmev = dynamic_cast<MMotionEvent*>(event))) {
+			int dx = mmev->x - get_last_drag_pos().x;
+			int dy = mmev->y - get_last_drag_pos().y;
 
-				IVec2 cpos = child->get_pos();
-				IVec2 csz = child->get_size();
-				
-				int max_x = MAX(csz.x - size.x, 0);
-				int max_y = MAX(csz.y - size.y, 0);
+			IVec2 cpos = child->get_pos();
+			IVec2 csz = child->get_size();
 
-				int new_x = CLAMP(cpos.x + dx, -max_x, 0);
-				int new_y = CLAMP(cpos.y + dy, -max_y, 0);
+			int max_x = MAX(csz.x - size.x, 0);
+			int max_y = MAX(csz.y - size.y, 0);
 
-				child->set_pos(new_x, new_y);
+			int new_x = CLAMP(cpos.x + dx, -max_x, 0);
+			int new_y = CLAMP(cpos.y + dy, -max_y, 0);
 
-				hbar->set_value(get_hscroll());
-				vbar->set_value(get_vscroll());
-				return this;
+			child->set_pos(new_x, new_y);
+
+			ignore_bars = true;
+			hbar->set_value(get_hscroll());
+			vbar->set_value(get_vscroll());
+			ignore_bars = false;
+			return this;
+		}
+
+		MButtonEvent *bev;
+		if ((bev = dynamic_cast<MButtonEvent*>(event))) {
+			if (bev->pressed && bev->button == MOUSE_MIDDLE) {
+				grab_mouse(this);
+				dragging = true;
+			} else if (bev->button == MOUSE_MIDDLE) {
+				grab_mouse(0);
+				dragging = false;
 			}
+			return this;
 		}
 	}
 
@@ -222,6 +225,8 @@ static void vbar_handler(Event *ev, void *data)
 		return;
 	}
 
+	if (swin->ignore_bars) return;
+
 	Scrollbar *sbar;
 	if(ev->widget && (sbar = dynamic_cast<Scrollbar*>(ev->widget))) {
 		swin->set_vscroll(sbar->get_value());
@@ -234,6 +239,8 @@ static void hbar_handler(Event *ev, void *data)
 	if(!(swin = dynamic_cast<ScrollWin*>((Widget*)data))) {
 		return;
 	}
+
+	if (swin->ignore_bars) return;
 
 	Scrollbar *sbar;
 	if(ev->widget && (sbar = dynamic_cast<Scrollbar*>(ev->widget))) {

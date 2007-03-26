@@ -25,10 +25,14 @@ protected:
 
 	int vbar_state, hbar_state;
 
+	bool dragging;
+
 	bool check_vscroll_vis() const;
 	bool check_hscroll_vis() const;
 
 public:
+	bool ignore_bars;
+
 	ScrollWin();
 	virtual ~ScrollWin();
 
