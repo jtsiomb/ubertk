@@ -204,6 +204,13 @@ static void handle_event(Event *e)
 			mouse_press_widget = deliver_event(receiver, e);
 			if (bev->button == MOUSE_LEFT)
 				mouse_grab_widget = receiver;
+
+			// show widget popup menu if the widget doesn't care about rightclicks
+			if (!e->widget && bev->pressed && bev->button == MOUSE_RIGHT &&
+				abs(bev->x - last_press_x) < 2 && abs(bev->y - last_press_y) < 2) {
+				receiver->show_popup();
+			}
+
 			return;
 		} else {
 			mouse_button_state = -1;
@@ -222,17 +229,10 @@ static void handle_event(Event *e)
 				cev.y = bev->y;
 				cev.time = get_msec();
 				deliver_event(receiver, &cev);
-				return;	// don't generate both a click and a mouse-button event(?)
 			}
 		}
 
 		deliver_event(receiver, e);
-		
-		// show widget popup menu if the widget doesn't care about rightclicks
-		if (!e->widget && !bev->pressed && bev->button == MOUSE_RIGHT &&
-			abs(bev->x - last_press_x) < 2 && abs(bev->y - last_press_y) < 2) {
-			receiver->show_popup();
-		}
 		return;
 	}
 }

@@ -46,9 +46,10 @@ class PopupMenu : public Popup
 	friend class PopupMenuItem;
 	
 	protected:
-	VBox		*vbox;
-	PopupMenu	*master;
-	PopupMenu	*vis_sub;	// visible submenu
+	VBox			*vbox;
+	PopupMenu		*master;
+	PopupMenu		*vis_sub;	// visible submenu
+	unsigned int	showtime;
 	
 	virtual void update_size();
 

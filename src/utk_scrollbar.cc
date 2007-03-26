@@ -36,13 +36,13 @@ IVec2 Scrollbar::get_cursor_br() const
 
 Scrollbar::Scrollbar()
 {
+	orient = HORIZONTAL;
 	dragging = false;
 	cursor_width = 20;
 	cursor_pos = 0;
 	set_border(2);
 	set_size(100 + border * 2 + cursor_width, 20 + border * 2);
 	set_color(128, 100, 80);
-	orient = HORIZONTAL;
 }
 
 Scrollbar::~Scrollbar() {}
@@ -91,15 +91,17 @@ Widget *Scrollbar::handle_event(Event *event)
 			}
 			
 			if(dx) {
+				int	old_cursor_pos = cursor_pos;
 				cursor_pos += dx;
 				cursor_pos = cursor_pos < 0 ? 0 : (cursor_pos > track_len ? track_len : cursor_pos);
 
-				if(link_flt) {
-					*link_flt = get_value();
-				}
+				if (old_cursor_pos != cursor_pos) {
+					if(link_flt) {
+						*link_flt = get_value();
+					}
 
-				on_modify(mmev);
-				callback(mmev, EVENT_MODIFY);
+					on_modify(mmev);
+				}
 			}
 			return this;
 		}
@@ -152,8 +154,11 @@ int Scrollbar::get_cursor_width() const
 
 void Scrollbar::set_value(float val)
 {
+	int	old_cursor_pos = cursor_pos;
 	val = val > 1.0 ? 1.0 : (val < 0.0 ? 0.0 : val);
 	cursor_pos = (int)(val * track_len);
+
+	if (old_cursor_pos == cursor_pos) return;
 
 	// on set_value() the link should definitely be updated, but...
 	if(link_flt) {
@@ -161,11 +166,10 @@ void Scrollbar::set_value(float val)
 	}
 
 	// ... should we also call the handlers?
-	/*Event ev;
+	Event ev;
 	ev.widget = this;
 
 	on_modify(&ev);
-	callback(&ev, EVENT_MODIFY);*/
 }
 
 float Scrollbar::get_value() const

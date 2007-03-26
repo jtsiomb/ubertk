@@ -16,8 +16,6 @@ public:
 	Slider();
 	virtual ~Slider();
 
-	virtual Widget *handle_event(Event *event);
-
 	virtual void set_min(float start);
 	virtual void set_max(float end);
 	virtual void set_range(float start, float end);

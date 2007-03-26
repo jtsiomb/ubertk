@@ -7,6 +7,7 @@
 namespace utk {
 
 Container *get_root_widget();
+unsigned int get_msec();
 
 PopupMenuItem::PopupMenuItem(Widget *widget)
 {
@@ -69,7 +70,14 @@ void PopupMenuItem::set_size(int w, int h)
 
 Widget *PopupMenuItem::handle_event(Event *event)
 {
-	if (dynamic_cast<ClickEvent*>(event)) {
+	MButtonEvent	*bev;
+	if ((bev = dynamic_cast<MButtonEvent*>(event))) {
+		if (bev->pressed)
+			return 0;
+
+		event->widget = this;
+		if ((get_msec() - master->showtime < 250))
+			return 0;
 		on_click(event);
 		callback(event, EVENT_CLICK);
 		master->cancel();
@@ -90,6 +98,8 @@ Widget *PopupMenuItem::handle_event(Event *event)
 			} else {
 				popup->vis_sub = 0;
 			}
+
+			event->widget = this;
 		}
 		return this;
 	}
@@ -241,6 +251,7 @@ void PopupMenu::run(int x, int y)
 	show();
 	rise();
 	grab_focus(this);
+	showtime = get_msec();
 }
 
 void PopupMenu::cancel()

@@ -15,16 +15,6 @@ Slider::Slider()
 
 Slider::~Slider() {}
 
-
-Widget *Slider::handle_event(Event *event)
-{
-	Widget *ret = Scrollbar::handle_event(event);
-	if(ret) {
-		set_value(get_value());	// this will call the handlers, update links, blah, blah...
-	}
-	return ret;
-}
-
 void Slider::set_min(float start)
 {
 	this->start = start;

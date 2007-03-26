@@ -65,6 +65,11 @@ void exit_bn_handler(utk::Event *event, void *data)
 	exit(0);
 }
 
+void slider_handler(utk::Event *event, void *data)
+{
+	pbar->set_value(((utk::Slider*)event->widget)->get_value());
+}
+
 
 int main(int argc, char **argv)
 {
@@ -146,7 +151,7 @@ int main(int argc, char **argv)
 	hue = new utk::HueBox();
 	vbox->add_child(hue);
 
-	slider = utk::create_slider(vbox, 0, 1); 
+	slider = utk::create_slider(vbox, 0, 1, slider_handler);
 
 	tball = new utk::TrackBall(50, 50);
 	vbox->add_child(tball);
@@ -226,8 +231,6 @@ void redraw(void)
 {
 	float h = hue->get_h();
 	cbox->set_h(h);
-
-	pbar->set_value(slider->get_value());
 
 	float s = cbox->get_s();
 	float v = cbox->get_v();
