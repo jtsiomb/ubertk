@@ -24,7 +24,7 @@ Button::~Button()
 Widget *Button::handle_event(Event *event)
 {
 	ClickEvent *cev;
-	if((cev = dynamic_cast<ClickEvent*>(event)) && hover) {
+	if((cev = dynamic_cast<ClickEvent*>(event)) && hover && cev->button == MOUSE_LEFT) {
 		pressed = false;
 		cev->widget = this;
 
@@ -35,7 +35,7 @@ Widget *Button::handle_event(Event *event)
 	}
 
 	MButtonEvent *bev;
-	if((bev = dynamic_cast<MButtonEvent*>(event))) {
+	if((bev = dynamic_cast<MButtonEvent*>(event)) && bev->button == MOUSE_LEFT) {
 		if(bev->pressed && hit_test(bev->x, bev->y) || !bev->pressed) {
 			pressed = bev->pressed;
 			if(pressed) return this;
