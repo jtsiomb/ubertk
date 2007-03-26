@@ -226,6 +226,18 @@
 				RelativePath=".\src\utk_listbox.h">
 			</File>
 			<File
+				RelativePath=".\src\utk_menus.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_menus.h">
+			</File>
+			<File
+				RelativePath=".\src\utk_popup.cc">
+			</File>
+			<File
+				RelativePath=".\src\utk_popup.h">
+			</File>
+			<File
 				RelativePath=".\src\utk_progress.cc">
 			</File>
 			<File

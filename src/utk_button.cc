@@ -6,6 +6,7 @@ namespace utk {
 Button::Button(const char *txt, Callback cb)
 {
 	pressed = false;
+	flat = false;
 
 	set_text(txt);
 	set_callback(EVENT_CLICK, cb);
@@ -60,7 +61,10 @@ void Button::draw() const
 		b += 16;
 	}
 	gfx::color_clamp(r, g, b, color.a);
-	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | ((pressed && hover) ? gfx::BEVEL_INSET : 0), 2);
+
+	if (hover || !flat) {
+		gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | ((pressed && hover) ? gfx::BEVEL_INSET : 0), 2);
+	}
 
 	if(text.size()) {
 		const char *txt = get_text();
@@ -71,6 +75,16 @@ void Button::draw() const
 	}
 
 	Widget::draw();
+}
+
+void Button::set_flat(bool flat)
+{
+	this->flat = flat;
+}
+
+bool Button::is_flat() const
+{
+	return flat;
 }
 
 Button *create_button(Widget *parent, const char *text, Callback func, void *cdata)

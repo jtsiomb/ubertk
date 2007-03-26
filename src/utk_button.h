@@ -9,6 +9,7 @@ namespace utk {
 class Button : public Drawable {
 protected:
 	bool pressed;
+	bool flat;
 
 public:
 	Button(const char *txt = 0, Callback cb = 0);
@@ -17,6 +18,9 @@ public:
 	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
+
+	virtual void set_flat(bool flat);
+	virtual bool is_flat() const;
 };
 
 Button *create_button(Widget *parent, const char *text, Callback func = 0, void *cdata = 0);

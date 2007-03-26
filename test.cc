@@ -182,6 +182,9 @@ int main(int argc, char **argv)
 	utk::HBox *label_box = create_hbox(vbox);
 	create_label(label_box, "test");
 	create_label(label_box, "foo");
+
+	create_button(vbox, "I rule")->set_flat(true);
+	create_button(vbox, "Yes i do")->set_flat(true);
 	
 	// set root widget popup menu
 	utk::PopupMenu	*menu = utk::create_popup_menu();
