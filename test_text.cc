@@ -28,7 +28,6 @@ public:
 #endif
 
 #ifdef UTK_BIG_ENDIAN
-#define BIG_ENDIAN	"foobar"
 #define PIXFMT	GL_ABGR
 #else
 #define PIXFMT	GL_BGRA
