@@ -12,10 +12,13 @@ protected:
 	bool flat;
 
 public:
-	Button(const char *txt = 0, Callback cb = 0);
+	Button(Widget *widget, Callback cb = 0);
 	virtual ~Button();
 
 	virtual Widget *handle_event(Event *event);
+
+	virtual Widget *get_child_at(int x, int y);
+	virtual void set_size(int w, int h);
 
 	virtual void draw() const;
 
@@ -25,7 +28,10 @@ public:
 
 Button *create_button(Widget *parent, const char *text, Callback func = 0, void *cdata = 0);
 Button *create_button(Widget *parent, const char *text, int xsz, int ysz = 0, Callback func = 0, void *cdata = 0);
+Button *create_button(Widget *parent, Widget *child, Callback func = 0, void *cdata = 0);
+Button *create_button(Widget *parent, Widget *child, int xsz, int ysz = 0, Callback func = 0, void *cdata = 0);
 
 }	// end of namespace utk
 
 #endif	// UBERTK_BUTTON_H_
+

@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 	pbar = new utk::Progress;
 	vbox->add_child(pbar);
 
-	vbox->add_child(new utk::Button("Exit", exit_bn_handler));
+	vbox->add_child(new utk::Button(new utk::Label("Exit"), exit_bn_handler));
 
 	win2 = utk::create_window(utkroot, 500, 150, 150, 300, "foo g");
 	win2->show();
@@ -190,6 +190,8 @@ int main(int argc, char **argv)
 
 	create_button(vbox, "I rule")->set_flat(true);
 	create_button(vbox, "Yes i do")->set_flat(true);
+
+	utk::create_button(vbox, new utk::Button(new utk::Label("Doubly")), 30);
 	
 	// set root widget popup menu
 	utk::PopupMenu	*menu = utk::create_popup_menu();

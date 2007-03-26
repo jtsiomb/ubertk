@@ -1,17 +1,24 @@
 #include "utk_button.h"
+#include "utk_label.h"
 #include "utk_gfx.h"
 
 namespace utk {
 
-Button::Button(const char *txt, Callback cb)
+Button::Button(Widget *widget, Callback cb)
 {
 	pressed = false;
 	flat = false;
 
-	set_text(txt);
+	if (widget->get_parent() != this) {
+		add_child(widget);
+	}
+
+	if (dynamic_cast<Drawable*>(widget)) {
+		set_text(((Drawable*)widget)->get_text());
+	}
 	set_callback(EVENT_CLICK, cb);
 
-	set_size(100, gfx::text_spacing() + 4);
+	set_size(widget->get_width() + 6, widget->get_height() + 6);
 	set_border(2);
 
 	set_color(128, 100, 80);
@@ -50,6 +57,17 @@ Widget *Button::handle_event(Event *event)
 	return 0;
 }
 
+Widget *Button::get_child_at(int x, int y)
+{
+	return this;
+}
+
+void Button::set_size(int w, int h)
+{
+	Drawable::set_size(w, h);
+	child->set_pos(size.x/2 - child->get_width()/2, size.y/2 - child->get_height()/2);
+}
+
 void Button::draw() const
 {
 	IVec2 gpos = get_global_pos();
@@ -66,13 +84,13 @@ void Button::draw() const
 		gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | ((pressed && hover) ? gfx::BEVEL_INSET : 0), 2);
 	}
 
-	if(text.size()) {
+	/*if(text.size()) {
 		const char *txt = get_text();
 		int twidth = gfx::text_width(txt, 18);
 
 		gfx::color(0, 0, 0, color.a);
 		gfx::text(gpos.x + (size.x - twidth) / 2, gpos.y + size.y, txt, 18);
-	}
+	}*/
 
 	Widget::draw();
 }
@@ -98,7 +116,25 @@ Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callba
 		ysz = gfx::text_spacing() + 4;
 	}
 
-	Button *bn = new Button(text);
+	Button *bn = new Button(new utk::Label(text));
+	bn->set_callback(EVENT_CLICK, func, cdata);
+	bn->set_size(xsz, ysz);
+	parent->add_child(bn);
+	return bn;
+}
+
+Button *create_button(Widget *parent, Widget *child, Callback func, void *cdata)
+{
+	return create_button(parent, child, child->get_width() + 6, 0, func, cdata);
+}
+
+Button *create_button(Widget *parent, Widget *child, int xsz, int ysz, Callback func, void *cdata)
+{
+	if (ysz == 0) {
+		ysz = child->get_height() + 6;
+	}
+
+	Button	*bn = new Button(child);
 	bn->set_callback(EVENT_CLICK, func, cdata);
 	bn->set_size(xsz, ysz);
 	parent->add_child(bn);
