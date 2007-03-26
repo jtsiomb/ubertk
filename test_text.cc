@@ -19,6 +19,20 @@ public:
 	}
 };
 
+#ifndef GL_BGRA
+#define GL_BGRA	0x80E1
+#endif
+
+#ifndef GL_ABGR
+#define GL_ABGR	0x8000
+#endif
+
+#ifdef UTK_BIG_ENDIAN
+#define BIG_ENDIAN	"foobar"
+#define PIXFMT	GL_ABGR
+#else
+#define PIXFMT	GL_BGRA
+#endif
 
 #define MAX_CHARS		128
 #define MAX_IMG_WIDTH	1024
@@ -149,14 +163,6 @@ unsigned int CreateFont(const char *fname, int font_size)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-#ifdef BIG_ENDIAN
-#define PIXFMT	GL_ABGR_EXT
-#else
-#ifndef GL_BGRA
-#define GL_BGRA	0x80E1
-#endif
-#define PIXFMT	GL_BGRA
-#endif
 	glTexImage2D(GL_TEXTURE_2D, 0, 4, tex_xsz, tex_ysz, 0, PIXFMT, GL_UNSIGNED_BYTE, img);
 
 #ifdef DUMP_FONT_IMG

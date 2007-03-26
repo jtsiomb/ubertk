@@ -5,39 +5,43 @@
 #define MAX(a, b)		((a) > (b) ? (a) : (b))
 #define CLAMP(x, a, b)	MIN(MAX(x, a), b)
 
-#if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+#if !defined(BYTE_ORDER) && !defined(__BYTE_ORDER)
+#	if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+#		if  defined(__i386__) || defined(__ia64__) || \
+			defined(WIN32) || defined(__WIN32__) || \
+    		(defined(__alpha__) || defined(__alpha)) || \
+		     defined(__arm__) || \
+		    (defined(__mips__) && defined(__MIPSEL__)) || \
+		     defined(__SYMBIAN32__) || \
+		     defined(__x86_64__) || \
+		     defined(__LITTLE_ENDIAN__)
 
-#if  defined(__i386__) || defined(__ia64__) || defined(WIN32) || \
-    (defined(__alpha__) || defined(__alpha)) || \
-     defined(__arm__) || \
-    (defined(__mips__) && defined(__MIPSEL__)) || \
-     defined(__SYMBIAN32__) || \
-     defined(__x86_64__) || \
-     defined(__LITTLE_ENDIAN__)
-	
-/* little endian */
-#define LITTLE_ENDIAN
-
+#			define UTK_LITTLE_ENDIAN
+#		else
+#			define UTK_BIG_ENDIAN
+#		endif	/* platform check */
+#	endif	/* !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN) */
 #else
-/* big endian */	
-#define BIG_ENDIAN
-
-#endif	/* endian check */
-#endif	/* !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN) */
+#	if (defined(BYTE_ORDER) && BYTE_ORDER == LITTLE_ENDIAN) || (defined(__BYTE_ORDER) && __BYTE_ORDER == __LITTLE_ENDIAN)
+#		define UTK_LITTLE_ENDIAN
+#	else
+#		define UTK_BIG_ENDIAN
+#	endif
+#endif
 
 
 /* 32bit color shift values */
-#if defined(LITTLE_ENDIAN) || defined(__LITTLE_ENDIAN__)
+#if defined(UTK_LITTLE_ENDIAN)
 #define ALPHA_SHIFT32	24
 #define RED_SHIFT32		16
 #define GREEN_SHIFT32	8
 #define BLUE_SHIFT32	0
-#else	/* BIG_ENDIAN */
+#else	/* UTK_BIG_ENDIAN */
 #define ALPHA_SHIFT32	0
 #define RED_SHIFT32		8
 #define GREEN_SHIFT32	16
 #define BLUE_SHIFT32	24
-#endif	/* LITTLE_ENDIAN */
+#endif	/* UTK_LITTLE_ENDIAN */
 
 /* 32bit color mask values */
 #define ALPHA_MASK32	(0xff << ALPHA_SHIFT32)
