@@ -152,6 +152,9 @@ unsigned int CreateFont(const char *fname, int font_size)
 #ifdef BIG_ENDIAN
 #define PIXFMT	GL_ABGR_EXT
 #else
+#ifndef GL_BGRA
+#define GL_BGRA	0x80E1
+#endif
 #define PIXFMT	GL_BGRA
 #endif
 	glTexImage2D(GL_TEXTURE_2D, 0, 4, tex_xsz, tex_ysz, 0, PIXFMT, GL_UNSIGNED_BYTE, img);
