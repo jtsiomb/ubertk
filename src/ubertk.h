@@ -7,6 +7,7 @@
 #include <utk_widget.h>
 #include <utk_win.h>
 #include <utk_container.h>
+#include <utk_popup.h>
 #include <utk_label.h>
 #include <utk_button.h>
 #include <utk_scrollbar.h>
@@ -24,6 +25,7 @@
 #include <utk_listbox.h>
 #include <utk_dialog.h>
 #include <utk_align.h>
+#include <utk_menus.h>
 
 namespace utk {
 

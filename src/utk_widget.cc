@@ -2,6 +2,7 @@
 #include "utk_widget.h"
 #include "utk_container.h"
 #include "utk_win.h"
+#include "utk_menus.h"
 #include "utk_gfx.h"
 
 namespace utk {
@@ -15,6 +16,8 @@ Widget::Widget()
 	child = parent = 0;
 	herod_mode = true;
 	name = 0;
+	
+	popup = 0;
 
 	link_int = 0;
 	link_flt = 0;
@@ -27,6 +30,10 @@ Widget::Widget()
 Widget::~Widget()
 {
 	invalidate_widget(this);
+	
+	if(popup) {
+		delete popup;
+	}
 	
 	if(herod_mode) {
 		delete child;
@@ -197,6 +204,9 @@ bool Widget::get_focus() const
 
 void Widget::add_child(Widget *w)
 {
+	if (!w)
+		return;
+
 	child = w;
 	w->set_parent(this);
 
@@ -268,6 +278,34 @@ void Widget::sink()
 	if(parent && (cont = dynamic_cast<Container*>(parent))) {
 		cont->sink_child(this);
 	}
+}
+
+PopupMenu *Widget::get_popup() const
+{
+	if(popup) {
+		return popup;
+	}
+	
+	if(parent) {
+		return parent->get_popup();
+	}
+	
+	return NULL;
+}
+
+void Widget::set_popup(PopupMenu *popup)
+{
+	if(this->popup) {
+		delete this->popup;
+	}
+	this->popup = popup;
+	popup->delete_master = false;
+}
+
+void Widget::show_popup(int x, int y)
+{
+	PopupMenu	*popup = get_popup();
+	if (popup) popup->run(x, y);
 }
 
 bool Widget::hit_test(int x, int y) const

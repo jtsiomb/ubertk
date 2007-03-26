@@ -55,10 +55,16 @@ void foo_handler(utk::Event *event, void *data)
 	printf("a button was just pressed!\n");
 }
 
+void tellme_callback(utk::Event *event, void *data)
+{
+	message_dialog("Do you want to know?", utk::MSG_TYPE_QUESTION);
+}
+
 void exit_bn_handler(utk::Event *event, void *data)
 {
 	exit(0);
 }
+
 
 int main(int argc, char **argv)
 {
@@ -176,6 +182,35 @@ int main(int argc, char **argv)
 	utk::HBox *label_box = create_hbox(vbox);
 	create_label(label_box, "test");
 	create_label(label_box, "foo");
+	
+	// set root widget popup menu
+	utk::PopupMenu	*menu = utk::create_popup_menu();
+	menu->add_item("bleh");
+	menu->add_item("blah");
+	menu->add_item("bloh");
+	menu->add_separator();
+	menu->add_item("more bleh");
+	menu->add_item("more blah");
+	utk::PopupMenuItem	*item = menu->add_item("more bloh");
+	menu->add_item("even more bleh");
+	menu->add_item("even more blah");
+	menu->add_item("even more bloh");
+	menu->add_separator();
+	menu->add_item("Tell me...", tellme_callback);
+	
+	item->add_item("sub one");
+	item->add_item("sub two");
+	item->add_separator();
+	item->add_item("sub three");
+	utk::PopupMenuItem	*sitem = item->add_item("sub four (more)");
+	item->add_item("sub five");
+	
+	sitem->add_item("one");
+	sitem->add_item("two");
+	sitem->add_item("three and guess...");
+	
+	utk::get_root_widget()->set_popup(menu);
+
 
 	utk::print_widget_tree();
 

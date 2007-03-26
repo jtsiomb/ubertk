@@ -20,6 +20,8 @@ protected:
 	bool hover;
 
 	bool herod_mode;
+	
+	class PopupMenu *popup;
 
 	CallbackClosure callbacks[EVENT_COUNT];
 
@@ -77,6 +79,10 @@ public:
 
 	virtual void rise();
 	virtual void sink();
+	
+	virtual class PopupMenu *get_popup() const;
+	virtual void set_popup(class PopupMenu *popup);
+	virtual void show_popup(int x=-1, int y=-1);
 
 	virtual bool hit_test(int x, int y) const;
 

@@ -227,6 +227,12 @@ static void handle_event(Event *e)
 		}
 
 		deliver_event(receiver, e);
+		
+		// show widget popup menu if the widget doesn't care about rightclicks
+		if (!e->widget && !bev->pressed && bev->button == MOUSE_RIGHT &&
+			abs(bev->x - last_press_x) < 2 && abs(bev->y - last_press_y) < 2) {
+			receiver->show_popup();
+		}
 		return;
 	}
 }
@@ -269,6 +275,9 @@ void grab_mouse(Widget *e)
 void grab_focus(Widget *w)
 {
 	FocusEvent fev;
+	
+	if(focused_window == w)
+		return;
 
 	if(focused_window) {
 		fev.focus = false;
