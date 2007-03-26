@@ -133,8 +133,6 @@ void Slider::on_modify(Event *event)
 		snprintf(link_str, link_str_width, fmt, val);
 		#endif
 	}
-
-	callback(event, EVENT_MODIFY);
 }
 
 Slider *create_slider(Widget *parent, float start, float end, Callback cb, void *cdata)

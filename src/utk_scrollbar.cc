@@ -100,7 +100,8 @@ Widget *Scrollbar::handle_event(Event *event)
 						*link_flt = get_value();
 					}
 
-					on_modify(mmev);
+					on_modify(event);
+					callback(event, EVENT_MODIFY);
 				}
 			}
 			return this;
@@ -170,6 +171,7 @@ void Scrollbar::set_value(float val)
 	ev.widget = this;
 
 	on_modify(&ev);
+	callback(&ev, EVENT_MODIFY);
 }
 
 float Scrollbar::get_value() const
