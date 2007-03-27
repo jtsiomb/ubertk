@@ -9,6 +9,10 @@ namespace utk {
 
 Widget::Widget()
 {
+	set_size(1, 1);
+	set_min_size(1, 1);
+	set_max_size(2147483640, 2147483640);
+	
 	padding = 0;
 	visible = true;
 	focused = false;
@@ -143,6 +147,11 @@ IVec2 Widget::get_global_pos() const
 
 void Widget::set_size(int w, int h)
 {
+	if (w < min_size.x) w = min_size.x;
+	if (h < min_size.y) h = min_size.y;
+	if (w > max_size.x) w = max_size.x;
+	if (h > max_size.y) h = max_size.y;
+	
 	size.x = w;
 	size.y = h;
 }
@@ -160,6 +169,52 @@ int Widget::get_width() const
 int Widget::get_height() const
 {
 	return get_size().y;
+}
+
+void Widget::set_min_size(int w, int h)
+{
+	if (w <= 0) w = 1;
+	if (h <= 0) h = 1;
+	min_size.x = w;
+	min_size.y = h;
+}
+
+IVec2 Widget::get_min_size() const
+{
+	return min_size;
+}
+
+int Widget::get_min_width() const
+{
+	return min_size.x;
+}
+
+int Widget::get_min_height() const
+{
+	return min_size.y;
+}
+
+void Widget::set_max_size(int w, int h)
+{
+	if (w <= 0) w = 1;
+	if (h <= 0) h = 1;
+	max_size.x = w;
+	max_size.y = h;
+}
+
+IVec2 Widget::get_max_size() const
+{
+	return max_size;
+}
+
+int Widget::get_max_width() const
+{
+	return max_size.x;
+}
+
+int Widget::get_max_height() const
+{
+	return max_size.y;
 }
 
 void Widget::set_padding(int pad)

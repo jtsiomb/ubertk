@@ -17,6 +17,8 @@ Button::Button(Widget *widget, Callback cb)
 		set_text(((Drawable*)widget)->get_text());
 	}
 	set_callback(EVENT_CLICK, cb);
+	
+	set_min_size(100, 6);
 
 	set_size(widget->get_width() + 6, widget->get_height() + 6);
 	set_border(2);
@@ -95,6 +97,13 @@ void Button::draw() const
 	Widget::draw();
 }
 
+void Button::set_text(const char *text)
+{
+	Drawable	*dc = dynamic_cast<Drawable*>(child);
+	if (dc) dc->set_text(text);
+	Drawable::set_text(text);
+}
+
 void Button::set_flat(bool flat)
 {
 	this->flat = flat;
@@ -107,7 +116,7 @@ bool Button::is_flat() const
 
 Button *create_button(Widget *parent, const char *text, Callback func, void *cdata)
 {
-	return create_button(parent, text, 100, gfx::text_spacing() + 4, func, cdata);
+	return create_button(parent, new Label(text), func, cdata);
 }
 
 Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func, void *cdata)
@@ -116,11 +125,7 @@ Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callba
 		ysz = gfx::text_spacing() + 4;
 	}
 
-	Button *bn = new Button(new utk::Label(text));
-	bn->set_callback(EVENT_CLICK, func, cdata);
-	bn->set_size(xsz, ysz);
-	parent->add_child(bn);
-	return bn;
+	return create_button(parent, new Label(text), xsz, ysz, func, cdata);
 }
 
 Button *create_button(Widget *parent, Widget *child, Callback func, void *cdata)

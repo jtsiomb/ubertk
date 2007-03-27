@@ -21,6 +21,8 @@ public:
 	virtual void set_size(int w, int h);
 
 	virtual void draw() const;
+	
+	virtual void set_text(const char *text);
 
 	virtual void set_flat(bool flat);
 	virtual bool is_flat() const;

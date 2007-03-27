@@ -11,7 +11,7 @@ class Event;
 class Widget {
 protected:
 	char *name;
-	IVec2 pos, size;
+	IVec2 pos, size, min_size, max_size;
 	int padding;
 
 	Widget *child, *parent;
@@ -55,6 +55,15 @@ public:
 	virtual IVec2 get_size() const;
 	virtual int get_width() const;
 	virtual int get_height() const;
+	
+	virtual void set_min_size(int w, int h);
+	virtual IVec2 get_min_size() const;
+	virtual int get_min_width() const;
+	virtual int get_min_height() const;
+	virtual void set_max_size(int w, int h);
+	virtual IVec2 get_max_size() const;
+	virtual int get_max_width() const;
+	virtual int get_max_height() const;
 
 	virtual void set_padding(int pad);
 	virtual int get_padding() const;

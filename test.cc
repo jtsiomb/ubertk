@@ -190,8 +190,8 @@ int main(int argc, char **argv)
 
 	create_button(vbox, "I rule")->set_flat(true);
 	create_button(vbox, "Yes i do")->set_flat(true);
-
-	utk::create_button(vbox, new utk::Button(new utk::Label("Doubly")), 30);
+	
+	utk::create_button(vbox, new utk::Button(new utk::Label("Doubly")));
 	
 	// set root widget popup menu
 	utk::PopupMenu	*menu = utk::create_popup_menu();
