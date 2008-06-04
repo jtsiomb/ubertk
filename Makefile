@@ -1,5 +1,5 @@
 ccsrc = $(wildcard src/*.cc)
-csrc = $(wildcard src/*.c) $(wildcard src/pcre/*.c)
+csrc = $(wildcard src/*.c)
 ccobj = $(ccsrc:.cc=.o)
 cobj = $(csrc:.c=.o)
 obj = $(cobj) $(ccobj)
@@ -20,7 +20,7 @@ $(lib_a): $(obj)
 	$(AR) rcs $@ $(obj)
 
 test: test.o test_text.o $(lib_a)
-	$(CXX) -o $@ test.o test_text.o $(lib_a) -lglut -lGL -lGLU `pkg-config --libs freetype2`
+	$(CXX) -o $@ test.o test_text.o $(lib_a) -lglut -lGL -lGLU `pkg-config --libs freetype2` -lpcre
 
 .PHONY: $(diag_file)
 $(diag_file):
