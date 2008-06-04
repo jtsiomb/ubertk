@@ -1,4 +1,5 @@
 #include <math.h>
+#include <ctype.h>
 #define GL_GLEXT_PROTOTYPES
 #include <GL/glut.h>
 #include <ft2build.h>

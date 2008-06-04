@@ -6,7 +6,7 @@
 
 namespace utk {
 
-class Popup : public utk::Drawable
+class Popup : public Drawable
 {
 	public:
 	Popup();
