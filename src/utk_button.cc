@@ -73,7 +73,7 @@ Widget *Button::handle_event(Event *event)
 
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(event)) && bev->button == MOUSE_LEFT) {
-		if(bev->pressed && hit_test(bev->x, bev->y) || !bev->pressed) {
+		if((bev->pressed && hit_test(bev->x, bev->y)) || !bev->pressed) {
 			pressed = bev->pressed;
 			if(pressed) return this;
 		}

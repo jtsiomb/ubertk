@@ -113,6 +113,8 @@ void ColorBox::set_h(float h)
 	float r, g, b;
 	hsv_to_rgb(&r, &g, &b, h, s, v);
 	Drawable::set_color((int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), color.a);
+
+	update();
 }
 
 void ColorBox::set_color(int r, int g, int b, int a)

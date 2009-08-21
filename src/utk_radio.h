@@ -40,7 +40,7 @@ class RadioBox : public Drawable {
 protected:
 	bool checked;
 public:
-	RadioBox(char *text = 0, utk::Callback cb = 0);
+	RadioBox(const char *text = 0, utk::Callback cb = 0);
 	virtual ~RadioBox();
 
 	virtual Widget *handle_event(Event *event);

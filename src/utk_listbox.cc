@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#include <string.h>
 #include "utk_listbox.h"
 #include "utk_label.h"
 #include "utk_gfx.h"
@@ -59,7 +60,7 @@ Widget *ListBox::handle_event(Event *event)
 			return this;
 
 		case KEY_DOWN:
-			if(sel < vbox->size() - 1) {
+			if(sel < (int)vbox->size() - 1) {
 				select(sel + 1);
 			}
 			kev->widget = this;

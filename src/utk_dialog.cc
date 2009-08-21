@@ -92,7 +92,7 @@ static void def_dialog_handler(Event *event, void *data)
 
 Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func, void *cdata)
 {
-	static char *type_str[] = {
+	static const char *type_str[] = {
 		"Question",
 		"Info",
 		"Warning",

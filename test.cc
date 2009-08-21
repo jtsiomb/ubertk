@@ -25,7 +25,7 @@ void mouse_motion(int x, int y);
 
 void utk_color(int r, int g, int b, int a);
 void utk_clip(int x1, int y1, int x2, int y2);
-void utk_image(int x, int y, void *pix, int xsz, int ysz);
+void utk_image(int x, int y, const void *pix, int xsz, int ysz);
 
 void utk_rect(int x1, int y1, int x2, int y2);
 void utk_line(int x1, int y1, int x2, int y2, int width);
@@ -240,7 +240,7 @@ void redraw(void)
 	float r, g, b;
 	utk::hsv_to_rgb(&r, &g, &b, h, s, v);
 
-	float t = (float)get_msec() / 1000.0;
+	//float t = (float)get_msec() / 1000.0;
 	//glClearColor(r->get_value(), g->get_value(), b->get_value(), 1);
 	glClearColor(r, g, b, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -467,7 +467,7 @@ void utk_clip(int x1, int y1, int x2, int y2)
 	glScissor(x1, ysz - y2, x2 - x1, y2 - y1);
 }
 
-void utk_image(int x, int y, void *pix, int w, int h)
+void utk_image(int x, int y, const void *pix, int w, int h)
 {
 	glPixelZoom(1, -1);
 	glRasterPos2f(CONVX(x), CONVY(y));

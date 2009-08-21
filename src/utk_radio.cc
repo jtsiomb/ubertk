@@ -34,7 +34,7 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
-RadioBox::RadioBox(char *text, utk::Callback cb)
+RadioBox::RadioBox(const char *text, utk::Callback cb)
 {
 	this->text = text;
 	if (this->text.size())

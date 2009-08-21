@@ -40,7 +40,7 @@ static Color cur_col;
 
 void (*color)(int r, int g, int b, int a) = 0;
 void (*clip)(int x1, int y1, int x2, int y2) = 0;
-void (*image)(int x, int y, void *pix, int xsz, int ysz) = 0;
+void (*image)(int x, int y, const void *pix, int xsz, int ysz) = 0;
 
 void (*rect)(int x1, int y1, int x2, int y2) = 0;
 void (*line)(int x1, int y1, int x2, int y2, int border) = 0;

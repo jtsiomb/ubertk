@@ -201,7 +201,7 @@ void PopupMenu::update_size()
 {
 	int	max = 0;
 	vbox->layout();
-	for (int i=0; i<vbox->size(); i++) {
+	for (size_t i=0; i<vbox->size(); i++) {
 		Widget	*c = (Widget*)(*vbox)[i];
 		if (max < c->get_width())
 			max = c->get_width();
@@ -215,7 +215,7 @@ void PopupMenu::set_size(int w, int h)
 {
 	Popup::set_size(w, h);
 
-	for (int i=0; i<vbox->size(); i++) {
+	for (size_t i=0; i<vbox->size(); i++) {
 		Widget	*c = (Widget*)(*vbox)[i];
 		c->set_size(w - padding*2, c->get_height());
 	}
