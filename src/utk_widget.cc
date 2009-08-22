@@ -413,6 +413,11 @@ void Widget::draw() const
 	}
 }
 
+void Widget::set_link(bool *ptr)
+{
+	link_bool = ptr;
+}
+
 void Widget::set_link(int *ptr)
 {
 	link_int = ptr;

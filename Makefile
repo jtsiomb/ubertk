@@ -8,6 +8,7 @@ obj = $(cobj) $(ccobj)
 lib_a = libutk.a
 soname = libspnav.so.0
 lib_so = $(soname).1
+depfiles = $(obj:.o=.d)
 dist_file = ubertk.tar.gz
 diag_file = diag.ps
 
@@ -42,6 +43,15 @@ $(lib_so): $(obj)
 test: test.o test_text.o $(lib_a)
 	$(CXX) -o $@ test.o test_text.o $(lib_a) $(LDFLAGS)
 
+-include $(depfiles)
+
+%.d: %.cc
+	@$(CPP) $(CXXFLAGS) -MM -MT $(@:.d=.o) $< >$@
+
+%.d: %.c
+	@$(CPP) $(CFLAGS) -MM -MT $(@:.d=.o) $< >$@
+
+
 .PHONY: $(diag_file)
 $(diag_file):
 	echo 'digraph class_diagram {' >/tmp/cdiag.dot
@@ -53,7 +63,7 @@ $(diag_file):
 
 .PHONY: clean
 clean:
-	rm -f $(obj) $(lib_a) $(dist_file) $(diag_file) test.o test_text.o test
+	rm -f $(obj) $(lib_a) $(dist_file) $(diag_file) test.o test_text.o test $(depfiles)
 
 .PHONY: dist
 dist: clean

@@ -53,6 +53,10 @@ Widget *CheckBox::handle_event(Event *event)
 	if((ce = dynamic_cast<ClickEvent*>(event)) && hit_test(ce->x, ce->y))
 	{
 		checked = !checked;
+
+		on_modify(event);
+		callback(event, EVENT_MODIFY);
+
 		return ce->widget = this;
 	}
 
@@ -109,10 +113,27 @@ bool CheckBox::is_checked() const
 	return checked;
 }
 
+void CheckBox::on_modify(Event *event)
+{
+	if(link_flt) {
+		*link_flt = checked ? 1.0 : 0.0;
+	}
+	if(link_int) {
+		*link_int = (int)checked;
+	}
+	if(link_str) {
+		snprintf(link_str, link_str_width, "%s", checked ? "true" : "false");
+	}
+	if(link_bool) {
+		*link_bool = checked;
+	}
+}
+
 
 CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callback func, void *cdata)
 {
 	CheckBox *cbox = new CheckBox(text);
+	cbox->set_checked(checked);
 	cbox->set_callback(EVENT_MODIFY, func, cdata);
 	parent->add_child(cbox);
 	return cbox;
@@ -120,8 +141,9 @@ CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callba
 
 CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, bool *link)
 {
-	// TODO
-	return 0;
+	CheckBox *cbox = create_checkbox(parent, text, checked);
+	cbox->set_link(link);
+	return cbox;
 }
 
 void destroy_checkbox(CheckBox *cbox)

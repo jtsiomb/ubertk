@@ -51,6 +51,8 @@ public:
 	virtual void uncheck();
 	virtual void set_checked(bool checked);
 	virtual bool is_checked() const;
+
+	virtual void on_modify(Event *event);
 };
 
 CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callback func = 0, void *cdata = 0);

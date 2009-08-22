@@ -53,6 +53,7 @@ protected:
 
 	CallbackClosure callbacks[EVENT_COUNT];
 
+	bool *link_bool;
 	int *link_int;
 	float *link_flt;
 	char *link_str;
@@ -125,6 +126,7 @@ public:
 
 	virtual void draw() const;
 
+	virtual void set_link(bool *ptr);
 	virtual void set_link(int *ptr);
 	virtual void set_link(float *ptr);
 	virtual void set_link(char *ptr, int width);
