@@ -14,12 +14,20 @@ diag_file = diag.ps
 
 opt = -O3
 dbg = -g
-
-ifneq ($(shell uname -s), Darwin)
+                             
+ifeq ($(shell uname -s), Darwin)
+	gllibs = -framework OpenGL -framework GLUT
+	testbin = test                                               
+	libset = $(lib_a)
+else ifeq ($(shell uname -s | sed 's/32.*//'), MINGW)
+	gllibs = -lopengl32 -lglu32 -lglut32
+	testbin = test.exe
+	libset = $(lib_a)
+else
 	pic = -fPIC
 	gllibs = -lGL -lGLU -lglut
-else
-	gllibs = -framework OpenGL -framework GLUT
+	testbin = test
+	libset = $(lib_a) $(lib_so)
 endif
 
 CC = gcc
@@ -31,7 +39,7 @@ CXXFLAGS = -ansi -pedantic -Wall $(opt) $(dbg) -Isrc $(pic) `pkg-config --cflags
 LDFLAGS = $(gllibs) `pkg-config --libs freetype2` -lpcre
 
 .PHONY: all
-all: $(lib_a) $(lib_so) test
+all: $(libset) $(testbin)
 
 $(lib_a): $(obj)
 	$(AR) rcs $@ $(obj)
@@ -40,7 +48,7 @@ $(lib_so): $(obj)
 	$(CXX) -shared -Wl,-soname,$(soname) -o $@ $(obj)
 
 
-test: test.o test_text.o $(lib_a)
+$(testbin): test.o test_text.o $(lib_a)
 	$(CXX) -o $@ test.o test_text.o $(lib_a) $(LDFLAGS)
 
 -include $(depfiles)
@@ -63,7 +71,7 @@ $(diag_file):
 
 .PHONY: clean
 clean:
-	rm -f $(obj) $(lib_a) $(dist_file) $(diag_file) test.o test_text.o test $(depfiles)
+	rm -f $(obj) $(lib_a) $(dist_file) $(diag_file) test.o test_text.o $(testbin) $(depfiles)
 
 .PHONY: dist
 dist: clean
