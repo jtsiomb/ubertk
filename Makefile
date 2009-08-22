@@ -6,7 +6,7 @@ ccobj = $(ccsrc:.cc=.o)
 cobj = $(csrc:.c=.o)
 obj = $(cobj) $(ccobj)
 lib_a = libutk.a
-soname = libspnav.so.0
+soname = libutk.so.0
 lib_so = $(soname).1
 depfiles = $(obj:.o=.d)
 dist_file = ubertk.tar.gz
