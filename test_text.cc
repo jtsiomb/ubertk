@@ -1,7 +1,11 @@
 #include <math.h>
 #include <ctype.h>
 #define GL_GLEXT_PROTOTYPES
+#if defined(__APPLE__) && defined(__MACH__)
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "test_text.h"

@@ -32,7 +32,7 @@ OF SUCH DAMAGE.
 #include <string.h>
 #include <errno.h>
 
-#if defined(unix) || defined(__unix__)
+#if defined(unix) || defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <unistd.h>
 #include <sys/types.h>
 #include <dirent.h>

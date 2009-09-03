@@ -29,7 +29,7 @@ OF SUCH DAMAGE.
 #include "ubertk.h"
 #include "utk_gfx.h"
 
-#if defined(unix) || defined(__unix__)
+#if defined(unix) || defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <time.h>
 #include <sys/time.h>
 #else 
@@ -91,7 +91,7 @@ Container *get_root_widget()
 
 unsigned int get_msec()
 {
-#if defined(__unix__) || defined(unix)
+#if defined(__unix__) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
 	static struct timeval timeval, first_timeval;
 	
 	gettimeofday(&timeval, 0);
