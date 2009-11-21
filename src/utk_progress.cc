@@ -37,7 +37,7 @@ namespace utk {
 Progress::Progress(bool infinite)
 {
 	this->infinite = infinite;
-	step_inc = 0.05;
+	step_inc = 0.05f;
 }
 
 Progress::~Progress() {}
@@ -63,7 +63,7 @@ void Progress::step()
 		set_value(fmod(get_value() + step_inc, 1.0f));
 	} else {
 		float val = get_value() + step_inc;
-		set_value(MIN(val, 1.0));
+		set_value(MIN(val, 1.0f));
 	}
 }
 

@@ -39,15 +39,19 @@ namespace gfx {
 
 static Color cur_col;
 
-void (*color)(int r, int g, int b, int a) = 0;
-void (*clip)(int x1, int y1, int x2, int y2) = 0;
-void (*image)(int x, int y, const void *pix, int xsz, int ysz) = 0;
+// graphics state
+ColorFunc color = NULL;
+ClipFunc clip = NULL;
+ImageFunc image = NULL;
 
-void (*rect)(int x1, int y1, int x2, int y2) = 0;
-void (*line)(int x1, int y1, int x2, int y2, int border) = 0;
-void (*text)(int x, int y, const char *txt, int sz) = 0;
-int (*text_spacing)(void) = 0;
-int (*text_width)(const char *txt, int sz) = 0;
+// drawing calls
+RectFunc rect = NULL;
+LineFunc line = NULL;
+
+// text
+TextFunc text = NULL;
+TextSpacingFunc text_spacing = NULL;
+TextWidthFunc text_width = NULL;
 		
 // high level drawing functions
 void circle(int x1, int y1, int x2, int y2, bool outline)

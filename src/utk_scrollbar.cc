@@ -187,7 +187,7 @@ int Scrollbar::get_cursor_width() const
 void Scrollbar::set_value(float val)
 {
 	int	old_cursor_pos = cursor_pos;
-	val = val > 1.0 ? 1.0 : (val < 0.0 ? 0.0 : val);
+	val = val > 1.0 ? 1.0 : (val < 0.0f ? 0.0f : val);
 	cursor_pos = (int)(val * track_len);
 
 	if (old_cursor_pos == cursor_pos) return;

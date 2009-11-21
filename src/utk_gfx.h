@@ -33,19 +33,28 @@ OF SUCH DAMAGE.
 
 namespace utk {
 	namespace gfx {
+		typedef void (*ColorFunc)(int r, int g, int b, int a);
+		typedef void (*ClipFunc)(int x1, int y1, int x2, int y2);
+		typedef void (*ImageFunc)(int x, int y, const void *pix, int xsz, int ysz);
+		typedef void (*RectFunc)(int x1, int y1, int x2, int y2);
+		typedef void (*LineFunc)(int x1, int y1, int x2, int y2, int width);
+		typedef void (*TextFunc)(int x, int y, const char *txt, int sz);
+		typedef int (*TextSpacingFunc)();
+		typedef int (*TextWidthFunc)(const char *txt, int sz);
+
 		// graphics state
-		extern void (*color)(int r, int g, int b, int a);
-		extern void (*clip)(int x1, int y1, int x2, int y2);
-		extern void (*image)(int x, int y, const void *pix, int xsz, int ysz);
-		
+		extern ColorFunc color;
+		extern ClipFunc clip;
+		extern ImageFunc image;
+
 		// drawing calls
-		extern void (*rect)(int x1, int y1, int x2, int y2);
-		extern void (*line)(int x1, int y1, int x2, int y2, int width);
+		extern RectFunc rect;
+		extern LineFunc line;
 
 		// text
-		extern void (*text)(int x, int y, const char *txt, int sz);
-		extern int (*text_spacing)(void);
-		extern int (*text_width)(const char *txt, int sz);
+		extern TextFunc text;
+		extern TextSpacingFunc text_spacing;
+		extern TextWidthFunc text_width;
 
 		// ---- high level drawing functions ----
 		void circle(int x1, int y1, int x2, int y2, bool outline);
