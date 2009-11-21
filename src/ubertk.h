@@ -60,6 +60,7 @@ OF SUCH DAMAGE.
 namespace utk {
 
 Container *init(int x, int y);
+void make_current(Container *root);
 void close(Container *root = 0);
 void draw(Container *root = 0);
 
@@ -70,6 +71,8 @@ unsigned int get_msec();
 void class_name(Widget *w);
 void print_widget_tree(Widget *root = UBERTK_PRINT_ROOT);
 	
+void *get_user_data();
+void set_user_data(void *ud);
 }
 
 #endif	// UBERTK_H_

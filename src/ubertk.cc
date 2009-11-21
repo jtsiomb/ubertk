@@ -41,6 +41,7 @@ namespace utk {
 
 #include "cursor.inl"
 
+static void *user_data = NULL;
 static Container *root_widget;
 static bool draw_cursor;
 
@@ -58,6 +59,11 @@ Container *init(int x, int y)
 	get_msec();	// initialize timer
 	
 	return cont;
+}
+
+void make_current(Container *root)
+{
+	root_widget = root;
 }
 
 void close(Container *root)
@@ -143,6 +149,16 @@ void print_widget_tree(Widget *w)
 	}
 
 	lvl--;
+}
+
+void *get_user_data()
+{
+	return user_data;
+}
+
+void set_user_data(void *ud)
+{
+	user_data = ud;
 }
 
 }	// namespace utk end
