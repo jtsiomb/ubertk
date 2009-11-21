@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#include "utk_config.h"
 #include "ubertk.h"
 #include "utk_gfx.h"
 
@@ -110,7 +111,7 @@ void print_widget_tree(Widget *w)
 {
 	static int lvl;
 	if(!w) return;
-	if(w == (Widget*)0xffffffff) w = root_widget;
+	if(w == UBERTK_PRINT_ROOT) w = root_widget;
 
 	for(int i=0; i<lvl; i++) {
 		fputs("  ", stdout);

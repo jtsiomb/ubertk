@@ -27,7 +27,7 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 // utk_img.cc
-
+#include "utk_config.h"
 #include "utk_img.h"
 #include "utk_gfx.h"
 

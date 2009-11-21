@@ -28,6 +28,7 @@ OF SUCH DAMAGE.
 */
 // utk_radio.cc
 
+#include "utk_config.h"
 #include "utk_radio.h"
 #include "utk_container.h"
 #include "utk_gfx.h"

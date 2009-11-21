@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#include "utk_config.h"
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -44,7 +45,10 @@ OF SUCH DAMAGE.
 #error "your OS is not supported currently, or OS detection failed"
 #endif
 
+
+#ifdef UBERTK_PCRE
 #include <pcre.h>
+#endif
 
 #include "ubertk.h"
 #include "utk_dialog.h"
@@ -213,8 +217,11 @@ bool FileDialog::fill_filelist()
 				dir_list.push_back(ent->d_name);
 			}
 		} else {
+#ifdef UBERTK_PCRE
 			bool match = !regexp || pcre_exec((pcre*)regexp, 0, ent->d_name, strlen(ent->d_name), 0, 0, 0, 0) >= 0;
-
+#else
+			bool match = true;
+#endif 
 			if((show_hidden || ent->d_name[0] != '.') && match) {
 				file_list.push_back(ent->d_name);
 			}
@@ -295,12 +302,13 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 	dlg->listb = create_listbox(list_hbox, 258, 200);
 	dlg->listb->set_spacing(0);
 
-
+#ifdef UBERTK_PCRE
 	if(filter && *filter) {
 		const char *err_str;
 		int offs;
 		dlg->regexp = pcre_compile(filter, 0, &err_str, &offs, 0);
 	}
+#endif 
 
 	if(dlg->fill_filelist() == false) {
 		destroy_dialog(dlg);

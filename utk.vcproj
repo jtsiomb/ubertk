@@ -1,117 +1,180 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9.00"
 	Name="utk"
 	ProjectGUID="{9B875B27-CD1F-4566-A624-898DAC335BEC}"
-	Keyword="Win32Proj">
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
-			CharacterSet="2">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;C:\Program Files\GnuWin32\include\freetype2&quot;;&quot;C:\Program Files\GnuWin32\include&quot;;src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
-				MinimalRebuild="TRUE"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="TRUE"
+				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="freetype.lib"
 				OutputFile="$(OutDir)/utk.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;C:\Program Files\GnuWin32\lib&quot;"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/utk.pdb"
 				SubSystem="1"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
-			CharacterSet="2">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;C:\Program Files\GnuWin32\include\freetype2&quot;;&quot;C:\Program Files\GnuWin32\include&quot;;src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				StructMemberAlignment="0"
-				RuntimeTypeInfo="TRUE"
+				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="freetype.lib"
 				OutputFile="$(OutDir)/utk.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;C:\Program Files\GnuWin32\lib&quot;"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -119,281 +182,259 @@
 	<Files>
 		<Filter
 			Name="utk"
-			Filter="">
+			>
 			<File
-				RelativePath=".\src\cursor.inl">
+				RelativePath=".\src\cursor.inl"
+				>
 			</File>
 			<File
-				RelativePath=".\src\ubertk.cc">
+				RelativePath=".\src\ubertk.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\ubertk.h">
+				RelativePath=".\src\ubertk.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_align.cc">
+				RelativePath=".\src\utk_align.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_align.h">
+				RelativePath=".\src\utk_align.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_button.cc">
+				RelativePath=".\src\utk_button.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_button.h">
+				RelativePath=".\src\utk_button.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_chkbox.cc">
+				RelativePath=".\src\utk_chkbox.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_chkbox.h">
+				RelativePath=".\src\utk_chkbox.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_colorbox.cc">
+				RelativePath=".\src\utk_colorbox.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_colorbox.h">
+				RelativePath=".\src\utk_colorbox.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_common.c">
+				RelativePath=".\src\utk_common.c"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_common.h">
+				RelativePath=".\src\utk_common.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_container.cc">
+				RelativePath=".\src\utk_config.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_container.h">
+				RelativePath=".\src\utk_container.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_dialog.cc">
+				RelativePath=".\src\utk_container.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_dialog.h">
+				RelativePath=".\src\utk_dialog.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_drawable.cc">
+				RelativePath=".\src\utk_dialog.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_drawable.h">
+				RelativePath=".\src\utk_drawable.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_entry.cc">
+				RelativePath=".\src\utk_drawable.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_entry.h">
+				RelativePath=".\src\utk_entry.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_events.cc">
+				RelativePath=".\src\utk_entry.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_events.h">
+				RelativePath=".\src\utk_events.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_gfx.cc">
+				RelativePath=".\src\utk_events.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_gfx.h">
+				RelativePath=".\src\utk_gfx.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_hsv.cc">
+				RelativePath=".\src\utk_gfx.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_hsv.h">
+				RelativePath=".\src\utk_hsv.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_huebox.cc">
+				RelativePath=".\src\utk_hsv.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_huebox.h">
+				RelativePath=".\src\utk_huebox.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_img.cc">
+				RelativePath=".\src\utk_huebox.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_img.h">
+				RelativePath=".\src\utk_img.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_label.cc">
+				RelativePath=".\src\utk_img.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_label.h">
+				RelativePath=".\src\utk_label.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_listbox.cc">
+				RelativePath=".\src\utk_label.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_listbox.h">
+				RelativePath=".\src\utk_listbox.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_menus.cc">
+				RelativePath=".\src\utk_listbox.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_menus.h">
+				RelativePath=".\src\utk_menus.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_popup.cc">
+				RelativePath=".\src\utk_menus.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_popup.h">
+				RelativePath=".\src\utk_popup.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_progress.cc">
+				RelativePath=".\src\utk_popup.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_progress.h">
+				RelativePath=".\src\utk_progress.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_radio.cc">
+				RelativePath=".\src\utk_progress.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_radio.h">
+				RelativePath=".\src\utk_radio.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_scrollbar.cc">
+				RelativePath=".\src\utk_radio.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_scrollbar.h">
+				RelativePath=".\src\utk_scrollbar.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_scrollwin.cc">
+				RelativePath=".\src\utk_scrollbar.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_scrollwin.h">
+				RelativePath=".\src\utk_scrollwin.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_slider.cc">
+				RelativePath=".\src\utk_scrollwin.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_slider.h">
+				RelativePath=".\src\utk_slider.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_tball.cc">
+				RelativePath=".\src\utk_slider.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_tball.h">
+				RelativePath=".\src\utk_tball.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_types.cc">
+				RelativePath=".\src\utk_tball.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_types.h">
+				RelativePath=".\src\utk_types.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_widget.cc">
+				RelativePath=".\src\utk_types.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_widget.h">
+				RelativePath=".\src\utk_widget.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_win.cc">
+				RelativePath=".\src\utk_widget.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\utk_win.h">
+				RelativePath=".\src\utk_win.cc"
+				>
 			</File>
 			<File
-				RelativePath=".\src\w32_dirent.c">
+				RelativePath=".\src\utk_win.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\w32_dirent.h">
+				RelativePath=".\src\w32_dirent.c"
+				>
 			</File>
-			<Filter
-				Name="pcre"
-				Filter="">
-				<File
-					RelativePath=".\src\pcre\chartables.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\config.h">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre.h">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_compile.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_config.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_dfa_exec.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_exec.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_fullinfo.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_get.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_globals.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_info.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_internal.h">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_maketables.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_newline.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_ord2utf8.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_refcount.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_study.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_tables.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_try_flipped.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_ucp_searchfuncs.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_valid_utf8.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_version.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcre_xclass.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcreposix.c">
-				</File>
-				<File
-					RelativePath=".\src\pcre\pcreposix.h">
-				</File>
-				<File
-					RelativePath=".\src\pcre\ucp.h">
-				</File>
-				<File
-					RelativePath=".\src\pcre\ucpinternal.h">
-				</File>
-				<File
-					RelativePath=".\src\pcre\ucptable.h">
-				</File>
-			</Filter>
+			<File
+				RelativePath=".\src\w32_dirent.h"
+				>
+			</File>
 		</Filter>
 		<File
-			RelativePath=".\test.cc">
+			RelativePath=".\test.cc"
+			>
 		</File>
 		<File
-			RelativePath=".\test_text.cc">
+			RelativePath=".\test_text.cc"
+			>
 		</File>
 		<File
-			RelativePath=".\test_text.h">
+			RelativePath=".\test_text.h"
+			>
 		</File>
 	</Files>
 	<Globals>

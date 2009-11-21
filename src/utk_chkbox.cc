@@ -28,8 +28,13 @@ OF SUCH DAMAGE.
 */
 // utk_chkbox.cc
 
+#include "utk_config.h"
 #include "utk_chkbox.h"
 #include "utk_gfx.h"
+
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif 
 
 namespace utk {
 
@@ -116,7 +121,7 @@ bool CheckBox::is_checked() const
 void CheckBox::on_modify(Event *event)
 {
 	if(link_flt) {
-		*link_flt = checked ? 1.0 : 0.0;
+		*link_flt = checked ? 1.0f : 0.0f;
 	}
 	if(link_int) {
 		*link_int = (int)checked;

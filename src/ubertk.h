@@ -55,6 +55,8 @@ OF SUCH DAMAGE.
 #include <utk_align.h>
 #include <utk_menus.h>
 
+#define UBERTK_PRINT_ROOT ((Widget*)-1)
+
 namespace utk {
 
 Container *init(int x, int y);
@@ -66,7 +68,7 @@ Container *get_root_widget();
 unsigned int get_msec();
 
 void class_name(Widget *w);
-void print_widget_tree(Widget *root = (Widget*)0xffffffff);
+void print_widget_tree(Widget *root = UBERTK_PRINT_ROOT);
 	
 }
 
