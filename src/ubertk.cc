@@ -61,10 +61,6 @@ Container *init(int x, int y)
 	return cont;
 }
 
-void make_current(Container *root)
-{
-	root_widget = root;
-}
 
 void close(Container *root)
 {
@@ -90,6 +86,12 @@ void draw(Container *root)
 
 	gfx::pop_clip();
 }
+
+void set_root_widget(Container *root)
+{
+	root_widget = root;
+}
+
 
 Container *get_root_widget()
 {

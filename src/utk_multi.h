@@ -26,53 +26,54 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_H_
-#define UBERTK_H_
 
-#include <utk_events.h>
-#include <utk_gfx.h>
+// utk_multi.h
 
-#include <utk_widget.h>
-#include <utk_win.h>
-#include <utk_container.h>
-#include <utk_popup.h>
-#include <utk_label.h>
-#include <utk_button.h>
-#include <utk_scrollbar.h>
-#include <utk_entry.h>
-#include <utk_chkbox.h>
-#include <utk_radio.h>
-#include <utk_img.h>
-#include <utk_tball.h>
-#include <utk_slider.h>
-#include <utk_colorbox.h>
-#include <utk_hsv.h>
-#include <utk_progress.h>
-#include <utk_huebox.h>
-#include <utk_scrollwin.h>
-#include <utk_listbox.h>
-#include <utk_dialog.h>
-#include <utk_align.h>
-#include <utk_menus.h>
+#ifndef _UTK_MULTI_H_
+#define _UTK_MULTI_H_
 
-#define UBERTK_PRINT_ROOT ((Widget*)-1)
+#include "ubertk.h"
 
-namespace utk {
+namespace utk
+{
 
-Container *init(int x, int y);
-void close(Container *root = 0);
-void draw(Container *root = 0);
+	class UTKContext
+	{
+	protected:
+		Container *root;
+		Container *old_root;
+		void *old_user_data;
 
-void set_root_widget(Container *root);
-Container *get_root_widget();
+		// saved gfx functions
+		gfx::ColorFunc old_color_func;
+		gfx::ClipFunc old_clip_func;
+		gfx::ImageFunc old_image_func;
+		gfx::RectFunc old_rect_func;
+		gfx::LineFunc old_line_func;
+		gfx::TextFunc old_text_func;
+		gfx::TextSpacingFunc old_text_spacing_func;
+		gfx::TextWidthFunc old_text_width_func;
 
-unsigned int get_msec();
+		void begin();
+		void end();		
 
-void class_name(Widget *w);
-void print_widget_tree(Widget *root = UBERTK_PRINT_ROOT);
-	
-void *get_user_data();
-void set_user_data(void *ud);
-}
+	public:
+		UTKContext(int w, int h);
+		virtual ~UTKContext();
 
-#endif	// UBERTK_H_
+		// graphics handlers
+		virtual void color(int r, int g, int b, int a) = 0;
+		virtual void clip(int x1, int y1, int x2, int y2) = 0;
+		virtual void image(int x, int y, const void *pix, int xsz, int ysz) = 0;
+		virtual void rect(int x1, int y1, int x2, int y2) = 0;
+		virtual void line(int x1, int y1, int x2, int y2, int width) = 0;
+		virtual void text(int x, int y, const char *txt, int sz) = 0;
+		virtual int text_spacing() = 0;
+		virtual int text_width(const char *txt, int sz) = 0;
+
+		void draw();
+	};
+
+} // end namespace utk
+
+#endif // ndef _UTK_MULTI_H_
