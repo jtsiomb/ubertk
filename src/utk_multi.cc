@@ -121,10 +121,6 @@ void UTKContext::begin()
 void UTKContext::end()
 {
 	// reset old drawing functions
-	old_root = get_root_widget();
-	set_root_widget(root);
-
-	// set multi* drawing functions
 	gfx::color = old_color_func;
 	gfx::clip = old_clip_func;
 	gfx::image = old_image_func;
@@ -157,6 +153,13 @@ void UTKContext::draw()
 {
 	begin();
 	utk::draw(root);
+	end();
+}
+
+void UTKContext::event(Event *e)
+{
+	begin();
+	utk::event(e);
 	end();
 }
 

@@ -58,7 +58,7 @@ namespace utk
 		void end();		
 
 	public:
-		UTKContext(int w, int h);
+		UTKContext(int w=320, int h=240);
 		virtual ~UTKContext();
 
 		// graphics handlers
@@ -72,6 +72,7 @@ namespace utk
 		virtual int text_width(const char *txt, int sz) = 0;
 
 		void draw();
+		void event(Event *e);
 	};
 
 } // end namespace utk
