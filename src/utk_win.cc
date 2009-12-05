@@ -206,6 +206,7 @@ void WinFrame::set_shade(bool shade)
 	}
 }
 
+
 Widget *WinFrame::handle_event(Event *event)
 {
 	Widget *w;

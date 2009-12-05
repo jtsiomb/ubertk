@@ -244,10 +244,6 @@ static void handle_event(Event *e)
 			return;
 		} else {
 			mouse_button_state = -1;
-			bev->press_x = last_press_x;
-			bev->press_y = last_press_y;
-			mouse_press_widget = 0;
-			
 			mouse_grab_widget = 0;	// note: grabbing is released on mouse release
 
 			// houston, we have a click!

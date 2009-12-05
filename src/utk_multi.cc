@@ -156,10 +156,20 @@ void UTKContext::draw()
 	end();
 }
 
+void UTKContext::update()
+{
+	// process all events
+	for (std::vector<Event*>::iterator it = events.begin(); it!=events.end(); it++)
+	{
+		utk::event(*it);
+		delete *it;
+	}
+
+	events.clear();
+}
+
 void UTKContext::event(Event *e)
 {
-	begin();
-	utk::event(e);
-	end();
+	events.push_back(e);
 }
 

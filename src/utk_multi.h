@@ -33,6 +33,7 @@ OF SUCH DAMAGE.
 #define _UTK_MULTI_H_
 
 #include "ubertk.h"
+#include <vector>
 
 namespace utk
 {
@@ -54,10 +55,14 @@ namespace utk
 		gfx::TextSpacingFunc old_text_spacing_func;
 		gfx::TextWidthFunc old_text_width_func;
 
+		
+		std::vector<Event*> events;
+
+	public:
+
 		void begin();
 		void end();		
 
-	public:
 		UTKContext(int w=320, int h=240);
 		virtual ~UTKContext();
 
@@ -72,6 +77,7 @@ namespace utk
 		virtual int text_width(const char *txt, int sz) = 0;
 
 		void draw();
+		void update();
 		void event(Event *e);
 	};
 
