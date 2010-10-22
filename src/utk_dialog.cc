@@ -27,6 +27,7 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 #include "utk_config.h"
+#include <stdio.h>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -129,7 +130,7 @@ Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 		msg = *sptr ? sptr + 1 : sptr;
 
 		create_label(vbox, buf);
-		
+
 		int len = gfx::text_width(buf, 18);
 		if(len > max_len) {
 			max_len = len;
@@ -142,7 +143,7 @@ Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 	int bn_width = 0;
 	if(bn_mask) {
 		HBox *hbox = create_hbox(vbox);
-	
+
 		if(bn_mask & MSG_BN_OK) {
 			create_button(hbox, "OK", func);
 		}
@@ -165,7 +166,7 @@ Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask,
 	int height = lines * text_spacing + 10 + (bn_mask ? text_spacing + 10 : 0);
 	int x = (root->get_size().x - width) / 2;
 	int y = (root->get_size().y - height) / 2;
-	
+
 	Dialog *dlg = create_dialog(root, x, y, width, height, type_str[type]);
 
 	dlg->add_child(vbox);
@@ -221,7 +222,7 @@ bool FileDialog::fill_filelist()
 			bool match = !regexp || pcre_exec((pcre*)regexp, 0, ent->d_name, strlen(ent->d_name), 0, 0, 0, 0) >= 0;
 #else
 			bool match = true;
-#endif 
+#endif
 			if((show_hidden || ent->d_name[0] != '.') && match) {
 				file_list.push_back(ent->d_name);
 			}
@@ -308,7 +309,7 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 		int offs;
 		dlg->regexp = pcre_compile(filter, 0, &err_str, &offs, 0);
 	}
-#endif 
+#endif
 
 	if(dlg->fill_filelist() == false) {
 		destroy_dialog(dlg);
@@ -340,7 +341,7 @@ FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter
 static bool is_dir(const char *name, const char *path)
 {
 	char *full_name;
-	
+
 	if(!(full_name = (char*)malloc(strlen(name) + strlen(path) + 2))) {
 		utk_error("malloc failed");
 		return false;
@@ -373,7 +374,7 @@ static void entry_modify_handler(Event *event, void *data)
 
 static void bn_handler(Event *event, void *data)
 {
-	
+
 }
 
 } // end of utk namespace

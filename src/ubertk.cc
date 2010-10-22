@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#include <stdio.h>
 #include "utk_config.h"
 #include "ubertk.h"
 #include "utk_gfx.h"
@@ -33,7 +34,7 @@ OF SUCH DAMAGE.
 #if defined(unix) || defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <time.h>
 #include <sys/time.h>
-#else 
+#else
 #include <windows.h>
 #endif	/* unix */
 
@@ -57,7 +58,7 @@ Container *init(int x, int y)
 #endif
 
 	get_msec();	// initialize timer
-	
+
 	return cont;
 }
 
@@ -79,7 +80,7 @@ void draw(Container *root)
 	gfx::push_clip();
 	gfx::set_clip(cpos.x, cpos.y, cpos.x + csz.x, cpos.y + csz.y);
 	root->draw();
-	
+
 	if(draw_cursor) {
 		gfx::image(get_mouse_pos().x, get_mouse_pos().y, utk_cursor_image, 16, 16);
 	}
@@ -102,7 +103,7 @@ unsigned int get_msec()
 {
 #if defined(__unix__) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
 	static struct timeval timeval, first_timeval;
-	
+
 	gettimeofday(&timeval, 0);
 
 	if(first_timeval.tv_sec == 0) {

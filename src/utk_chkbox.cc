@@ -28,13 +28,14 @@ OF SUCH DAMAGE.
 */
 // utk_chkbox.cc
 
+#include <stdio.h>
 #include "utk_config.h"
 #include "utk_chkbox.h"
 #include "utk_gfx.h"
 
 #ifdef _MSC_VER
 #define snprintf _snprintf
-#endif 
+#endif
 
 namespace utk {
 
@@ -82,9 +83,9 @@ void CheckBox::draw() const
 	if (checked)
 	{
 		gfx::color(255, 100, 100, 255);
-		gfx::line(gpos.x + 4, gpos.y + 4, gpos.x + size.y - 4, 
+		gfx::line(gpos.x + 4, gpos.y + 4, gpos.x + size.y - 4,
 			gpos.y + size.y - 4, 5);
-		gfx::line(gpos.x + size.y - 4, gpos.y + 4, gpos.x + 4, 
+		gfx::line(gpos.x + size.y - 4, gpos.y + 4, gpos.x + 4,
 			gpos.y + size.y - 4, 5);
 	}
 
