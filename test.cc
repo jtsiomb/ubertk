@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 
 	ninja = new utk::CheckBox("Eimai ninja!");
 	vbox->add_child(ninja);
-	
+
 	cbox = new utk::ColorBox();
 	vbox->add_child(cbox);
 	hue = new utk::HueBox();
@@ -194,9 +194,9 @@ int main(int argc, char **argv)
 
 	create_button(vbox, "I rule")->set_flat(true);
 	create_button(vbox, "Yes i do")->set_flat(true);
-	
+
 	utk::create_button(vbox, new utk::Button(new utk::Label("Doubly")));
-	
+
 	// set root widget popup menu
 	utk::PopupMenu	*menu = utk::create_popup_menu();
 	menu->add_item("bleh");
@@ -211,18 +211,18 @@ int main(int argc, char **argv)
 	menu->add_item("even more bloh");
 	menu->add_separator();
 	menu->add_item("Tell me...", tellme_callback);
-	
+
 	item->add_item("sub one");
 	item->add_item("sub two");
 	item->add_separator();
 	item->add_item("sub three");
 	utk::PopupMenuItem	*sitem = item->add_item("sub four (more)");
 	item->add_item("sub five");
-	
+
 	sitem->add_item("one");
 	sitem->add_item("two");
 	sitem->add_item("three and guess...");
-	
+
 	utk::get_root_widget()->set_popup(menu);
 
 
@@ -260,7 +260,7 @@ void redraw(void)
 	draw_grid(2.0, 100.0);
 	glTranslatef(0, 0.8, 0);
 	glutWireTeapot(1.0);
-	
+
 	glPushMatrix();
 	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
@@ -270,12 +270,12 @@ void redraw(void)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
-	
+
 	utk::draw(utkroot);
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-	
+
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
@@ -354,7 +354,7 @@ void keyb(unsigned char key, int x, int y)
 	case '4':
 		message_dialog("Everything is lost!\nRun for the hills!", utk::MSG_TYPE_ERROR);
 		return;
-		
+
 	case 'f':
 		file_dialog(utk::FILE_DIALOG_OPEN, 0, 0, 0);
 		return;

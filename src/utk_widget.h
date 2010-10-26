@@ -48,7 +48,7 @@ protected:
 	bool hover;
 
 	bool herod_mode;
-	
+
 	class PopupMenu *popup;
 
 	CallbackClosure callbacks[EVENT_COUNT];
@@ -62,7 +62,7 @@ protected:
 public:
 	Widget();
 	virtual ~Widget();
-	
+
 	virtual void set_name(const char *name);
 	virtual const char *get_name() const;
 
@@ -84,7 +84,7 @@ public:
 	virtual IVec2 get_size() const;
 	virtual int get_width() const;
 	virtual int get_height() const;
-	
+
 	virtual void set_min_size(int w, int h);
 	virtual IVec2 get_min_size() const;
 	virtual int get_min_width() const;
@@ -117,7 +117,7 @@ public:
 
 	virtual void rise();
 	virtual void sink();
-	
+
 	virtual class PopupMenu *get_popup() const;
 	virtual void set_popup(class PopupMenu *popup);
 	virtual void show_popup(int x=-1, int y=-1);
@@ -140,7 +140,7 @@ public:
 	virtual void on_click(Event *event);
 	virtual void on_focus(Event *event);
 	virtual void on_modify(Event *event);
-	
+
 	inline void set_hover(bool hover) { this->hover = hover; }
 };
 

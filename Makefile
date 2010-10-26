@@ -84,10 +84,12 @@ install:
 	$(INSTALL) -m 644 $(lib_so) $(PREFIX)/lib/$(lib_so)
 	$(INSTALL) -d $(PREFIX)/include/utk
 	cd src; $(INSTALL) -m 644 *.h *.inl $(PREFIX)/include/utk
+	cd $(PREFIX)/lib; rm -f libutk.so; ln -s $(lib_so) libutk.so
 
 .PHONY: uninstall
 uninstall:
 	rm -f $(PREFIX)/lib/$(lib_a)
 	rm -f $(PREFIX)/lib/$(lib_so)
+	rm -f $(PREFIX)/lib/libutk.so
 	rm -f $(PREFIX)/include/utk/*
 	rmdir $(PREFIX)/include/utk

@@ -133,10 +133,14 @@ void Slider::draw() const
 
 	if(show_value) {
 		char txbuf[128];
-		char fmt[8];
 
-		sprintf(fmt, vis_decimal ? "%%.%df" : "%%d", vis_decimal);
-		sprintf(txbuf, fmt, vis_decimal ? get_value() : (int)get_value());
+		if(vis_decimal) {
+			char fmt[8];
+			sprintf(fmt, "%%.%df", vis_decimal);
+			sprintf(txbuf, fmt, get_value());
+		} else {
+			sprintf(txbuf, "%d", (int)get_value());
+		}
 
 		gfx::color(0, 0, 0, color.a);
 		gfx::text(gpos.x + border, gpos.y + size.y - border, txbuf, 18);
@@ -158,11 +162,11 @@ void Slider::on_modify(Event *event)
 	if(link_str) {
 		char fmt[8];
 		sprintf(fmt, vis_decimal ? "%%.%df" : "%%d", vis_decimal);
-		#if (defined(WIN32) && !defined(_GNUC_))	// assume msvc
+#ifdef _MSC_VER
 		sprintf(link_str, fmt, val);
-		#else
+#else
 		snprintf(link_str, link_str_width, fmt, val);
-		#endif
+#endif
 	}
 }
 

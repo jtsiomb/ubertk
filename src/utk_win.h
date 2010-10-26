@@ -46,7 +46,7 @@ public:
 	virtual ~Window();
 
 	virtual Widget *handle_event(Event *event);
-	
+
 	virtual void show();
 
 	virtual void set_size(int w, int h);
@@ -60,7 +60,7 @@ public:
 	virtual const Widget *get_win_focus() const;
 
 	virtual void draw() const;
-	
+
 	inline void set_modal(bool modal) { this->modal = modal; }
 
 	friend class WinFrame;
@@ -76,7 +76,6 @@ protected:
 	IVec2 orig_size;	// used when shaded
 
 	void update_geometry();
-	void set_shade(bool shade);
 
 public:
 	WinFrame(Widget *child);
@@ -85,6 +84,9 @@ public:
 	virtual Widget *handle_event(Event *event);
 
 	virtual bool is_visible() const;
+
+	void set_shade(bool shade);
+	bool get_shade() const;
 
 	virtual void draw() const;
 

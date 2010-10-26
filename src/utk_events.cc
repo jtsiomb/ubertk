@@ -121,7 +121,7 @@ FocusEvent::~FocusEvent() {}
 void event(Event *e)
 {
 	handle_event(e);
-	
+
 	if(!destruct_queue.empty()) {
 		lock_destruct_queue = true;
 		std::list<Widget*>::iterator iter = destruct_queue.begin();
@@ -129,7 +129,7 @@ void event(Event *e)
 			Widget *w = *iter++;
 			if(dynamic_cast<Window*>(w)) {
 				Widget *parent = w->get_parent();
-		
+
 				if(dynamic_cast<WinFrame*>(parent)) {
 					w = parent;
 					parent = w->get_parent();
@@ -141,7 +141,7 @@ void event(Event *e)
 			}
 		}
 		lock_destruct_queue = false;
-		
+
 		destruct_queue.clear();
 	}
 }
@@ -167,12 +167,12 @@ static void handle_event(Event *e)
 		}
 		return;
 	}
-	
+
 	MMotionEvent *mev;
 	if((mev = dynamic_cast<MMotionEvent*>(e))) {
 		Widget *widget_under_mouse = root->get_child_at(mev->x, mev->y);
-		receiver = mouse_grab_widget?mouse_grab_widget:widget_under_mouse;
-		
+		receiver = mouse_grab_widget ? mouse_grab_widget : widget_under_mouse;
+
 		mouse_pos.x = mev->x;
 		mouse_pos.y = mev->y;
 
@@ -220,8 +220,8 @@ static void handle_event(Event *e)
 
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(e))) {
-		receiver = mouse_grab_widget?mouse_grab_widget:root->get_child_at(bev->x, bev->y);
-		
+		receiver = mouse_grab_widget ? mouse_grab_widget : root->get_child_at(bev->x, bev->y);
+
 		if (current_modal_window && receiver->get_window() != current_modal_window)
 			return;
 
@@ -301,7 +301,7 @@ void grab_mouse(Widget *e)
 void grab_focus(Widget *w)
 {
 	FocusEvent fev;
-	
+
 	if(focused_window == w)
 		return;
 
@@ -365,7 +365,7 @@ void close_last_modal_window()
 	if (modal_windows.empty())	// sanity check
 		return;
 	modal_windows.pop();
-	current_modal_window = modal_windows.empty()?NULL:modal_windows.top();
+	current_modal_window = modal_windows.empty() ? NULL : modal_windows.top();
 	if (current_modal_window)
 		grab_focus(current_modal_window);
 }

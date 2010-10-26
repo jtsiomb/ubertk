@@ -44,7 +44,7 @@ Widget::Widget()
 	set_size(1, 1);
 	set_min_size(1, 1);
 	set_max_size(2147483640, 2147483640);
-	
+
 	padding = 0;
 	visible = true;
 	focused = false;
@@ -52,7 +52,7 @@ Widget::Widget()
 	child = parent = 0;
 	herod_mode = true;
 	name = 0;
-	
+
 	popup = 0;
 
 	link_int = 0;
@@ -66,11 +66,11 @@ Widget::Widget()
 Widget::~Widget()
 {
 	invalidate_widget(this);
-	
+
 	if(popup) {
 		delete popup;
 	}
-	
+
 	if(herod_mode) {
 		delete child;
 	}
@@ -183,7 +183,7 @@ void Widget::set_size(int w, int h)
 	if (h < min_size.y) h = min_size.y;
 	if (w > max_size.x) w = max_size.x;
 	if (h > max_size.y) h = max_size.y;
-	
+
 	size.x = w;
 	size.y = h;
 }
@@ -348,7 +348,7 @@ Window *Widget::get_window()
 	Window *win = dynamic_cast<Window*>(parent);
 	if (win)
 		return win;
-	return parent?parent->get_window():NULL;
+	return parent ? parent->get_window() : NULL;
 }
 
 void Widget::rise()
@@ -372,11 +372,11 @@ PopupMenu *Widget::get_popup() const
 	if(popup) {
 		return popup;
 	}
-	
+
 	if(parent) {
 		return parent->get_popup();
 	}
-	
+
 	return NULL;
 }
 

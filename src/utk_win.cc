@@ -186,7 +186,7 @@ WinFrame::~WinFrame() {}
 void WinFrame::update_geometry()
 {
 	Window *win = (Window*)this->child;
-	
+
 	int cbord = win->get_border();
 
 	IVec2 csz = win->get_size();
@@ -206,6 +206,10 @@ void WinFrame::set_shade(bool shade)
 	}
 }
 
+bool WinFrame::get_shade() const
+{
+	return shaded;
+}
 
 Widget *WinFrame::handle_event(Event *event)
 {
@@ -213,12 +217,12 @@ Widget *WinFrame::handle_event(Event *event)
 	if(!shaded && child && (w = child->handle_event(event))) {
 		return w;
 	}
-	
+
 	// no child handled the event, either we do or return false
 	MMotionEvent *mmev;
 	if((mmev = dynamic_cast<MMotionEvent*>(event))) {
 		if(/*hit_test(mmev->x, mmev->y) &&*/ get_button_state() == MOUSE_LEFT) {
-		
+
 			int dx = mmev->x - get_last_drag_pos().x;
 			int dy = mmev->y - get_last_drag_pos().y;
 
@@ -251,11 +255,11 @@ Widget *WinFrame::handle_event(Event *event)
 					last_click = msec;
 				}
 			}
-			
+
 			return this;
 		}
 	}
-	
+
 	return 0;
 }
 
@@ -334,7 +338,7 @@ void destroy_window(Widget *w)
 	if(dynamic_cast<Window*>(w)) {
 		/*
 		Widget *parent = w->get_parent();
-		
+
 		if(dynamic_cast<WinFrame*>(parent)) {
 			w = parent;
 			parent = w->get_parent();
