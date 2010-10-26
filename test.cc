@@ -4,7 +4,6 @@
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
-#include <GL/glext.h>
 #endif
 #include <ubertk.h>
 #include "test_text.h"

@@ -59,6 +59,7 @@ Widget::Widget()
 	link_flt = 0;
 	link_str = 0;
 	link_str_width = 0;
+	link_bool = 0;
 
 	memset(callbacks, 0, EVENT_COUNT * sizeof *callbacks);
 }
