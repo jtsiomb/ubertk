@@ -28,6 +28,7 @@ OF SUCH DAMAGE.
 */
 #include "utk_config.h"
 #include <stack>
+#include <stdlib.h>
 #include <math.h>
 #include "utk_gfx.h"
 #include "utk_common.h"

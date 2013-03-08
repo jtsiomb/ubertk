@@ -30,6 +30,7 @@ OF SUCH DAMAGE.
 #define UBERTK_CONTAINER_H_
 
 #include <list>
+#include <stdlib.h>
 #include <utk_widget.h>
 
 namespace utk {
