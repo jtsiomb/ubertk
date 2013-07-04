@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -27,7 +27,6 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
-#include "utk_config.h"
 #include <math.h>
 #include "utk_tball.h"
 #include "utk_common.h"
@@ -43,9 +42,9 @@ static vec3_t get_primary_ray(int x, int y, int w, int h)
 	vec3_t pt;
 	float aspect = (float)w / (float)h;
 
-	pt.x = ((float)x / (float)w) - 0.5;
-	pt.y = -(((float)y / (float)h) - 0.5) / aspect;
-	pt.z = 1.0;
+	pt.x = ((float)x / (float)w) - 0.5f;
+	pt.y = -(((float)y / (float)h) - 0.5f) / aspect;
+	pt.z = 1.0f;
 
 	return pt;
 }
@@ -58,19 +57,19 @@ bool ray_sphere(vec3_t spos, float srad, vec3_t rdir, vec3_t *sp)
 	float a, b, c, d, sqrt_d, t1, t2, dist;
 
 	a = SQ(rdir.x) + SQ(rdir.y) + SQ(rdir.z);
-	b = 2.0 * rdir.x * -spos.x + 2.0 * rdir.y * -spos.y + 2.0 * rdir.z * -spos.z;
-	c = SQ(spos.x) + SQ(spos.y) + SQ(spos.z) + 2.0 * (-spos.x - spos.y - spos.z) - SQ(srad);
+	b = 2.0f * rdir.x * -spos.x + 2.0f * rdir.y * -spos.y + 2.0f * rdir.z * -spos.z;
+	c = SQ(spos.x) + SQ(spos.y) + SQ(spos.z) + 2.0f * (-spos.x - spos.y - spos.z) - SQ(srad);
 
-	if((d = SQ(b) - 4.0 * a * c) < 0.0) return false;
+	if((d = SQ(b) - 4.0f * a * c) < 0.0f) return false;
 
 	sqrt_d = sqrt(d);
-	t1 = (-b + sqrt_d) / (2.0 * a);
-	t2 = (-b - sqrt_d) / (2.0 * a);
+	t1 = (-b + sqrt_d) / (2.0f * a);
+	t2 = (-b - sqrt_d) / (2.0f * a);
 
-	if(t1 < 0.00001 && t2 < 0.00001) return false;
+	if(t1 < 0.00001f && t2 < 0.00001f) return false;
 
-	if(t1 < 0.00001) t1 = t2;
-	if(t2 < 0.00001) t2 = t1;
+	if(t1 < 0.00001f) t1 = t2;
+	if(t2 < 0.00001f) t2 = t1;
 	dist = t1 < t2 ? t1 : t2;
 
 	sp->x = rdir.x * dist;
@@ -84,9 +83,9 @@ bool ray_sphere(vec3_t spos, float srad, vec3_t rdir, vec3_t *sp)
 
 void TrackBall::update()
 {
-	vec3_t ldir = {-0.577, 0.577, -0.577};
-	vec3_t sph_pos = {0, 0, 10.5};
-	float sph_rad = 1.0;
+	vec3_t ldir = {-0.577f, 0.577f, -0.577f};
+	vec3_t sph_pos = {0.0f, 0.0f, 10.5f};
+	float sph_rad = 1.0f;
 
 	unsigned int *pptr = pixels;
 	for(int y=0; y<img_h; y++) {
@@ -104,20 +103,20 @@ void TrackBall::update()
 				norm.z /= nlen;
 
 				float dot = ldir.x * norm.x + ldir.y * norm.y + ldir.z * norm.z;
-				dot = dot < 0.0 ? 0.0 : (dot > 1.0 ? 1.0 : dot);
+				dot = dot < 0.0f ? 0.0f : (dot > 1.0f ? 1.0f : dot);
 
 				float theta = atan2(norm.z, norm.x) - this->theta;
 				float phi = acos(norm.y) - this->phi;
 
-				while(theta < 0.0) theta += TWO_PI;
-				while(phi < 0.0) phi += PI;
+				while(theta < 0.0f) theta += TWO_PI;
+				while(phi < 0.0f) phi += PI;
 
 				int tx = (int)(12.0f * fmod(theta, TWO_PI) / TWO_PI);
-				int ty = (int)(6.0 * fmod(phi, PI) / PI);
+				int ty = (int)(6.0f * fmod(phi, PI) / PI);
 
-				int cint = (int)(50.0 * dot);
+				int cint = (int)(50.0f * dot);
 				if((tx % 2) == (ty % 2)) {
-					cint = (int)(255.0 * dot);
+					cint = (int)(255.0f * dot);
 				}
 
 				*pptr++ = PACK_RGBA(cint, cint, cint, 0xff);
@@ -128,7 +127,7 @@ void TrackBall::update()
 	}
 }
 
-void TrackBall::on_click(int x, int y)
+void TrackBall::on_click(Event *ev)
 {
 
 }

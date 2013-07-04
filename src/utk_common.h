@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+
 #ifndef UTK_MACROS_H_
 #define UTK_MACROS_H_
 
@@ -37,7 +38,7 @@ OF SUCH DAMAGE.
 #	if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
 #		if  defined(__i386__) || defined(__ia64__) || \
 			defined(WIN32) || defined(__WIN32__) || \
-    		(defined(__alpha__) || defined(__alpha)) || \
+			(defined(__alpha__) || defined(__alpha)) || \
 		     defined(__arm__) || \
 		    (defined(__mips__) && defined(__MIPSEL__)) || \
 		     defined(__SYMBIAN32__) || \
@@ -87,7 +88,7 @@ OF SUCH DAMAGE.
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
+
 void utk_error(const char *fmt, ...);
 
 #ifdef __cplusplus

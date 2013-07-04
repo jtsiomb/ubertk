@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include <string.h>
 #include "utk_listbox.h"
 #include "utk_label.h"
@@ -91,13 +91,15 @@ Widget *ListBox::handle_event(Event *event)
 				select(i);
 
 				cev->widget = this;
+
+				callback(event, EVENT_CLICK);
 				return this;
 			}
 			iter++;
 			i++;
 		}
 	}
-	
+
 	return ScrollWin::handle_event(event);
 }
 
@@ -175,7 +177,12 @@ int ListBox::get_spacing() const
 
 void ListBox::clear()
 {
+	sel = -1;
 	vbox->clear();
+	set_hscroll(0);
+	set_vscroll(0);
+	hbar->set_value(0);
+	vbar->set_value(0);
 }
 
 void ListBox::draw() const

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_HUEBOX_H_
-#define UBERTK_HUEBOX_H_
+
+#ifndef UTK_HUEBOX_H_
+#define UTK_HUEBOX_H_
 
 #include <utk_img.h>
 
@@ -40,7 +41,7 @@ protected:
 
 	virtual void update();
 
-	virtual void on_click(int x, int y);
+	virtual void on_click(Event *ev);
 	//virtual void on_motion(int x, int y);
 	virtual void on_drag(int dx, int dy);
 public:
@@ -53,4 +54,4 @@ public:
 
 }
 
-#endif // ndef _UBERTK_HUEBOX_H_
+#endif // ndef _UTK_HUEBOX_H_

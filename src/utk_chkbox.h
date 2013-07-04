@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+
 // utk_chkbox.h
 
 #ifndef _UTK_CHKBOX_H_
@@ -52,7 +53,7 @@ public:
 	virtual void set_checked(bool checked);
 	virtual bool is_checked() const;
 
-	virtual void on_modify(Event *event);
+	virtual void on_modify(Event *ev);
 };
 
 CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callback func = 0, void *cdata = 0);

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_SCROLLBAR_H_
-#define UBERTK_SCROLLBAR_H_
+
+#ifndef UTK_SCROLLBAR_H_
+#define UTK_SCROLLBAR_H_
 
 #include <utk_drawable.h>
 #include <utk_events.h>
@@ -61,7 +62,7 @@ public:
 	virtual void set_cursor_width(int width);
 	virtual void set_cursor_width(float percent);
 	virtual int get_cursor_width() const;
-	
+
 	virtual void set_value(float val);
 	virtual float get_value() const;
 	virtual void operator=(float val);
@@ -72,4 +73,4 @@ public:
 
 }
 
-#endif // ndef UBERTK_SCROLLBAR_H_
+#endif // ndef UTK_SCROLLBAR_H_

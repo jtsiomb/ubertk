@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -37,6 +37,7 @@ OF SUCH DAMAGE.
 #include <utk_container.h>
 #include <utk_popup.h>
 #include <utk_label.h>
+#include <utk_arrow.h>
 #include <utk_button.h>
 #include <utk_scrollbar.h>
 #include <utk_entry.h>
@@ -52,8 +53,10 @@ OF SUCH DAMAGE.
 #include <utk_scrollwin.h>
 #include <utk_listbox.h>
 #include <utk_dialog.h>
+#include <utk_filedialog.h>
 #include <utk_align.h>
 #include <utk_menus.h>
+#include <utk_combobox.h>
 
 #define UBERTK_PRINT_ROOT ((Widget*)-1)
 
@@ -70,7 +73,7 @@ unsigned int get_msec();
 
 void class_name(Widget *w);
 void print_widget_tree(Widget *root = UBERTK_PRINT_ROOT);
-	
+
 void *get_user_data();
 void set_user_data(void *ud);
 }

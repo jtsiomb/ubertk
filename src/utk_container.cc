@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,13 +26,13 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include <string.h>
+#include <stack>
 #include <algorithm>
 #include "utk_container.h"
 #include "utk_events.h"
 #include "utk_gfx.h"
-#include <stack>
 
 namespace utk {
 
@@ -55,9 +55,12 @@ Container::~Container()
 
 const Widget *Container::find_widget(const char *name) const
 {
+	if (get_name() && !strcmp(get_name(), name))
+		return this;
+
 	const_iterator iter = begin();
 	while(iter != end()) {
-		if(strcmp((*iter)->get_name(), name) == 0) {
+		if((*iter)->get_name() && strcmp((*iter)->get_name(), name) == 0) {
 			return *iter;
 		}
 		iter++;
@@ -95,6 +98,7 @@ bool Container::remove_child(Widget *w)
 		delete *iter;
 	}
 	cont.erase(iter);
+	cache_idx = -1;
 	layout();
 	return true;
 }
@@ -220,7 +224,7 @@ void Container::draw() const
 			IVec2 cpos, csz;
 			cpos = w->get_global_pos();
 			csz = w->get_size();
-			
+
 			gfx::push_clip();
 			gfx::mult_clip(cpos.x, cpos.y, cpos.x + csz.x, cpos.y + csz.y);
 			w->draw();
@@ -241,7 +245,7 @@ void HBox::layout()
 		Widget *w = *iter++;
 
 		w->set_pos(cur_x, padding);
-		
+
 		cur_x += w->get_width() + spacing;
 		if(w->get_height() > max_y) {
 			max_y = w->get_height();

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
-#include <stdlib.h>
+
 #include <list>
 #include <stack>
 #include "ubertk.h"
@@ -127,10 +126,10 @@ void event(Event *e)
 		std::list<Widget*>::iterator iter = destruct_queue.begin();
 		while(iter != destruct_queue.end()) {
 			Widget *w = *iter++;
-			if(dynamic_cast<Window*>(w)) {
+			if(registered_widget(w) && dynamic_cast<Window*>(w)) {
 				Widget *parent = w->get_parent();
 
-				if(dynamic_cast<WinFrame*>(parent)) {
+				if(registered_widget(parent) && dynamic_cast<WinFrame*>(parent)) {
 					w = parent;
 					parent = w->get_parent();
 				}
@@ -151,7 +150,10 @@ static Widget *deliver_event(Widget *w, Event *e)
 	if (!e || !w)
 		return NULL;
 	for (e->widget=NULL; w && !e->widget; w=w->get_parent())
+	{
+		if (!registered_widget(w)) return NULL;
 		w->handle_event(e);
+	}
 	return w;
 }
 
@@ -171,13 +173,15 @@ static void handle_event(Event *e)
 	MMotionEvent *mev;
 	if((mev = dynamic_cast<MMotionEvent*>(e))) {
 		Widget *widget_under_mouse = root->get_child_at(mev->x, mev->y);
-		receiver = mouse_grab_widget ? mouse_grab_widget : widget_under_mouse;
+		receiver = mouse_grab_widget?mouse_grab_widget:widget_under_mouse;
 
 		mouse_pos.x = mev->x;
 		mouse_pos.y = mev->y;
 
-		if (current_modal_window && receiver->get_window() != current_modal_window)
-			return;
+		if (current_modal_window) {
+			Window	*win = receiver->get_window();
+			if (win && win != current_modal_window) return;
+		}
 
 		deliver_event(receiver, mev);
 
@@ -220,10 +224,12 @@ static void handle_event(Event *e)
 
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(e))) {
-		receiver = mouse_grab_widget ? mouse_grab_widget : root->get_child_at(bev->x, bev->y);
-
-		if (current_modal_window && receiver->get_window() != current_modal_window)
-			return;
+		receiver = mouse_grab_widget?mouse_grab_widget:root->get_child_at(bev->x, bev->y);
+		
+		if (current_modal_window) {
+			Window	*win = receiver->get_window();
+			if (win && win != current_modal_window) return;
+		}
 
 		if(bev->pressed) {
 			mouse_button_state = bev->button;
@@ -244,6 +250,10 @@ static void handle_event(Event *e)
 			return;
 		} else {
 			mouse_button_state = -1;
+			bev->press_x = last_press_x;
+			bev->press_y = last_press_y;
+			mouse_press_widget = 0;
+			
 			mouse_grab_widget = 0;	// note: grabbing is released on mouse release
 
 			// houston, we have a click!
@@ -301,7 +311,7 @@ void grab_mouse(Widget *e)
 void grab_focus(Widget *w)
 {
 	FocusEvent fev;
-
+	
 	if(focused_window == w)
 		return;
 
@@ -328,6 +338,7 @@ void grab_win_focus(Widget *w)
 	while((par = par->get_parent())) {
 		Window *win = dynamic_cast<Window*>(par);
 		if(win) {
+			grab_focus(win);
 			win->set_win_focus(w);
 			return;
 		}
@@ -365,7 +376,7 @@ void close_last_modal_window()
 	if (modal_windows.empty())	// sanity check
 		return;
 	modal_windows.pop();
-	current_modal_window = modal_windows.empty() ? NULL : modal_windows.top();
+	current_modal_window = modal_windows.empty()?NULL:modal_windows.top();
 	if (current_modal_window)
 		grab_focus(current_modal_window);
 }

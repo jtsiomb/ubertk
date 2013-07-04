@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_WIN_H_
-#define UBERTK_WIN_H_
+
+#ifndef UTK_WIN_H_
+#define UTK_WIN_H_
 
 #include <utk_widget.h>
 #include <utk_drawable.h>
@@ -49,6 +50,9 @@ public:
 
 	virtual void show();
 
+	virtual void set_pos(int x, int y);
+	virtual void set_pos(IVec2 pos);
+
 	virtual void set_size(int w, int h);
 	virtual void set_size(IVec2 sz);
 
@@ -64,6 +68,7 @@ public:
 	inline void set_modal(bool modal) { this->modal = modal; }
 
 	friend class WinFrame;
+	friend void destroy_window(Widget *w);
 };
 
 
@@ -76,6 +81,7 @@ protected:
 	IVec2 orig_size;	// used when shaded
 
 	void update_geometry();
+	void set_shade(bool shade);
 
 public:
 	WinFrame(Widget *child);
@@ -84,9 +90,6 @@ public:
 	virtual Widget *handle_event(Event *event);
 
 	virtual bool is_visible() const;
-
-	void set_shade(bool shade);
-	bool get_shade() const;
 
 	virtual void draw() const;
 
@@ -99,4 +102,4 @@ void destroy_window(Widget *w);
 
 }	// end of namespace utk
 
-#endif	// UBERTK_WIN_H_
+#endif	// UTK_WIN_H_

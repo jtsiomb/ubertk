@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_SLIDER_H_
-#define UBERTK_SLIDER_H_
+
+#ifndef UTK_SLIDER_H_
+#define UTK_SLIDER_H_
 
 #include <utk_scrollbar.h>
 #include <utk_events.h>
@@ -70,4 +71,4 @@ Slider *create_slider(Widget *parent, float start, float end, char *link, int bu
 
 }	// end namespace utk
 
-#endif	// UBERTK_SLIDER_H_
+#endif	// UTK_SLIDER_H_

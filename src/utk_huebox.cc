@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include "utk_huebox.h"
 #include "utk_hsv.h"
 #include <math.h>
@@ -50,8 +50,9 @@ void HueBox::update()
 		}
 	}
 }
-void HueBox::on_click(int x, int y)
+void HueBox::on_click(Event *ev)
 {
+	int x = ((ClickEvent*)ev)->x;
 	sel_h = x;
 	h = (float) sel_h / (float) (img_w - 1);
 	h = fmod(h, 1.0f);
@@ -70,7 +71,8 @@ void HueBox::on_drag(int dx, int dy)
 
 HueBox::HueBox(utk::Callback cb) : Image(150, 20, cb)
 {
-	h = sel_h = 0;
+	h = 0.0f;
+	sel_h = 0;
 	update();
 }
 HueBox::~HueBox()

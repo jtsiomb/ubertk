@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,9 +26,10 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+
 // utk_radio.cc
 
-#include "utk_config.h"
+#include <string.h>
 #include "utk_radio.h"
 #include "utk_container.h"
 #include "utk_gfx.h"
@@ -59,7 +60,9 @@ Widget *RadioBox::handle_event(Event *event)
 	ClickEvent *ce;
 	if((ce = dynamic_cast<ClickEvent*>(event)) && hit_test(ce->x, ce->y))
 	{
-		check();
+		if(!is_checked()) {
+			check();
+		}
 		return this;
 	}
 
@@ -96,24 +99,68 @@ void RadioBox::draw() const
 
 void RadioBox::check()
 {
+	IVec2 pos = get_global_pos();
+	MButtonEvent fakeev(0, pos.x + 1, pos.y + 1);
+
 	Container *cont_par = dynamic_cast<Container*> (parent);
-	if (cont_par)
-	{
-		for (unsigned int i=0; i<cont_par->size(); i++)
-		{
+	if(cont_par) {
+		for(unsigned int i=0; i<cont_par->size(); i++) {
 			RadioBox *rb = dynamic_cast<RadioBox*> ((*cont_par)[i]);
-			if (rb)
-			{
+			if(rb) {
 				rb->checked = false;
+				rb->on_modify(&fakeev);
 			}
 		}
 	}
+
 	checked = true;
+	on_modify(&fakeev);
 }
 
 bool RadioBox::is_checked() const
 {
 	return checked;
+}
+
+void RadioBox::on_modify(Event *ev)
+{
+	if(link_int) {
+		*link_int = checked ? 1 : 0;
+	}
+	if(link_bool) {
+		*link_bool = checked;
+	}
+	if(link_flt) {
+		*link_flt = checked ? 1.0 : 0.0;
+	}
+	if(link_str) {
+		strncpy(link_str, checked ? "selected" : "not selected", link_str_width);
+		link_str[link_str_width - 1] = 0;
+	}
+
+	callback(ev, EVENT_MODIFY);
+}
+
+RadioBox *create_radiobox(Widget *parent, const char *text, bool selected, Callback cb, void *udata)
+{
+	RadioBox *rb = new RadioBox(text);
+	if(selected) {
+		rb->check();
+	}
+	rb->set_callback(EVENT_MODIFY, cb, udata);
+	parent->add_child(rb);
+	return rb;
+}
+
+RadioBox *create_radiobox(Widget *parent, const char *text, bool selected, bool *link)
+{
+	RadioBox *rb = new RadioBox(text);
+	if(selected) {
+		rb->check();
+	}
+	rb->set_link(link);
+	parent->add_child(rb);
+	return rb;
 }
 
 }

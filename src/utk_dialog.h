@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+
 #ifndef UTK_DIALOG_H_
 #define UTK_DIALOG_H_
 
@@ -37,22 +38,6 @@ class Dialog : public Window {
 public:
 	Dialog();
 	virtual ~Dialog();
-};
-
-class FileDialog : public Dialog {
-	void *regexp;	// opaque, because I don't want to expose the regexp lib in the header
-	bool show_hidden;
-
-	char *path;
-	ListBox *listb;
-
-	bool fill_filelist();
-
-public:
-	FileDialog();
-	virtual ~FileDialog();
-
-	friend FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func, void *cdata);
 };
 
 enum {
@@ -84,7 +69,7 @@ void destroy_dialog(Widget *w);
 Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0, void *cdata = 0);
 Dialog *message_dialog(const char *msg, unsigned int type, Callback func = 0, void *cdata = 0);
 
-FileDialog *file_dialog(unsigned int type, const char *fname, const char *filter, const char *start_dir, Callback func = 0, void *cdata = 0);
+Dialog *input_dialog(const char *msg, const char *title = "Input", const char *deftext=0, Callback func = 0, void *cdata = 0);
 
 } // end utk namespace
 

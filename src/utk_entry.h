@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_ENTRY_H_
-#define UBERTK_ENTRY_H_
+
+#ifndef UTK_ENTRY_H_
+#define UTK_ENTRY_H_
 
 #include <utk_drawable.h>
 #include <utk_events.h>
@@ -37,7 +38,13 @@ namespace utk {
 class Entry : public Drawable {
 protected:
 	int cursor;
-	int vfirst;
+	int vscroll;
+	bool readonly;
+
+	int cursor_from_x(int x) const;
+	int x_from_cursor(int c) const;
+
+	void scroll_to_cursor();
 
 public:
 	Entry(const char *txt = 0, utk::Callback cb = 0);
@@ -46,6 +53,9 @@ public:
 	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
+
+	virtual void set_readonly(bool readonly);
+	virtual bool is_readonly() const;
 };
 
 Entry *create_entry(Widget *parent, const char *text, int width = 100, Callback func = 0, void *cdata = 0);
@@ -53,4 +63,4 @@ void destroy_entry(Entry *en);
 
 }
 
-#endif	// UBERTK_ENTRY_H_
+#endif	// UTK_ENTRY_H_

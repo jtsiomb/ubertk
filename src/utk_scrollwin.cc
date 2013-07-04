@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -27,7 +27,6 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
-#include "utk_config.h"
 #include "utk_scrollwin.h"
 #include "utk_gfx.h"
 #include "utk_common.h"
@@ -56,10 +55,10 @@ ScrollWin::ScrollWin()
 	dragging = false;
 
 	sbar_width = 15;
-	
+
 	set_color(100, 100, 100);
 	set_size(64, 64);
-	
+
 }
 
 ScrollWin::~ScrollWin()
@@ -124,9 +123,9 @@ Widget *ScrollWin::handle_event(Event *event)
 
 Widget *ScrollWin::get_child_at(int x, int y)
 {
-	if (hbar->hit_test(x, y))
+	if (check_hscroll_vis() && hbar->hit_test(x, y))
 		return hbar;
-	if (vbar->hit_test(x, y))
+	if (check_vscroll_vis() && vbar->hit_test(x, y))
 		return vbar;
 	return Drawable::get_child_at(x, y);
 }
@@ -134,7 +133,7 @@ Widget *ScrollWin::get_child_at(int x, int y)
 void ScrollWin::set_size(int w, int h)
 {
 	Widget::set_size(w, h);
-	
+
 	hbar->set_size(size.x, sbar_width);
 	hbar->set_pos(0, size.y - sbar_width);
 
@@ -227,22 +226,22 @@ void ScrollWin::draw() const
 		hbar->set_size(hbar_sz, hbar->get_size().y);
 
 		float width_ratio = (float)size.x / (float)child_size.x;
-		hbar->set_cursor_width(width_ratio); 
+		hbar->set_cursor_width(width_ratio);
 		hbar->draw();
 	}
-	
+
 	if(show_vbar) {
 		int vbar_sz = show_hbar ? size.y - hbar->get_size().y : size.y;
 		vbar->set_size(vbar->get_size().x, vbar_sz);
 
 		float width_ratio = (float)size.y / (float)child_size.y;
-		vbar->set_cursor_width(width_ratio); 
+		vbar->set_cursor_width(width_ratio);
 		vbar->draw();
 	}
 
 	if(show_vbar && show_hbar) {
 		Color col = darker_color(vbar->get_color());
-		
+
 		gfx::color(col.r, col.g, col.b, col.a);
 		gfx::rect(gpos.x + size.x - sbar_width, gpos.y + size.y - sbar_width, gpos.x + size.x, gpos.y + size.y);
 	}

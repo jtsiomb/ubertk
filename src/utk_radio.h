@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,10 +26,11 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+
 // utk_radio.h
 
-#ifndef _UBERTK_RADIO_H_
-#define _UBERTK_RADIO_H_
+#ifndef _UTK_RADIO_H_
+#define _UTK_RADIO_H_
 
 #include <utk_drawable.h>
 #include <utk_events.h>
@@ -49,8 +50,13 @@ public:
 
 	void check();
 	bool is_checked() const;
+
+	void on_modify(Event *ev);
 };
+
+RadioBox *create_radiobox(Widget *parent, const char *text, bool selected, Callback cb = 0, void *udata = 0);
+RadioBox *create_radiobox(Widget *parent, const char *text, bool selected, bool *link);
 
 }
 
-#endif // ndef _UBERTK_RADIO_H_
+#endif // ndef _UTK_RADIO_H_

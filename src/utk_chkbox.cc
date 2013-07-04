@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,16 +26,12 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+
 // utk_chkbox.cc
 
-#include <stdio.h>
-#include "utk_config.h"
+#include <string.h>
 #include "utk_chkbox.h"
 #include "utk_gfx.h"
-
-#ifdef _MSC_VER
-#define snprintf _snprintf
-#endif
 
 namespace utk {
 
@@ -59,10 +55,9 @@ Widget *CheckBox::handle_event(Event *event)
 	if((ce = dynamic_cast<ClickEvent*>(event)) && hit_test(ce->x, ce->y))
 	{
 		checked = !checked;
-
 		on_modify(event);
 		callback(event, EVENT_MODIFY);
-
+		callback(event, EVENT_CLICK);
 		return ce->widget = this;
 	}
 
@@ -119,27 +114,29 @@ bool CheckBox::is_checked() const
 	return checked;
 }
 
-void CheckBox::on_modify(Event *event)
+void CheckBox::on_modify(Event *ev)
 {
-	if(link_flt) {
-		*link_flt = checked ? 1.0f : 0.0f;
-	}
 	if(link_int) {
-		*link_int = (int)checked;
-	}
-	if(link_str) {
-		snprintf(link_str, link_str_width, "%s", checked ? "true" : "false");
+		*link_int = checked ? 1 : 0;
 	}
 	if(link_bool) {
 		*link_bool = checked;
 	}
+	if(link_flt) {
+		*link_flt = checked ? 1.0 : 0.0;
+	}
+	if(link_str) {
+		strncpy(link_str, checked ? "checked" : "unchecked", link_str_width);
+		link_str[link_str_width - 1] = 0;
+	}
 }
-
 
 CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callback func, void *cdata)
 {
 	CheckBox *cbox = new CheckBox(text);
-	cbox->set_checked(checked);
+	if(checked) {
+		cbox->check();
+	}
 	cbox->set_callback(EVENT_MODIFY, func, cdata);
 	parent->add_child(cbox);
 	return cbox;
@@ -147,15 +144,18 @@ CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, Callba
 
 CheckBox *create_checkbox(Widget *parent, const char *text, bool checked, bool *link)
 {
-	CheckBox *cbox = create_checkbox(parent, text, checked);
+	CheckBox *cbox = new CheckBox(text);
 	cbox->set_link(link);
-	return cbox;
+	if(checked) {
+		cbox->check();
+	}
+	parent->add_child(cbox);
+	return 0;
 }
 
 void destroy_checkbox(CheckBox *cbox)
 {
 	delete cbox;
 }
-
 
 } // end namespace utk

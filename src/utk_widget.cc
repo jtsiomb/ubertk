@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -27,8 +27,6 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
-#include "utk_config.h"
-#include <stdlib.h>
 #include <string.h>
 #include <typeinfo>
 #include "utk_widget.h"
@@ -55,18 +53,23 @@ Widget::Widget()
 
 	popup = 0;
 
+	link_bool = 0;
 	link_int = 0;
 	link_flt = 0;
 	link_str = 0;
 	link_str_width = 0;
-	link_bool = 0;
 
 	memset(callbacks, 0, EVENT_COUNT * sizeof *callbacks);
+
+	user_data = 0;
+
+	register_widget(this);
 }
 
 Widget::~Widget()
 {
 	invalidate_widget(this);
+	unregister_widget(this);
 
 	if(popup) {
 		delete popup;
@@ -100,7 +103,7 @@ Widget *Widget::find_widget(const char *name)
 
 const Widget *Widget::find_widget(const char *name) const
 {
-	if(strcmp(name, this->name) == 0) {
+	if(this->name && strcmp(name, this->name) == 0) {
 		return this;
 	}
 	return child ? child->find_widget(name) : 0;
@@ -295,6 +298,10 @@ void Widget::add_child(Widget *w)
 	if (!w)
 		return;
 
+	if (child) {
+		remove_child(child);
+	}
+
 	child = w;
 	w->set_parent(this);
 
@@ -349,7 +356,7 @@ Window *Widget::get_window()
 	Window *win = dynamic_cast<Window*>(parent);
 	if (win)
 		return win;
-	return parent ? parent->get_window() : NULL;
+	return parent?parent->get_window():NULL;
 }
 
 void Widget::rise()
@@ -472,9 +479,43 @@ void Widget::callback(Event *event, int event_type)
 	}
 }
 
+void Widget::set_user_data(void *data)
+{
+	user_data = data;
+}
+
+void *Widget::get_user_data()
+{
+	return user_data;
+}
+
 void Widget::on_click(Event *event) {}
 void Widget::on_focus(Event *event) {}
 void Widget::on_modify(Event *event) {}
+
+
+// widget registry
+static std::list<Widget*>	wr;
+
+void register_widget(Widget *widget)
+{
+	wr.push_front(widget);
+}
+
+void unregister_widget(Widget *widget)
+{
+	wr.remove(widget);
+}
+
+bool registered_widget(const Widget *widget)
+{
+	std::list<Widget*>::const_iterator	iter = wr.begin();
+	while (iter != wr.end()) {
+		if (*iter == widget) return true;
+		iter++;
+	}
+	return false;
+}
 
 
 }	// end of namespace utk

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+
 // utk_img.cc
-#include "utk_config.h"
+
 #include "utk_img.h"
 #include "utk_gfx.h"
 
@@ -68,12 +69,13 @@ Image::~Image()
 
 Widget *Image::handle_event(Event *event)
 {
-
 	ClickEvent *ce;
 	IVec2 pos = get_global_pos();
 	if((ce = dynamic_cast<ClickEvent*>(event)) && hit_test(ce->x, ce->y))
 	{
-		on_click(ce->x - pos.x, ce->y - pos.y);
+		ce->x -= pos.x;
+		ce->y -= pos.y;
+		on_click(ce);
 		upd = true;
 		dragging = false;
 		event->widget = this;
@@ -97,7 +99,7 @@ Widget *Image::handle_event(Event *event)
 	}
 
 	MMotionEvent *mmev;
-	if((mmev = dynamic_cast<MMotionEvent*>(event))) 
+	if((mmev = dynamic_cast<MMotionEvent*>(event)))
 	{
 		if (dragging)
 		{
@@ -114,13 +116,13 @@ Widget *Image::handle_event(Event *event)
 		return 0;
 	}
 
-	return 0;	
+	return 0;
 }
 
 void Image::draw() const
 {
 	IVec2 gpos = get_global_pos();
-	
+
 	if (upd)
 	{
 		upd = false;
@@ -138,19 +140,16 @@ void Image::clear(unsigned int c)
 	}
 }
 
-void Image::on_click(int x, int y)
+void Image::on_click(Event *ev)
 {
-
 }
 
 void Image::on_motion(int x, int y)
 {
-
 }
 
 void Image::on_drag(int dx, int dy)
 {
-	
 }
 
 } // end namespace utk

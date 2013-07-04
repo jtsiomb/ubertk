@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include "utk_button.h"
 #include "utk_label.h"
 #include "utk_gfx.h"
@@ -38,18 +38,14 @@ Button::Button(Widget *widget, Callback cb)
 	pressed = false;
 	flat = false;
 
-	if (widget->get_parent() != this) {
+	set_min_size(100, 6);
+
+	if (widget) {
 		add_child(widget);
 	}
 
-	if (dynamic_cast<Drawable*>(widget)) {
-		set_text(((Drawable*)widget)->get_text());
-	}
 	set_callback(EVENT_CLICK, cb);
-	
-	set_min_size(100, 6);
 
-	set_size(widget->get_width() + 6, widget->get_height() + 6);
 	set_border(2);
 
 	set_color(128, 100, 80);
@@ -79,13 +75,24 @@ Widget *Button::handle_event(Event *event)
 			if(pressed) return this;
 		}
 	}
-	
+
 	if (dynamic_cast<MMotionEvent*>(event)) {
 		event->widget = this;
 		return this;
 	}
 
 	return 0;
+}
+
+void Button::add_child(Widget *w)
+{
+	Drawable::add_child(w);
+
+	if (dynamic_cast<Drawable*>(w)) {
+		set_text(((Drawable*)w)->get_text());
+	}
+
+	set_size(w->get_width() + 6, w->get_height() + 6);
 }
 
 Widget *Button::get_child_at(int x, int y)
@@ -96,7 +103,9 @@ Widget *Button::get_child_at(int x, int y)
 void Button::set_size(int w, int h)
 {
 	Drawable::set_size(w, h);
-	child->set_pos(size.x/2 - child->get_width()/2, size.y/2 - child->get_height()/2);
+	if (child) {
+		child->set_pos(size.x/2 - child->get_width()/2, size.y/2 - child->get_height()/2);
+	}
 }
 
 void Button::draw() const
@@ -115,22 +124,16 @@ void Button::draw() const
 		gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_FILLBG | ((pressed && hover) ? gfx::BEVEL_INSET : 0), 2);
 	}
 
-	/*if(text.size()) {
-		const char *txt = get_text();
-		int twidth = gfx::text_width(txt, 18);
-
-		gfx::color(0, 0, 0, color.a);
-		gfx::text(gpos.x + (size.x - twidth) / 2, gpos.y + size.y, txt, 18);
-	}*/
-
 	Widget::draw();
 }
 
 void Button::set_text(const char *text)
 {
-	Drawable	*dc = dynamic_cast<Drawable*>(child);
-	if (dc) dc->set_text(text);
 	Drawable::set_text(text);
+	if (child) {
+		Drawable *dc = dynamic_cast<Drawable*>(child);
+		if (dc) dc->set_text(text);
+	}
 }
 
 void Button::set_flat(bool flat)
@@ -150,26 +153,29 @@ Button *create_button(Widget *parent, const char *text, Callback func, void *cda
 
 Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callback func, void *cdata)
 {
-	if(ysz == 0) {
-		ysz = gfx::text_spacing() + 4;
-	}
-
 	return create_button(parent, new Label(text), xsz, ysz, func, cdata);
 }
 
 Button *create_button(Widget *parent, Widget *child, Callback func, void *cdata)
 {
-	return create_button(parent, child, child->get_width() + 6, 0, func, cdata);
+	Button	*bn = new Button(child);
+	bn->set_callback(EVENT_CLICK, func, cdata);
+	parent->add_child(bn);
+	return bn;
 }
 
 Button *create_button(Widget *parent, Widget *child, int xsz, int ysz, Callback func, void *cdata)
 {
+	if (xsz == 0) {
+		xsz = child->get_width() + 6;
+	}
 	if (ysz == 0) {
 		ysz = child->get_height() + 6;
 	}
 
 	Button	*bn = new Button(child);
 	bn->set_callback(EVENT_CLICK, func, cdata);
+	bn->set_min_size(xsz, ysz);
 	bn->set_size(xsz, ysz);
 	parent->add_child(bn);
 	return bn;

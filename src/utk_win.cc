@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -27,8 +27,8 @@ IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
-#include "utk_config.h"
 #include "utk_win.h"
+#include "utk_container.h"
 #include "utk_gfx.h"
 #include "utk_events.h"
 #include "utk_common.h"
@@ -37,6 +37,7 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
+Container *get_root_widget();
 unsigned int get_msec();
 
 Window::Window()
@@ -91,6 +92,21 @@ void Window::show()
 	if (modal)
 		modalize_window(this);
 	Drawable::show();
+}
+
+void Window::set_pos(int x, int y)
+{
+	WinFrame *frm = dynamic_cast<WinFrame*>(get_parent());
+	if(frm) {
+		frm->set_pos(x, y);
+	} else {
+		Widget::set_pos(x, y);
+	}
+}
+
+void Window::set_pos(IVec2 pos)
+{
+	set_pos(pos.x, pos.y);
 }
 
 void Window::set_size(int w, int h)
@@ -149,7 +165,7 @@ void Window::draw() const
 {
 	IVec2 gpos = get_global_pos();
 
-	gfx::color(color.r, color.g, color.b, color.a);
+	gfx::color_clamp(color.r, color.g, color.b, color.a);
 	gfx::rect(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y);
 
 	Widget::draw();
@@ -168,12 +184,14 @@ WinFrame::WinFrame(Widget *child)
 	shaded = false;
 
 	if((win = dynamic_cast<Window*>(child))) {
+		// this must be called before we reparent the window
+		int cbord = win->get_border();
+		win->set_pos(cbord, cbord + win->tbar_height);
+
 		add_child(child);
 		update_geometry();
 
-		int cbord = win->get_border();
 		set_pos(win->get_pos() - IVec2(cbord, cbord + win->tbar_height));
-		win->set_pos(cbord, cbord + win->tbar_height);
 	} else {
 		utk_error("non-window widget passed as WinFrame's child\n");
 	}
@@ -204,11 +222,6 @@ void WinFrame::set_shade(bool shade)
 	} else {
 		set_size(orig_size.x, orig_size.y);
 	}
-}
-
-bool WinFrame::get_shade() const
-{
-	return shaded;
 }
 
 Widget *WinFrame::handle_event(Event *event)
@@ -255,11 +268,11 @@ Widget *WinFrame::handle_event(Event *event)
 					last_click = msec;
 				}
 			}
-
+			
 			return this;
 		}
 	}
-
+	
 	return 0;
 }
 
@@ -327,7 +340,12 @@ Window *create_window(Widget *parent, int x, int y, int w, int h, const char *ti
 	win->set_text(title);
 
 	WinFrame *frm = new WinFrame(win);
-	parent->add_child(frm);
+
+	if (parent) {
+		parent->add_child(frm);
+	} else {
+		get_root_widget()->add_child(frm);
+	}
 
 	win->rise();
 	return win;
@@ -335,7 +353,8 @@ Window *create_window(Widget *parent, int x, int y, int w, int h, const char *ti
 
 void destroy_window(Widget *w)
 {
-	if(dynamic_cast<Window*>(w)) {
+	Window	*win;
+	if((win = dynamic_cast<Window*>(w))) {
 		/*
 		Widget *parent = w->get_parent();
 
@@ -348,6 +367,10 @@ void destroy_window(Widget *w)
 			parent->remove_child(w);
 		}
 		*/
+		if (win->modal) {
+			win->modal = false;
+			close_last_modal_window();
+		}
 		utk::destruct_queue.push_back(w);
 	} else {
 		utk_error("non-window widget passed to destroy_window()\n");

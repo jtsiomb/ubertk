@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -28,7 +28,6 @@ OF SUCH DAMAGE.
 */
 
 #include <stdio.h>
-#include "utk_config.h"
 #include "utk_slider.h"
 #include "utk_gfx.h"
 
@@ -133,14 +132,10 @@ void Slider::draw() const
 
 	if(show_value) {
 		char txbuf[128];
+		char fmt[8];
 
-		if(vis_decimal) {
-			char fmt[8];
-			sprintf(fmt, "%%.%df", vis_decimal);
-			sprintf(txbuf, fmt, get_value());
-		} else {
-			sprintf(txbuf, "%d", (int)get_value());
-		}
+		sprintf(fmt, vis_decimal ? "%%.%df" : "%%d", vis_decimal);
+		sprintf(txbuf, fmt, vis_decimal ? get_value() : (int)get_value());
 
 		gfx::color(0, 0, 0, color.a);
 		gfx::text(gpos.x + border, gpos.y + size.y - border, txbuf, 18);
@@ -162,11 +157,7 @@ void Slider::on_modify(Event *event)
 	if(link_str) {
 		char fmt[8];
 		sprintf(fmt, vis_decimal ? "%%.%df" : "%%d", vis_decimal);
-#ifdef _MSC_VER
-		sprintf(link_str, fmt, val);
-#else
 		snprintf(link_str, link_str_width, fmt, val);
-#endif
 	}
 }
 

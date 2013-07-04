@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_MENUS_H_
-#define UBERTK_MENUS_H_
+
+#ifndef UTK_MENUS_H_
+#define UTK_MENUS_H_
 
 #include <utk_widget.h>
 #include <utk_drawable.h>
@@ -39,21 +40,21 @@ namespace utk {
 class PopupMenuItem : public Drawable
 {
 	friend class PopupMenu;
-	
+
 	protected:
 	utk::Widget		*widget;
 	class PopupMenu *master;
 	class PopupMenu *submenu;
-	
+
 	public:
 	PopupMenuItem(utk::Widget *widget);
 	virtual ~PopupMenuItem();
-	
+
 	virtual utk::Widget *get_child_at(int x, int y);
 	virtual void set_size(int w, int h);
-	
+
 	virtual Widget *handle_event(utk::Event *event);
-	
+
 	virtual void draw() const;
 
 	virtual PopupMenuItem *add_item(PopupMenuItem *item, utk::Callback cb=0);

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include <string>
 #include "utk_entry.h"
 #include "utk_gfx.h"
@@ -38,6 +38,8 @@ Entry::Entry(const char *txt, utk::Callback cb)
 {
 	focused = false;
 	cursor = 0;
+	readonly = false;
+
 	set_text(txt);
 	set_callback(EVENT_MODIFY, cb);
 
@@ -45,11 +47,53 @@ Entry::Entry(const char *txt, utk::Callback cb)
 
 	set_color(115, 156, 156);
 
-	vfirst = 0;
+	vscroll = 0;
 }
 
 Entry::~Entry() {}
 
+int Entry::cursor_from_x(int x) const
+{
+	if (x < 0) return -1;
+
+	int			chw;
+	const char	*txt = get_text();
+	char		chs[2];
+	chs[1] = 0;
+	for (int i=0; *txt; i++, txt++) {
+		int	cx = gfx::text_width(text.substr(0, i).c_str(), 18) - vscroll;
+		chs[0] = *txt;
+		chw = gfx::text_width(chs, 18);
+		if (x >= cx && x < cx + chw) {
+			return i;
+		}
+	}
+
+	return 2147483640;
+}
+
+int Entry::x_from_cursor(int c) const
+{
+	if (c < 0 || c > (int)text.length()) return 0;
+
+	return gfx::text_width(text.substr(0, c).c_str(), 18) - vscroll;
+}
+
+void Entry::scroll_to_cursor()
+{
+	while (true) {
+		int	cx = x_from_cursor(cursor);
+		if (cx < 0) {
+			if (vscroll > 0) {
+				vscroll -= size.x/2;
+			}
+		} else if (cx >= size.x - 4) {
+			vscroll += 20;
+		} else break;
+	}
+
+	if (vscroll < 0) vscroll = 0;
+}
 
 Widget *Entry::handle_event(Event *event)
 {
@@ -60,30 +104,45 @@ Widget *Entry::handle_event(Event *event)
 
 			switch(kev->key) {
 			case '\b':
-				if(!text.empty()) {
+				if(!readonly && !text.empty()) {
 					text.erase(text.end() - 1);
+					cursor--;
+				}
+				break;
+
+			case KEY_DELETE:
+				if (readonly || text.empty()) break;
+
+				if (cursor < (int)text.size()) {
+					text = text.substr(0, cursor) + text.substr(cursor + 1, text.size());
 				}
 
+				break;
+
 			case KEY_LEFT:
-				if(vfirst >= (int)text.length() && vfirst > 0) {
-					vfirst--;
-					std::string view_str(text, vfirst);
-					while(vfirst > 0 && gfx::text_width(view_str.c_str(), 18) < size.x) {
-						vfirst--;
-						view_str = std::string(text, vfirst);
-					}
-					if(vfirst > 0) vfirst++;
-				}
 				cursor--;
 				if(cursor < 0) cursor = 0;
 				break;
 
-				text += "    ";
-				cursor += 4;
+			case KEY_RIGHT:
+				cursor++;
+				if(cursor > (int)text.length()) cursor = (int)text.length();
+				break;
+
+			case KEY_HOME:
+				vscroll = 0;
+				cursor = 0;
+				break;
+
+			case KEY_END:
+				vscroll = 0;
+				cursor = (int)text.length();
 				break;
 
 			case '\n':
 			case '\r':
+				event->widget = this;
+				callback(event, EVENT_NOTIFY);
 				break;
 
 			case '\t':
@@ -92,24 +151,22 @@ Widget *Entry::handle_event(Event *event)
 			default:
 					tmp_str = std::string("") + (char)kev->key;
 				}
-				
+
+				if (readonly) break;
+
 				// filter out non-character keys
 				if (kev->key != '\t' && (kev->key < 32 || kev->key > 126))
 					break;
-					
+
 				if(cursor < (int)text.length()) {
 					text = std::string(text, 0, cursor) + tmp_str + std::string(text, cursor);
 				} else {
 					text += tmp_str;
 				}
-				cursor += tmp_str.length();
+				cursor += (int)tmp_str.length();
 			}
 
-			std::string view_str(text, vfirst);
-			while(gfx::text_width(view_str.c_str(), 18) > size.x) {
-				vfirst++;
-				view_str = std::string(text, vfirst);
-			}
+			scroll_to_cursor();
 
 			on_modify(kev);
 			callback(kev, EVENT_MODIFY);
@@ -123,11 +180,19 @@ Widget *Entry::handle_event(Event *event)
 
 		cev->widget = this;
 
+		cursor = cursor_from_x(cev->x - get_global_pos().x - border);
+		if (cursor < 0) {
+			cursor = 0;
+		} else if (cursor > (int)text.length()) {
+			cursor = (int)text.length();
+		}
+		scroll_to_cursor();
+
 		on_click(cev);
 		callback(cev, EVENT_CLICK);
 		return this;
 	}
-	
+
 	return 0;
 }
 
@@ -140,12 +205,12 @@ void Entry::draw() const
 	gfx::color_clamp(color.r, color.g, color.b, color.a);
 	gfx::bevel(gpos.x, gpos.y, gpos.x + size.x, gpos.y + size.y, gfx::BEVEL_INSET | gfx::BEVEL_FILLBG, border);
 
-	std::string view_text(text, vfirst);
+	std::string view_text(text);
 
 	if(text.length()) {
 		gfx::clip(gpos.x + border, gpos.y + border, gpos.x + size.x - border, gpos.y + size.y - border);
 		gfx::color(0, 0, 0, color.a);
-		gfx::text(gpos.x + border, gpos.y + size.y, view_text.c_str(), 18);
+		gfx::text(gpos.x + border - vscroll, gpos.y + size.y, view_text.c_str(), 18);
 		gfx::clip(0, 0, 0, 0);
 	}
 
@@ -153,16 +218,26 @@ void Entry::draw() const
 		int cur_pos = 0;
 
 		if(text.length()) {
-			cur_pos = gfx::text_width(std::string(view_text, vfirst, cursor - vfirst).c_str(), 18);
+			cur_pos = x_from_cursor(cursor);
 		}
 
 		gfx::clip(gpos.x + border, gpos.y + border, gpos.x + size.x - border, gpos.y + size.y - border);
 		gfx::color(64, 64, 64, color.a);
-		gfx::line(border + gpos.x + cur_pos, gpos.y + border + 2, border + gpos.x + cur_pos, gpos.y + size.y - border - 2, 2);
+		gfx::line(border + gpos.x + cur_pos + 1, gpos.y + border + 2, border + gpos.x + cur_pos + 1, gpos.y + size.y - border - 2, 2);
 		gfx::clip(0, 0, 0, 0);
 	}
 
 	Widget::draw();
+}
+
+void Entry::set_readonly(bool readonly)
+{
+	this->readonly = true;
+}
+
+bool Entry::is_readonly() const
+{
+	return readonly;
 }
 
 

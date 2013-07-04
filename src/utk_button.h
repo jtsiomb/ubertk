@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_BUTTON_H_
-#define UBERTK_BUTTON_H_
+
+#ifndef UTK_BUTTON_H_
+#define UTK_BUTTON_H_
 
 #include <utk_drawable.h>
 #include <utk_events.h>
@@ -45,11 +46,12 @@ public:
 
 	virtual Widget *handle_event(Event *event);
 
+	virtual void add_child(utk::Widget *w);
 	virtual Widget *get_child_at(int x, int y);
 	virtual void set_size(int w, int h);
 
 	virtual void draw() const;
-	
+
 	virtual void set_text(const char *text);
 
 	virtual void set_flat(bool flat);
@@ -63,5 +65,5 @@ Button *create_button(Widget *parent, Widget *child, int xsz, int ysz = 0, Callb
 
 }	// end of namespace utk
 
-#endif	// UBERTK_BUTTON_H_
+#endif	// UTK_BUTTON_H_
 

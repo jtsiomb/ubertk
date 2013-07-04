@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,8 +26,9 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_WIDGET_H_
-#define UBERTK_WIDGET_H_
+
+#ifndef UTK_WIDGET_H_
+#define UTK_WIDGET_H_
 
 #include <utk_types.h>
 #include <utk_events.h>
@@ -58,6 +59,8 @@ protected:
 	float *link_flt;
 	char *link_str;
 	int link_str_width;
+
+	void *user_data;
 
 public:
 	Widget();
@@ -137,6 +140,9 @@ public:
 
 	virtual void callback(Event *event, int event_type);
 
+	virtual void set_user_data(void *data);
+	virtual void *get_user_data();
+
 	virtual void on_click(Event *event);
 	virtual void on_focus(Event *event);
 	virtual void on_modify(Event *event);
@@ -144,6 +150,10 @@ public:
 	inline void set_hover(bool hover) { this->hover = hover; }
 };
 
+void register_widget(Widget *widget);
+void unregister_widget(Widget *widget);
+bool registered_widget(const Widget *widget);
+
 }
 
-#endif	// UBERTK_WIDGET_H_
+#endif	// UTK_WIDGET_H_

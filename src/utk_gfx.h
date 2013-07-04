@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,12 +26,21 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#ifndef UBERTK_GFX_H_
-#define UBERTK_GFX_H_
+
+#ifndef UTK_GFX_H_
+#define UTK_GFX_H_
 
 #include <utk_types.h>
 
 namespace utk {
+
+	enum ArrowOrientation {
+		ARROW_LEFT,
+		ARROW_UP,
+		ARROW_RIGHT,
+		ARROW_DOWN
+	};
+
 	namespace gfx {
 		typedef void (*ColorFunc)(int r, int g, int b, int a);
 		typedef void (*ClipFunc)(int x1, int y1, int x2, int y2);
@@ -58,7 +67,7 @@ namespace utk {
 
 		// ---- high level drawing functions ----
 		void circle(int x1, int y1, int x2, int y2, bool outline);
-		
+
 		void push_clip();
 		void pop_clip();
 		void set_clip(int x1, int y1, int x2, int y2);
@@ -70,7 +79,9 @@ namespace utk {
 
 		enum {BEVEL_INSET = 1, BEVEL_FILLBG = 2};
 		void bevel(int x1, int y1, int x2, int y2, unsigned int flags = 0, int thickness = 1);
+
+		void arrow(int x, int y, ArrowOrientation orientation);
 	}
 }
 
-#endif	// UBERTK_GFX_H_
+#endif	// UTK_GFX_H_

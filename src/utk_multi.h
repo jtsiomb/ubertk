@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -32,7 +32,7 @@ OF SUCH DAMAGE.
 #ifndef _UTK_MULTI_H_
 #define _UTK_MULTI_H_
 
-#include "ubertk.h"
+#include <ubertk.h>
 #include <vector>
 
 namespace utk
@@ -55,13 +55,12 @@ namespace utk
 		gfx::TextSpacingFunc old_text_spacing_func;
 		gfx::TextWidthFunc old_text_width_func;
 
-		
 		std::vector<Event*> events;
 
 	public:
 
 		void begin();
-		void end();		
+		void end();
 
 		UTKContext(int w=320, int h=240);
 		virtual ~UTKContext();

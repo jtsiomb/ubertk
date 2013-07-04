@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,9 +26,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include <stack>
-#include <stdlib.h>
 #include <math.h>
 #include "utk_gfx.h"
 #include "utk_common.h"
@@ -41,19 +40,19 @@ namespace gfx {
 static Color cur_col;
 
 // graphics state
-ColorFunc color = NULL;
-ClipFunc clip = NULL;
-ImageFunc image = NULL;
+ColorFunc color;
+ClipFunc clip;
+ImageFunc image;
 
 // drawing calls
-RectFunc rect = NULL;
-LineFunc line = NULL;
+RectFunc rect;
+LineFunc line;
 
 // text
-TextFunc text = NULL;
-TextSpacingFunc text_spacing = NULL;
-TextWidthFunc text_width = NULL;
-		
+TextFunc text;
+TextSpacingFunc text_spacing;
+TextWidthFunc text_width;
+
 // high level drawing functions
 void circle(int x1, int y1, int x2, int y2, bool outline)
 {
@@ -111,7 +110,7 @@ void pop_clip()
 {
 	if(!clip_stack.empty()) {
 		clip_stack.pop();
-		
+
 		if(clip_stack.empty()) {
 			clip(0, 0, 0, 0);
 		} else {
@@ -181,7 +180,7 @@ void bevel(int x1, int y1, int x2, int y2, unsigned int flags, int thickness)
 			gfx::color(dark_color.r, dark_color.g, dark_color.b, dark_color.a);
 			gfx::rect(x1 + i, y1 + i, x2 - i, y1 + 1 + i);
 			gfx::rect(x1 + i, y1 + i, x1 + 1 + i, y2 - i);
-			
+
 			gfx::color(light_color.r, light_color.g, light_color.b, light_color.a);
 			gfx::rect(x1 + i, y2 - 1 - i, x2 - i, y2 - i);
 			gfx::rect(x2 - 1 - i, y1 + i, x2 - i, y2 - i);
@@ -196,6 +195,72 @@ void bevel(int x1, int y1, int x2, int y2, unsigned int flags, int thickness)
 		}
 	}
 }
-	
+
+void arrow(int x, int y, ArrowOrientation orientation)
+{
+	int	x1, y1, x2, y2;
+
+	switch (orientation) {
+	case ARROW_LEFT:
+		{
+			y1 = y - 6;
+			y2 = y1 + 13;
+			x1 = x - 4;
+			x2 = x + 3;
+			for(int x=x2;x>x1;x--) {
+				line(x, y1, x, y2, 1);
+				y1++;
+				y2--;
+			}
+		}
+		break;
+
+	case ARROW_UP:
+		{
+			x1 = x - 6;
+			x2 = x1 + 13;
+			y1 = y - 4;
+			y2 = y + 3;
+			for (int y=y2;y>y1;y--) {
+				line(x1, y, x2, y, 1);
+				x1++;
+				x2--;
+			}
+		}
+		break;
+
+	case ARROW_RIGHT:
+		{
+			y1 = y - 6;
+			y2 = y1 + 13;
+			x1 = x - 3;
+			x2 = x + 4;
+			for (int x=x1;x<x2;x++) {
+				line(x, y1, x, y2, 1);
+				y1++;
+				y2--;
+			}
+		}
+		break;
+
+	case ARROW_DOWN:
+		{
+			x1 = x - 6;
+			x2 = x1 + 13;
+			y1 = y - 2;
+			y2 = y + 5;
+			for (int y=y1;y<y2;y++) {
+				line(x1, y, x2, y, 1);
+				x1++;
+				x2--;
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+}
+
 } // end namespace gfx
 } // end namespace utk

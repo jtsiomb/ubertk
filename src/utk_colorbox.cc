@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include "utk_colorbox.h"
 #include "utk_hsv.h"
 
@@ -52,8 +52,12 @@ void ColorBox::update()
 		}
 	}
 }
-void ColorBox::on_click(int x, int y)
+void ColorBox::on_click(Event *ev)
 {
+	ClickEvent *cev = (ClickEvent*)ev;
+	int x = cev->x;
+	int y = cev->y;
+
 	s = (float) x / (float) (img_w - 1);
 	v = (float) y / (float) (img_h - 1);
 
@@ -113,15 +117,13 @@ void ColorBox::set_h(float h)
 
 	float r, g, b;
 	hsv_to_rgb(&r, &g, &b, h, s, v);
-	Drawable::set_color((int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), color.a);
-
-	update();
+	Drawable::set_color((int)(r * 255.0f), (int)(g * 255.0f), (int)(b * 255.0f), color.a);
 }
 
 void ColorBox::set_color(int r, int g, int b, int a)
 {
 	Drawable::set_color(r, g, b, a);
-	rgb_to_hsv((float)r / 255.0, (float)g / 255.0, (float)b / 255.0, &h, &s, &v);
+	rgb_to_hsv((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, &h, &s, &v);
 }
 
 void ColorBox::set_color_hsv(int h, int s, int v, int a)
@@ -135,7 +137,7 @@ void ColorBox::set_color_hsv(int h, int s, int v, int a)
 void ColorBox::set_color(const Color &col)
 {
 	Drawable::set_color(col);
-	rgb_to_hsv((float)col.r / 255.0, (float)col.g / 255.0, (float)col.b / 255.0, &h, &s, &v);
+	rgb_to_hsv((float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, &h, &s, &v);
 }
 
 unsigned int ColorBox::get_packed_color() const

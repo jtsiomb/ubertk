@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2008 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-#include "utk_config.h"
+
 #include "utk_menus.h"
 #include "utk_label.h"
 #include "utk_win.h"
@@ -58,7 +58,7 @@ PopupMenuItem::~PopupMenuItem()
 		get_root_widget()->remove_child(submenu);
 	}
 }
-	
+
 PopupMenuItem *PopupMenuItem::add_item(PopupMenuItem *item, Callback cb)
 {
 	if (!submenu) {
@@ -68,7 +68,7 @@ PopupMenuItem *PopupMenuItem::add_item(PopupMenuItem *item, Callback cb)
 		size.x += 20;
 		((PopupMenu*)(get_parent()->get_parent()))->update_size();
 	}
-		
+
 	return submenu->add_item(item, cb);
 }
 
@@ -151,17 +151,11 @@ void PopupMenuItem::draw() const
 	}
 	
 	if (submenu) {
-		int	y1 = gpos.y + size.y/2 - 6;
-		int	y2 = y1 + 13;
 		if (barr)
 			gfx::color(80, 64, 64, 255);
 		else
 			gfx::color(64, 64, 80, 255);
-		for (int x=gpos.x + size.x - 10;y1 <= y2;x++) {
-			gfx::line(x, y1, x, y2, 1);
-			y1++;
-			y2--;
-		}
+		gfx::arrow(gpos.x + size.x - 7, gpos.y + size.y/2, ARROW_RIGHT);
 	}
 
 	Widget::draw();
@@ -202,7 +196,7 @@ void PopupMenu::update_size()
 {
 	int	max = 0;
 	vbox->layout();
-	for (size_t i=0; i<vbox->size(); i++) {
+	for (int i=0; i<(int)vbox->size(); i++) {
 		Widget	*c = (Widget*)(*vbox)[i];
 		if (max < c->get_width())
 			max = c->get_width();
@@ -216,7 +210,7 @@ void PopupMenu::set_size(int w, int h)
 {
 	Popup::set_size(w, h);
 
-	for (size_t i=0; i<vbox->size(); i++) {
+	for (int i=0; i<(int)vbox->size(); i++) {
 		Widget	*c = (Widget*)(*vbox)[i];
 		c->set_size(w - padding*2, c->get_height());
 	}
