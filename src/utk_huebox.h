@@ -52,6 +52,8 @@ public:
 	void set_h(float h);
 };
 
+HueBox *create_huebox(Widget *parent, Callback func = 0, void *cdata = 0);
+
 }
 
 #endif // ndef _UTK_HUEBOX_H_

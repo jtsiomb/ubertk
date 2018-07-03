@@ -67,6 +67,8 @@ void ColorBox::on_click(Event *ev)
 	float r, g, b;
 	hsv_to_rgb(&r, &g, &b, h, s, v);
 	Drawable::set_color((int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), color.a);
+
+	invalidate();
 }
 
 #define CLAMP(x, a, b)	((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
@@ -85,6 +87,8 @@ void ColorBox::on_drag(int dx, int dy)
 	float r, g, b;
 	hsv_to_rgb(&r, &g, &b, h, s, v);
 	Drawable::set_color((int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0), color.a);
+
+	invalidate();
 }
 
 ColorBox::ColorBox(utk::Callback cb) : Image(150, 150, cb)
@@ -118,12 +122,16 @@ void ColorBox::set_h(float h)
 	float r, g, b;
 	hsv_to_rgb(&r, &g, &b, h, s, v);
 	Drawable::set_color((int)(r * 255.0f), (int)(g * 255.0f), (int)(b * 255.0f), color.a);
+
+	invalidate();
 }
 
 void ColorBox::set_color(int r, int g, int b, int a)
 {
 	Drawable::set_color(r, g, b, a);
 	rgb_to_hsv((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, &h, &s, &v);
+
+	invalidate();
 }
 
 void ColorBox::set_color_hsv(int h, int s, int v, int a)
@@ -138,11 +146,21 @@ void ColorBox::set_color(const Color &col)
 {
 	Drawable::set_color(col);
 	rgb_to_hsv((float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, &h, &s, &v);
+
+	invalidate();
 }
 
 unsigned int ColorBox::get_packed_color() const
 {
 	return pack_hsv(h, s, v);
+}
+
+ColorBox *create_colorbox(Widget *parent, Callback func, void *cdata)
+{
+	ColorBox *cbox = new ColorBox;
+	cbox->set_callback(EVENT_MODIFY, func, cdata);
+	parent->add_child(cbox);
+	return cbox;
 }
 
 } // end namespace utk

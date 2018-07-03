@@ -48,7 +48,9 @@ OF SUCH DAMAGE.
 #error "your OS is not supported currently, or OS detection failed"
 #endif
 
+#ifdef UBERTK_PCRE
 #include <pcre.h>
+#endif
 #include "ubertk.h"
 #include "utk_filedialog.h"
 #include "utk_common.h"
@@ -125,8 +127,10 @@ bool FileDialogExtFilter::accept(const char *name) const
 
 FileDialogRegExpFilter::FileDialogRegExpFilter(const char *name, const char *regexp, bool wildcard)
 {
+#ifdef UBERTK_PCRE
 	const char	*err;
 	int			off;
+#endif
 	char		*code = strdup(regexp);
 	char		buf[512];
 	this->name = strdup(name);
@@ -150,7 +154,9 @@ FileDialogRegExpFilter::FileDialogRegExpFilter(const char *name, const char *reg
 		code = buf;
 	}
 
+#ifdef UBERTK_PCRE
 	rxprog = pcre_compile(code, 0, &err, &off, 0);
+#endif
 
 	if (!wildcard) free(code);
 }
@@ -167,7 +173,11 @@ const char *FileDialogRegExpFilter::get_name() const
 
 bool FileDialogRegExpFilter::accept(const char *name) const
 {
+#ifdef UBERTK_PCRE
 	return !rxprog || pcre_exec((pcre*)rxprog, 0, name, strlen(name), 0, 0, 0, 0) >= 0;
+#else
+	return true;
+#endif
 }
 
 void FileDialog::extlist_modify_handler(Event *event, void *data)

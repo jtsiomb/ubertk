@@ -54,6 +54,7 @@ public:
 	virtual ~Image();
 
 	virtual Widget *handle_event(Event *event);
+	virtual void invalidate();
 
 	virtual void draw() const;
 	void clear(unsigned int c);

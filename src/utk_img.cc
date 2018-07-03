@@ -36,7 +36,6 @@ namespace utk {
 
 void Image::update()
 {
-
 }
 
 Image::Image(int w, int h, utk::Callback cb)
@@ -63,8 +62,7 @@ Image::Image(int w, int h, utk::Callback cb)
 
 Image::~Image()
 {
-	if (pixels)
-		delete [] pixels;
+	delete [] pixels;
 }
 
 Widget *Image::handle_event(Event *event)
@@ -76,7 +74,7 @@ Widget *Image::handle_event(Event *event)
 		ce->x -= pos.x;
 		ce->y -= pos.y;
 		on_click(ce);
-		upd = true;
+		invalidate();
 		dragging = false;
 		event->widget = this;
 		return this;
@@ -92,7 +90,7 @@ Widget *Image::handle_event(Event *event)
 			{
 				dragging = true;
 			}
-			upd = true;
+			invalidate();
 			event->widget = this;
 			return this;
 		}
@@ -111,12 +109,17 @@ Widget *Image::handle_event(Event *event)
 		{
 			on_motion(mmev->x, mmev->y);
 		}
-		upd = true;
+		invalidate();
 		event->widget = this;
 		return 0;
 	}
 
 	return 0;
+}
+
+void Image::invalidate()
+{
+	upd = true;
 }
 
 void Image::draw() const

@@ -56,6 +56,8 @@ void HueBox::on_click(Event *ev)
 	sel_h = x;
 	h = (float) sel_h / (float) (img_w - 1);
 	h = fmod(h, 1.0f);
+
+	callback(ev, EVENT_MODIFY);
 }
 
 #define CLAMP(x, a, b)	((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
@@ -67,6 +69,9 @@ void HueBox::on_drag(int dx, int dy)
 	sel_h = lmx;
 	h = (float) sel_h / (float) (img_w - 1);
 	h = fmod(h, 1.0f);
+
+	utk::Event ev;
+	callback(&ev, EVENT_MODIFY);
 }
 
 HueBox::HueBox(utk::Callback cb) : Image(150, 20, cb)
@@ -87,6 +92,14 @@ float HueBox::get_h() const
 void HueBox::set_h(float h)
 {
 	this->h = h;
+}
+
+HueBox *create_huebox(Widget *parent, Callback func, void *cdata)
+{
+	HueBox *huebox = new HueBox;
+	huebox->set_callback(EVENT_MODIFY, func, cdata);
+	parent->add_child(huebox);
+	return huebox;
 }
 
 } // end namespace utk

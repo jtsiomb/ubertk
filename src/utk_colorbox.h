@@ -62,6 +62,8 @@ public:
 	virtual unsigned int get_packed_color() const;
 };
 
+ColorBox *create_colorbox(Widget *parent, Callback func = 0, void *cdata = 0);
+
 }
 
 #endif // ndef _UTK_COLORBOX_H_
