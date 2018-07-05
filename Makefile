@@ -1,57 +1,69 @@
-PREFIX = /usr/local
-
 ccsrc = $(wildcard src/*.cc)
 csrc = $(wildcard src/*.c)
 ccobj = $(ccsrc:.cc=.o)
 cobj = $(csrc:.c=.o)
 obj = $(cobj) $(ccobj)
-lib_a = libutk.a
-soname = libutk.so.0
-lib_so = $(soname).1
-depfiles = $(obj:.o=.d)
+dep = $(obj:.o=.d)
+
+abi = 0
+rev = 1
+
+name = libutk
+lib_a = $(name).a
 dist_file = ubertk.tar.gz
 diag_file = diag.ps
 
 opt = -O3
 dbg = -g
-                             
-ifeq ($(shell uname -s), Darwin)
+
+sys := $(shell uname -s | sed 's/MINGW.*/mingw/')
+ifeq ($(sys), Darwin)
 	gllibs = -framework OpenGL -framework GLUT
-	testbin = test                                               
-	libset = $(lib_a)
-else ifeq ($(shell uname -s | sed 's/32.*//'), MINGW)
+	testbin = test
+	lib_so = $(name).dylib
+	sharedopt = -dynamiclib
+	sodir = lib
+
+else ifeq ($(sys), mingw)
 	gllibs = -lopengl32 -lglu32 -lglut32
 	testbin = test.exe
-	libset = $(lib_a)
+	lib_so = $(name).dll
+	sharedopt = -shared
+	sodir = bin
+
 else
 	pic = -fPIC
 	gllibs = -lGL -lGLU -lglut
 	testbin = test
-	libset = $(lib_a) $(lib_so)
+	soname = $(name).so.$(abi)
+	lib_so = $(soname).$(rev)
+	ldname = $(name).so
+	sharedopt = -shared -Wl,-soname,$(soname)
+	sodir = lib
 endif
 
-CC = gcc
-CXX = g++
 AR = ar
-INSTALL = install
 CFLAGS = -std=c89 -pedantic -Wall $(opt) $(dbg) -Isrc $(pic)
-CXXFLAGS = -ansi -pedantic -Wall $(opt) $(dbg) -Isrc $(pic) `pkg-config --cflags freetype2`
-LDFLAGS = $(gllibs) `pkg-config --libs freetype2` -lpcre
+CXXFLAGS = -std=c++98 -pedantic -Wall $(opt) $(dbg) -Isrc $(pic) `pkg-config --cflags freetype2`
+LDFLAGS = $(gllibs) `pkg-config --libs freetype2`
 
 .PHONY: all
-all: $(libset) $(testbin)
+all: $(lib_so) $(lib_a) $(soname) $(ldname)
 
 $(lib_a): $(obj)
 	$(AR) rcs $@ $(obj)
 
 $(lib_so): $(obj)
-	$(CXX) -shared -Wl,-soname,$(soname) -o $@ $(obj)
-
+	$(CXX) $(sharedopt) -o $@ $(obj)
+	[ -n "$(ldname)" ] && \
+		rm -f $(soname) && ln -s $(lib_so) $(soname) && \
+		rm -f $(ldname) && ln -s $(soname) $(ldname) || \
+		true
 
 $(testbin): test.o test_text.o $(lib_a)
 	$(CXX) -o $@ test.o test_text.o $(lib_a) $(LDFLAGS)
 
--include $(depfiles)
+-include $(dep)
 
 %.d: %.cc
 	@$(CPP) $(CXXFLAGS) -MM -MT $(@:.d=.o) $< >$@
@@ -71,7 +83,11 @@ $(diag_file):
 
 .PHONY: clean
 clean:
-	rm -f $(obj) $(lib_a) $(dist_file) $(diag_file) test.o test_text.o $(testbin) $(depfiles)
+	rm -f $(obj) $(lib_a) $(dist_file) $(diag_file) test.o test_text.o $(testbin)
+
+.PHONY: cleandep
+cleandep:
+	rm -f $(dep)
 
 .PHONY: dist
 dist: clean
@@ -79,17 +95,21 @@ dist: clean
 
 .PHONY: install
 install:
-	$(INSTALL) -d $(PREFIX)/lib
-	$(INSTALL) -m 644 $(lib_a) $(PREFIX)/lib/$(lib_a)
-	$(INSTALL) -m 644 $(lib_so) $(PREFIX)/lib/$(lib_so)
-	$(INSTALL) -d $(PREFIX)/include/utk
-	cd src; $(INSTALL) -m 644 *.h *.inl $(PREFIX)/include/utk
-	cd $(PREFIX)/lib; rm -f libutk.so; ln -s $(lib_so) libutk.so
+	mkdir -p $(DESTDIR)$(PREFIX)/include/utk $(DESTDIR)$(PREFIX)/lib
+	cp $(lib_a) $(DESTDIR)$(PREFIX)/lib/$(lib_a)
+	cp $(lib_so) $(DESTDIR)$(PREFIX)/$(sodir)/$(lib_so)
+	cp src/*.h src/*.inl $(DESTDIR)$(PREFIX)/include/utk
+	[ -n "$(ldname)" ] && \
+		rm -f $(DESTDIR)$(PREFIX)/$(sodir)/$(ldname) $(DESTDIR)$(PREFIX)/$(sodir)/$(soname) && \
+		cd $(DESTDIR)$(PREFIX)/lib && ln -s $(lib_so) $(ldname) && ln -s $(lib_so) $(soname) || true
+
 
 .PHONY: uninstall
 uninstall:
-	rm -f $(PREFIX)/lib/$(lib_a)
-	rm -f $(PREFIX)/lib/$(lib_so)
-	rm -f $(PREFIX)/lib/libutk.so
-	rm -f $(PREFIX)/include/utk/*
-	rmdir $(PREFIX)/include/utk
+	rm -f $(DESTDIR)$(PREFIX)/lib/$(lib_a)
+	rm -f $(DESTDIR)$(PREFIX)/$(sodir)/$(lib_so)
+	rm -f $(DESTDIR)$(PREFIX)/include/utk/*
+	rmdir $(DESTDIR)$(PREFIX)/include/utk
+	[ -n "$(ldname)" ] && \
+		rm -f $(DESTDIR)$(PREFIX)/$(sodir)/$(ldname) && \
+		rm -f $(DESTDIR)$(PREFIX)/$(sodir)/$(soname) || true
