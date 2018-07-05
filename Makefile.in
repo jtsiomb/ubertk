@@ -13,9 +13,6 @@ lib_a = $(name).a
 dist_file = ubertk.tar.gz
 diag_file = diag.ps
 
-opt = -O3
-dbg = -g
-
 sys := $(shell uname -s | sed 's/MINGW.*/mingw/')
 ifeq ($(sys), Darwin)
 	gllibs = -framework OpenGL -framework GLUT
