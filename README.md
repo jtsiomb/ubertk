@@ -6,7 +6,6 @@ ubertk
 
 About
 -----
-
 Ubertk is an API-agnostic C++ widget toolkit for graphics programs. The
 user program supplies a set of drawing callbacks required by ubertk, and
 calls a function to notify ubertk about low level mouse and keyboard
@@ -36,7 +35,6 @@ project: https://github.com/MutantStargoat/rototool
 
 License
 -------
-
 Copyright (C) 2007 - 2018 John Tsiombikas, Michael Georgoulopoulos,
     and Kostas Michalopoulos.
 
@@ -48,9 +46,32 @@ like, as long as you give attribution to the authors, retain all
 relevant copyright notices, and not claim to have our endorsement for
 whatever you're doing with it.
 
+Build
+-----
+To build and install `libutk` on UNIX, run the usual:
+
+    ./configure
+    make
+    make install
+
+See `./configure --help` for build-time options. 
+
+If you wish to build the test program, run:
+
+    make test
+
+To build on windows, you may use the included visual studio project, or use
+mingw, in which case just follow the UNIX instructions above.
+
+To cross-compile for windows with mingw-w64, try the following incantation:
+
+    ./configure --prefix=/usr/i686-w64-mingw32
+    make CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ AR=i686-w64-mingw32-ar sys=mingw
+    make install sys=mingw
+
+
 Contact
 -------
-
 Curent maintainer ubertk is John Tsiombikas <nuclear@member.fsf.org>.
 
 Only properly formatted (hard wrapped at 72 columns, no top-posting)

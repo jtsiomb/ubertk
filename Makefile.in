@@ -22,7 +22,7 @@ ifeq ($(sys), Darwin)
 	sodir = lib
 
 else ifeq ($(sys), mingw)
-	gllibs = -lopengl32 -lglu32 -lglut32
+	gllibs = -lopengl32 -lglu32 -lfreeglut
 	testbin = test.exe
 	lib_so = $(name).dll
 	sharedopt = -shared
@@ -42,10 +42,13 @@ endif
 AR = ar
 CFLAGS = -std=c89 -pedantic -Wall $(opt) $(dbg) -Isrc $(pic)
 CXXFLAGS = -std=c++98 -pedantic -Wall $(opt) $(dbg) -Isrc $(pic) `pkg-config --cflags freetype2`
-LDFLAGS = $(gllibs) `pkg-config --libs freetype2`
+LDFLAGS = $(gllibs) `pkg-config --libs freetype2` -lpng -lz
 
 .PHONY: all
 all: $(lib_so) $(lib_a) $(soname) $(ldname)
+
+.PHONY: test
+test: $(lib_a) $(testbin)
 
 $(lib_a): $(obj)
 	$(AR) rcs $@ $(obj)
