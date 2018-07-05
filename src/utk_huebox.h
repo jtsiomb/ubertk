@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,6 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_HUEBOX_H_
 #define UTK_HUEBOX_H_
 
@@ -34,7 +33,7 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
-class HueBox : public Image {
+class UTK_API HueBox : public Image {
 protected:
 	float h;
 	int sel_h;
@@ -53,7 +52,7 @@ public:
 	void set_h(float h);
 };
 
-HueBox *create_huebox(Widget *parent, Callback func = 0, void *cdata = 0);
+UTK_API HueBox *create_huebox(Widget *parent, Callback func = 0, void *cdata = 0);
 
 }
 

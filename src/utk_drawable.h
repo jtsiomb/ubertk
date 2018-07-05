@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,7 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
+#include <utk_config.h>
 #include <string>
 #include <utk_widget.h>
 #include <utk_types.h>
@@ -36,7 +36,7 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
-class Drawable : public Widget {
+class UTK_API Drawable : public Widget {
 protected:
 	Color color, light_color, dark_color;
 	int border;

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,10 +26,10 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_GFX_H_
 #define UTK_GFX_H_
 
+#include <utk_config.h>
 #include <utk_types.h>
 
 namespace utk {
@@ -52,35 +52,35 @@ namespace utk {
 		typedef int (*TextWidthFunc)(const char *txt, int sz);
 
 		// graphics state
-		extern ColorFunc color;
-		extern ClipFunc clip;
-		extern ImageFunc image;
+		extern UTK_API ColorFunc color;
+		extern UTK_API ClipFunc clip;
+		extern UTK_API ImageFunc image;
 
 		// drawing calls
-		extern RectFunc rect;
-		extern LineFunc line;
+		extern UTK_API RectFunc rect;
+		extern UTK_API LineFunc line;
 
 		// text
-		extern TextFunc text;
-		extern TextSpacingFunc text_spacing;
-		extern TextWidthFunc text_width;
+		extern UTK_API TextFunc text;
+		extern UTK_API TextSpacingFunc text_spacing;
+		extern UTK_API TextWidthFunc text_width;
 
 		// ---- high level drawing functions ----
-		void circle(int x1, int y1, int x2, int y2, bool outline);
+		UTK_API void circle(int x1, int y1, int x2, int y2, bool outline);
 
-		void push_clip();
-		void pop_clip();
-		void set_clip(int x1, int y1, int x2, int y2);
-		void mult_clip(int x1, int y1, int x2, int y2);
+		UTK_API void push_clip();
+		UTK_API void pop_clip();
+		UTK_API void set_clip(int x1, int y1, int x2, int y2);
+		UTK_API void mult_clip(int x1, int y1, int x2, int y2);
 
-		void color_clamp(int r, int g, int b, int a);
+		UTK_API void color_clamp(int r, int g, int b, int a);
 
-		void frame(int x1, int y1, int x2, int y2, int thickness = 1);
+		UTK_API void frame(int x1, int y1, int x2, int y2, int thickness = 1);
 
 		enum {BEVEL_INSET = 1, BEVEL_FILLBG = 2};
-		void bevel(int x1, int y1, int x2, int y2, unsigned int flags = 0, int thickness = 1);
+		UTK_API void bevel(int x1, int y1, int x2, int y2, unsigned int flags = 0, int thickness = 1);
 
-		void arrow(int x, int y, ArrowOrientation orientation);
+		UTK_API void arrow(int x, int y, ArrowOrientation orientation);
 	}
 }
 

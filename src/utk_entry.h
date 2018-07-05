@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,16 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_ENTRY_H_
 #define UTK_ENTRY_H_
 
+#include <utk_config.h>
 #include <utk_drawable.h>
 #include <utk_events.h>
 
 namespace utk {
 
-class Entry : public Drawable {
+class UTK_API Entry : public Drawable {
 protected:
 	int cursor;
 	int vscroll;
@@ -58,8 +58,8 @@ public:
 	virtual bool is_readonly() const;
 };
 
-Entry *create_entry(Widget *parent, const char *text, int width = 100, Callback func = 0, void *cdata = 0);
-void destroy_entry(Entry *en);
+UTK_API Entry *create_entry(Widget *parent, const char *text, int width = 100, Callback func = 0, void *cdata = 0);
+UTK_API void destroy_entry(Entry *en);
 
 }
 

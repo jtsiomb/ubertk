@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,18 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#ifndef UTK_IMAGE_H_
+#define UTK_IMAGE_H_
 
-// utk_img.h
-
-#ifndef _UTK_IMAGE_H_
-#define _UTK_IMAGE_H_
-
+#include <utk_config.h>
 #include <utk_drawable.h>
 #include <utk_events.h>
 
 namespace utk {
 
-class Image : public Drawable {
+class UTK_API Image : public Drawable {
 protected:
 	int img_w, img_h;
 	unsigned int *pixels;
@@ -62,4 +60,4 @@ public:
 
 }
 
-#endif // ndef _UTK_IMAGE_H_
+#endif // UTK_IMAGE_H_

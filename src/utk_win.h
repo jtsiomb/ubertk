@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,16 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_WIN_H_
 #define UTK_WIN_H_
 
+#include <utk_config.h>
 #include <utk_widget.h>
 #include <utk_drawable.h>
 
 namespace utk {
 
-class Window : public Drawable {
+class UTK_API Window : public Drawable {
 protected:
 	int tbar_height;
 	bool shaded;
@@ -76,7 +76,7 @@ public:
 };
 
 
-class WinFrame : public Drawable {
+class UTK_API WinFrame : public Drawable {
 protected:
 	Color modal_col;
 	Color unfocused_col;
@@ -101,8 +101,8 @@ public:
 };
 
 
-Window *create_window(Widget *parent, int x, int y, int w, int h, const char *title);
-void destroy_window(Widget *w);
+UTK_API Window *create_window(Widget *parent, int x, int y, int w, int h, const char *title);
+UTK_API void destroy_window(Widget *w);
 
 }	// end of namespace utk
 

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,17 +26,17 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_CONTAINER_H_
 #define UTK_CONTAINER_H_
 
+#include <utk_config.h>
 #include <list>
 #include <stdlib.h>
 #include <utk_widget.h>
 
 namespace utk {
 
-class Container : public Widget {
+class UTK_API Container : public Widget {
 private:
 	mutable std::list<Widget*>::iterator cache_iter;
 	mutable int cache_idx;
@@ -87,25 +87,25 @@ public:
 
 
 
-class HBox : public Container {
+class UTK_API HBox : public Container {
 public:
 	virtual void layout();
 };
 
-class VBox : public Container {
+class UTK_API VBox : public Container {
 public:
 	virtual void layout();
 };
 
-class NullBox : public Container {
+class UTK_API NullBox : public Container {
 public:
 	virtual void layout();
 };
 
 
-HBox *create_hbox(Widget *parent, int padding = 0, int spacing = 4);
-VBox *create_vbox(Widget *parent, int padding = 0, int spacing = 4);
-NullBox *create_nullbox(Widget *parent);
+UTK_API HBox *create_hbox(Widget *parent, int padding = 0, int spacing = 4);
+UTK_API VBox *create_vbox(Widget *parent, int padding = 0, int spacing = 4);
+UTK_API NullBox *create_nullbox(Widget *parent);
 
 }	// end of namespace utk
 

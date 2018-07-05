@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -30,6 +30,7 @@ OF SUCH DAMAGE.
 #ifndef UTK_MENUS_H_
 #define UTK_MENUS_H_
 
+#include <utk_config.h>
 #include <utk_widget.h>
 #include <utk_drawable.h>
 #include <utk_container.h>
@@ -37,7 +38,7 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
-class PopupMenuItem : public Drawable
+class UTK_API PopupMenuItem : public Drawable
 {
 	friend class PopupMenu;
 
@@ -62,48 +63,48 @@ class PopupMenuItem : public Drawable
 	virtual void add_separator();
 };
 
-class PopupMenuSeparator : public PopupMenuItem
+class UTK_API PopupMenuSeparator : public PopupMenuItem
 {
 	public:
 	PopupMenuSeparator();
-	
+
 	virtual void draw() const;
 };
 
-class PopupMenu : public Popup
+class UTK_API PopupMenu : public Popup
 {
 	friend class PopupMenuItem;
-	
+
 	protected:
 	VBox			*vbox;
 	PopupMenu		*master;
 	PopupMenu		*vis_sub;	// visible submenu
 	unsigned int	showtime;
-	
+
 	virtual void update_size();
 
 	public:
 	bool		delete_master;	// if true, then once the master popup is cancelled
 								// everything gets deleted.
-	
+
 	PopupMenu();
 	virtual ~PopupMenu();
-	
+
 	virtual void set_size(int w, int h);
-	
+
 	virtual Widget *handle_event(utk::Event *event);
-	
+
 	virtual PopupMenuItem *add_item(PopupMenuItem *item, utk::Callback cb=0);
 	virtual PopupMenuItem *add_item(const char *item, utk::Callback cb=0);
 	virtual void add_separator();
-	
+
 	virtual void run(int x=-1, int y=-1);
 	virtual void cancel();
 };
 
 
-PopupMenu *create_popup_menu(bool show=false);
+UTK_API PopupMenu *create_popup_menu(bool show=false);
 
 }
 
-#endif
+#endif	// UTK_API

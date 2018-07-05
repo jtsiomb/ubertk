@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,15 +26,25 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#ifndef UTK_CONFIG_H_
+#define UTK_CONFIG_H_
 
-/* utk_config.h
- * UberTK configuration file
- */
-
-#ifndef _UBERTK_CONFIG_HEADER_
-#define _UBERTK_CONFIG_HEADER_
+/* UberTK configuration file */
 
 /* define this to compile UTK with pcre (regular expressions) support */
 /* #define UBERTK_PCRE */
 
-#endif /* ndef _UBERTK_CONFIG_HEADER_ */
+#if defined(WIN32) || defined(__WIN32__)
+/* windows */
+#ifdef UTK_STATIC
+#define UTK_API
+#else
+#define UTK_API __declspec(dllexport)
+#endif
+
+#else
+/* UNIX */
+#define UTK_API
+#endif
+
+#endif /* UTK_CONFIG_H_ */

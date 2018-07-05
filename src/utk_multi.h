@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,59 +26,55 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#ifndef UTK_MULTI_H_
+#define UTK_MULTI_H_
 
-// utk_multi.h
-
-#ifndef _UTK_MULTI_H_
-#define _UTK_MULTI_H_
-
+#include <utk_config.h>
 #include <ubertk.h>
 #include <vector>
 
-namespace utk
-{
+namespace utk {
 
-	class UTKContext
-	{
-	protected:
-		Container *root;
-		Container *old_root;
-		void *old_user_data;
+class UTK_API UTKContext {
+protected:
+	Container *root;
+	Container *old_root;
+	void *old_user_data;
 
-		// saved gfx functions
-		gfx::ColorFunc old_color_func;
-		gfx::ClipFunc old_clip_func;
-		gfx::ImageFunc old_image_func;
-		gfx::RectFunc old_rect_func;
-		gfx::LineFunc old_line_func;
-		gfx::TextFunc old_text_func;
-		gfx::TextSpacingFunc old_text_spacing_func;
-		gfx::TextWidthFunc old_text_width_func;
+	// saved gfx functions
+	gfx::ColorFunc old_color_func;
+	gfx::ClipFunc old_clip_func;
+	gfx::ImageFunc old_image_func;
+	gfx::RectFunc old_rect_func;
+	gfx::LineFunc old_line_func;
+	gfx::TextFunc old_text_func;
+	gfx::TextSpacingFunc old_text_spacing_func;
+	gfx::TextWidthFunc old_text_width_func;
 
-		std::vector<Event*> events;
+	std::vector<Event*> events;
 
-	public:
+public:
 
-		void begin();
-		void end();
+	void begin();
+	void end();
 
-		UTKContext(int w=320, int h=240);
-		virtual ~UTKContext();
+	UTKContext(int w=320, int h=240);
+	virtual ~UTKContext();
 
-		// graphics handlers
-		virtual void color(int r, int g, int b, int a) = 0;
-		virtual void clip(int x1, int y1, int x2, int y2) = 0;
-		virtual void image(int x, int y, const void *pix, int xsz, int ysz) = 0;
-		virtual void rect(int x1, int y1, int x2, int y2) = 0;
-		virtual void line(int x1, int y1, int x2, int y2, int width) = 0;
-		virtual void text(int x, int y, const char *txt, int sz) = 0;
-		virtual int text_spacing() = 0;
-		virtual int text_width(const char *txt, int sz) = 0;
+	// graphics handlers
+	virtual void color(int r, int g, int b, int a) = 0;
+	virtual void clip(int x1, int y1, int x2, int y2) = 0;
+	virtual void image(int x, int y, const void *pix, int xsz, int ysz) = 0;
+	virtual void rect(int x1, int y1, int x2, int y2) = 0;
+	virtual void line(int x1, int y1, int x2, int y2, int width) = 0;
+	virtual void text(int x, int y, const char *txt, int sz) = 0;
+	virtual int text_spacing() = 0;
+	virtual int text_width(const char *txt, int sz) = 0;
 
-		void draw();
-		void update();
-		void event(Event *e);
-	};
+	void draw();
+	void update();
+	void event(Event *e);
+};
 
 } // end namespace utk
 

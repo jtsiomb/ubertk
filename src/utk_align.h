@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -30,11 +30,12 @@ OF SUCH DAMAGE.
 #ifndef UTK_ALIGN_H_
 #define UTK_ALIGN_H_
 
+#include <utk_config.h>
 #include <utk_widget.h>
 
 namespace utk {
 
-Widget *create_spacer(Widget *parent, int sz);
+UTK_API Widget *create_spacer(Widget *parent, int sz);
 
 }
 

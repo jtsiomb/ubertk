@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -30,12 +30,13 @@ OF SUCH DAMAGE.
 #ifndef UTK_ARROW_H_
 #define UTK_ARROW_H_
 
-#include "utk_drawable.h"
-#include "utk_gfx.h"
+#include <utk_config.h>
+#include <utk_drawable.h>
+#include <utk_gfx.h>
 
 namespace utk {
 
-class Arrow : public Drawable {
+class UTK_API Arrow : public Drawable {
 protected:
 	ArrowOrientation	orientation;
 
@@ -49,7 +50,7 @@ public:
 	virtual void draw() const;
 };
 
-Arrow *create_arrow(Widget *parent, ArrowOrientation orientation = ARROW_RIGHT);
+UTK_API Arrow *create_arrow(Widget *parent, ArrowOrientation orientation = ARROW_RIGHT);
 
 }
 

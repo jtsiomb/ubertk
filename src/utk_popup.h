@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,16 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_POPUP_H_
 #define UTK_POPUP_H_
 
+#include <utk_config.h>
 #include <utk_widget.h>
 #include <utk_drawable.h>
 
 namespace utk {
 
-class Popup : public utk::Drawable
+class UTK_API Popup : public utk::Drawable
 {
 	public:
 	Popup();
@@ -43,8 +43,8 @@ class Popup : public utk::Drawable
 	virtual void draw() const;
 };
 
-Popup *create_popup(utk::Widget *parent);
+UTK_API Popup *create_popup(utk::Widget *parent);
 
 }
 
-#endif
+#endif	// UTK_POPUP_H_

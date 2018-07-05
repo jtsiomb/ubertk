@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,16 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_FILEDIALOG_H_
 #define UTK_FILEDIALOG_H_
 
+#include <utk_config.h>
 #include <utk_combobox.h>
 #include <utk_dialog.h>
 
 namespace utk {
 
-class FileDialogFilter
+class UTK_API FileDialogFilter
 {
 public:
 	virtual ~FileDialogFilter();
@@ -44,7 +44,7 @@ public:
 	virtual bool accept(const char *name) const=0;
 };
 
-class FileDialogExtFilter : public FileDialogFilter
+class UTK_API FileDialogExtFilter : public FileDialogFilter
 {
 protected:
 	std::list<char*> extlist;
@@ -60,7 +60,7 @@ public:
 	virtual bool accept(const char *name) const;
 };
 
-class FileDialogRegExpFilter : public FileDialogFilter
+class UTK_API FileDialogRegExpFilter : public FileDialogFilter
 {
 protected:
 	void *rxprog;
@@ -74,7 +74,7 @@ public:
 	virtual bool accept(const char *name) const;
 };
 
-class FileDialog : public Dialog {
+class UTK_API FileDialog : public Dialog {
 	std::list<FileDialogFilter*> filters;
 	FileDialogFilter *filter;
 	FileDialogRegExpFilter *rxfilter;
@@ -116,8 +116,8 @@ public:
 	friend FileDialog *file_dialog(unsigned int type, const char *fname, FileDialogFilter *filter, const char *start_dir, Callback func, void *cdata);
 };
 
-FileDialog *file_dialog(unsigned int type, const char *fname, FileDialogFilter *filter, const char *start_dir, Callback func = 0, void *cdata = 0);
+UTK_API FileDialog *file_dialog(unsigned int type, const char *fname, FileDialogFilter *filter, const char *start_dir, Callback func = 0, void *cdata = 0);
 
 }
 
-#endif
+#endif	// UTK_FILEDIALOG_H_

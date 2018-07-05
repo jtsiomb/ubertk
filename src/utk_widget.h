@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,10 +26,10 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_WIDGET_H_
 #define UTK_WIDGET_H_
 
+#include <utk_config.h>
 #include <utk_types.h>
 #include <utk_events.h>
 
@@ -37,7 +37,7 @@ namespace utk {
 
 class Event;
 
-class Widget {
+class UTK_API Widget {
 protected:
 	char *name;
 	IVec2 pos, size, min_size, max_size;
@@ -150,9 +150,9 @@ public:
 	inline void set_hover(bool hover) { this->hover = hover; }
 };
 
-void register_widget(Widget *widget);
-void unregister_widget(Widget *widget);
-bool registered_widget(const Widget *widget);
+UTK_API void register_widget(Widget *widget);
+UTK_API void unregister_widget(Widget *widget);
+UTK_API bool registered_widget(const Widget *widget);
 
 }
 

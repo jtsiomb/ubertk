@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,16 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_BUTTON_H_
 #define UTK_BUTTON_H_
 
+#include <utk_config.h>
 #include <utk_drawable.h>
 #include <utk_events.h>
 
 namespace utk {
 
-class Button : public Drawable {
+class UTK_API Button : public Drawable {
 protected:
 	bool pressed;
 	bool flat;
@@ -58,10 +58,10 @@ public:
 	virtual bool is_flat() const;
 };
 
-Button *create_button(Widget *parent, const char *text, Callback func = 0, void *cdata = 0);
-Button *create_button(Widget *parent, const char *text, int xsz, int ysz = 0, Callback func = 0, void *cdata = 0);
-Button *create_button(Widget *parent, Widget *child, Callback func = 0, void *cdata = 0);
-Button *create_button(Widget *parent, Widget *child, int xsz, int ysz = 0, Callback func = 0, void *cdata = 0);
+UTK_API Button *create_button(Widget *parent, const char *text, Callback func = 0, void *cdata = 0);
+UTK_API Button *create_button(Widget *parent, const char *text, int xsz, int ysz = 0, Callback func = 0, void *cdata = 0);
+UTK_API Button *create_button(Widget *parent, Widget *child, Callback func = 0, void *cdata = 0);
+UTK_API Button *create_button(Widget *parent, Widget *child, int xsz, int ysz = 0, Callback func = 0, void *cdata = 0);
 
 }	// end of namespace utk
 

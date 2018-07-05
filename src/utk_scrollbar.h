@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -30,12 +30,13 @@ OF SUCH DAMAGE.
 #ifndef UTK_SCROLLBAR_H_
 #define UTK_SCROLLBAR_H_
 
+#include <utk_config.h>
 #include <utk_drawable.h>
 #include <utk_events.h>
 
 namespace utk {
 
-class Scrollbar : public Drawable {
+class UTK_API Scrollbar : public Drawable {
 protected:
 	int cursor_width;
 	int track_len, track_start;
@@ -73,4 +74,4 @@ public:
 
 }
 
-#endif // ndef UTK_SCROLLBAR_H_
+#endif	// UTK_SCROLLBAR_H_

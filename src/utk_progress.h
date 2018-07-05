@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -30,6 +30,7 @@ OF SUCH DAMAGE.
 #ifndef UTK_PROGRESS_H_
 #define UTK_PROGRESS_H_
 
+#include <utk_config.h>
 #include <utk_scrollbar.h>
 #include <utk_events.h>
 
@@ -37,7 +38,7 @@ namespace utk {
 
 enum {PROGRESS_FINITE, PROGRESS_INFINITE};
 
-class Progress : public Scrollbar {
+class UTK_API Progress : public Scrollbar {
 protected:
 	bool infinite;
 	float step_inc;

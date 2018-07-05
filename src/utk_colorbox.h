@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,17 +26,15 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
-// utk_tball.h
-
 #ifndef _UTK_COLORBOX_H_
 #define _UTK_COLORBOX_H_
 
+#include <utk_config.h>
 #include <utk_img.h>
 
 namespace utk {
 
-class ColorBox : public Image {
+class UTK_API ColorBox : public Image {
 protected:
 	float h, s, v;
 	int sel_s, sel_v;
@@ -64,7 +62,7 @@ public:
 	virtual unsigned int get_packed_color() const;
 };
 
-ColorBox *create_colorbox(Widget *parent, Callback func = 0, void *cdata = 0);
+UTK_API ColorBox *create_colorbox(Widget *parent, Callback func = 0, void *cdata = 0);
 
 }
 

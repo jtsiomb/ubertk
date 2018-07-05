@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,15 +26,15 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_DIALOG_H_
 #define UTK_DIALOG_H_
 
+#include <utk_config.h>
 #include <utk_widget.h>
 
 namespace utk {
 
-class Dialog : public Window {
+class UTK_API Dialog : public Window {
 public:
 	Dialog();
 	virtual ~Dialog();
@@ -63,13 +63,13 @@ enum {
 
 enum { DLG_MODAL = (1 << 15) };
 
-Dialog *create_dialog(Widget *parent, int x, int y, int w, int h, const char *title);
-void destroy_dialog(Widget *w);
+UTK_API Dialog *create_dialog(Widget *parent, int x, int y, int w, int h, const char *title);
+UTK_API void destroy_dialog(Widget *w);
 
-Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0, void *cdata = 0);
-Dialog *message_dialog(const char *msg, unsigned int type, Callback func = 0, void *cdata = 0);
+UTK_API Dialog *message_dialog(const char *msg, unsigned int type, unsigned int bn_mask, Callback func = 0, void *cdata = 0);
+UTK_API Dialog *message_dialog(const char *msg, unsigned int type, Callback func = 0, void *cdata = 0);
 
-Dialog *input_dialog(const char *msg, const char *title = "Input", const char *deftext=0, Callback func = 0, void *cdata = 0);
+UTK_API Dialog *input_dialog(const char *msg, const char *title = "Input", const char *deftext=0, Callback func = 0, void *cdata = 0);
 
 } // end utk namespace
 

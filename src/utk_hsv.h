@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,17 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
-// utk_hsv.h
-
 #ifndef _UTK_HSV_H_
 #define _UTK_HSV_H_
 
+#include <utk_config.h>
+
 namespace utk {
 
-void rgb_to_hsv( float r, float g, float b, float *h, float *s, float *v );
-void hsv_to_rgb( float *r, float *g, float *b, float h, float s, float v );
-unsigned int pack_hsv(float h, float s, float v);
+UTK_API void rgb_to_hsv(float r, float g, float b, float *h, float *s, float *v);
+UTK_API void hsv_to_rgb(float *r, float *g, float *b, float h, float s, float v);
+UTK_API unsigned int pack_hsv(float h, float s, float v);
 
 } // end namespace utk
 

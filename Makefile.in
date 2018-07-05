@@ -25,6 +25,7 @@ else ifeq ($(sys), mingw)
 	gllibs = -lopengl32 -lglu32 -lfreeglut
 	testbin = test.exe
 	lib_so = $(name).dll
+	lib_a = $(name)-static.a
 	sharedopt = -shared
 	sodir = bin
 

@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,15 +26,15 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#ifndef UTK_TBALL_H_
+#define UTK_TBALL_H_
 
-#ifndef _UTK_TBALL_H_
-#define _UTK_TBALL_H_
-
+#include <utk_config.h>
 #include <utk_img.h>
 
 namespace utk {
 
-class TrackBall : public Image {
+class UTK_API TrackBall : public Image {
 private:
 	struct { float x, y, z; } *norm_cache;
 	bool cache_valid;
@@ -57,4 +57,4 @@ public:
 
 }
 
-#endif // ndef _UTK_TBALL_H_
+#endif // UTK_TBALL_H_

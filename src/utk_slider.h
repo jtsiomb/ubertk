@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,16 +26,16 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_SLIDER_H_
 #define UTK_SLIDER_H_
 
+#include <utk_config.h>
 #include <utk_scrollbar.h>
 #include <utk_events.h>
 
 namespace utk {
 
-class Slider : public Scrollbar {
+class UTK_API Slider : public Scrollbar {
 protected:
 	float start, end;
 	int vis_decimal;
@@ -64,10 +64,10 @@ public:
 	virtual void on_modify(Event *event);
 };
 
-Slider *create_slider(Widget *parent, float start, float end, Callback cb = 0, void *cdata = 0);
-Slider *create_slider(Widget *parent, float start, float end, float *link);
-Slider *create_slider(Widget *parent, float start, float end, int *link);
-Slider *create_slider(Widget *parent, float start, float end, char *link, int bufsz);
+UTK_API Slider *create_slider(Widget *parent, float start, float end, Callback cb = 0, void *cdata = 0);
+UTK_API Slider *create_slider(Widget *parent, float start, float end, float *link);
+UTK_API Slider *create_slider(Widget *parent, float start, float end, int *link);
+UTK_API Slider *create_slider(Widget *parent, float start, float end, char *link, int bufsz);
 
 }	// end namespace utk
 

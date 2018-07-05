@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -26,10 +26,10 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
 #ifndef UTK_LISTBOX_H_
 #define UTK_LISTBOX_H_
 
+#include <utk_config.h>
 #include <utk_widget.h>
 #include <utk_drawable.h>
 #include <utk_scrollwin.h>
@@ -37,7 +37,7 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
-class ListBox : public ScrollWin {
+class UTK_API ListBox : public ScrollWin {
 protected:
 	int sel;
 	VBox *vbox;
@@ -65,11 +65,11 @@ public:
 	virtual void draw() const;
 };
 
-ListBox *create_listbox(Widget *parent, int width, int height, Callback func = 0, void *cdata = 0);
-ListBox *create_listbox(Widget *parent, int width, int height, const char **items, int inum, Callback func = 0, void *cdata = 0);
-ListBox *create_listbox(Widget *parent, int width, int height, int *link);
-ListBox *create_listbox(Widget *parent, int width, int height, const char *link);
-void destroy_listbox(ListBox *lb);
+UTK_API ListBox *create_listbox(Widget *parent, int width, int height, Callback func = 0, void *cdata = 0);
+UTK_API ListBox *create_listbox(Widget *parent, int width, int height, const char **items, int inum, Callback func = 0, void *cdata = 0);
+UTK_API ListBox *create_listbox(Widget *parent, int width, int height, int *link);
+UTK_API ListBox *create_listbox(Widget *parent, int width, int height, const char *link);
+UTK_API void destroy_listbox(ListBox *lb);
 
 } // end namespace utk
 

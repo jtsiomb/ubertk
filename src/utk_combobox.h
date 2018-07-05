@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -30,6 +30,7 @@ OF SUCH DAMAGE.
 #ifndef UTK_COMBOBOX_H_
 #define UTK_COMBOBOX_H_
 
+#include <utk_config.h>
 #include <utk_events.h>
 #include <utk_button.h>
 #include <utk_entry.h>
@@ -39,7 +40,7 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
-class ComboBox : public utk::HBox
+class UTK_API ComboBox : public utk::HBox
 {
 protected:
 	Entry	*entry;
@@ -68,7 +69,7 @@ public:
 	virtual bool is_readonly() const;
 };
 
-ComboBox *create_combobox(utk::Widget *parent);
+UTK_API ComboBox *create_combobox(utk::Widget *parent);
 
 }
 

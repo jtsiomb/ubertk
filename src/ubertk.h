@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -28,6 +28,8 @@ OF SUCH DAMAGE.
 */
 #ifndef UBERTK_H_
 #define UBERTK_H_
+
+#include <utk_config.h>
 
 #include <utk_events.h>
 #include <utk_gfx.h>
@@ -62,20 +64,20 @@ OF SUCH DAMAGE.
 
 namespace utk {
 
-Container *init(int x, int y);
-void close(Container *root = 0);
-void draw(Container *root = 0);
+UTK_API Container *init(int x, int y);
+UTK_API void close(Container *root = 0);
+UTK_API void draw(Container *root = 0);
 
-void set_root_widget(Container *root);
-Container *get_root_widget();
+UTK_API void set_root_widget(Container *root);
+UTK_API Container *get_root_widget();
 
-unsigned int get_msec();
+UTK_API unsigned int get_msec();
 
-void class_name(Widget *w);
-void print_widget_tree(Widget *root = UBERTK_PRINT_ROOT);
+UTK_API void class_name(Widget *w);
+UTK_API void print_widget_tree(Widget *root = UBERTK_PRINT_ROOT);
 
-void *get_user_data();
-void set_user_data(void *ud);
+UTK_API void *get_user_data();
+UTK_API void set_user_data(void *ud);
 }
 
 #endif	// UBERTK_H_
