@@ -53,9 +53,11 @@ Container *init(int x, int y)
 	cont->set_pos(0, 0);
 	root_widget = cont;
 
+	/*
 #if defined(WIN32) || defined(__WIN32__)
 	draw_cursor = true;
 #endif
+	*/
 
 	get_msec();	// initialize timer
 

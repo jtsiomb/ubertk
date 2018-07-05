@@ -28,6 +28,7 @@ OF SUCH DAMAGE.
 */
 
 // utk_hsv.cc
+#include <stdio.h>
 #include <math.h>
 #include "utk_common.h"
 
@@ -68,6 +69,8 @@ void rgb_to_hsv( float r, float g, float b, float *h, float *s, float *v )
 		return;
 	}
 
+	if(!delta) delta = 1.0f;
+
 	if( r == max )
 		*h = ( g - b ) / delta;		// between yellow & magenta
 	else if( g == max )
@@ -83,60 +86,38 @@ void rgb_to_hsv( float r, float g, float b, float *h, float *s, float *v )
 	*h /= 360;
 }
 
-void hsv_to_rgb( float *r, float *g, float *b, float h, float s, float v )
+#define RETRGB(red, green, blue) \
+	do { \
+		*r = (red); \
+		*g = (green); \
+		*b = (blue); \
+		return; \
+	} while(0)
+
+void hsv_to_rgb(float *r, float *g, float *b, float h, float s, float v)
 {
-	int i;
-	float f, p, q, t;
-
-	// convert h to [0-360]
-	h *= 360;
-
-	if( s == 0 ) {
-		// achromatic (grey)
+	if(s == 0.0f) {
 		*r = *g = *b = v;
 		return;
 	}
 
-	h /= 60;			// sector 0 to 5
-	i = (int)floorf( h );
-	f = h - i;			// factorial part of h
-	p = v * ( 1 - s );
-	q = v * ( 1 - s * f );
-	t = v * ( 1 - s * ( 1 - f ) );
+	float sec = floor(h * (360.0f / 60.0f));
+	float frac = (h * (360.0f / 60.0f)) - sec;
 
-	switch( i ) {
-		case 0:
-			*r = v;
-			*g = t;
-			*b = p;
-			break;
-		case 1:
-			*r = q;
-			*g = v;
-			*b = p;
-			break;
-		case 2:
-			*r = p;
-			*g = v;
-			*b = t;
-			break;
-		case 3:
-			*r = p;
-			*g = q;
-			*b = v;
-			break;
-		case 4:
-			*r = t;
-			*g = p;
-			*b = v;
-			break;
-		default:		// case 5:
-			*r = v;
-			*g = p;
-			*b = q;
-			break;
+	float o = v * (1.0f - s);
+	float p = v * (1.0f - s * frac);
+	float q = v * (1.0f - s * (1.0f - frac));
+
+	int hidx = (int)sec;
+	switch(hidx) {
+	default:
+	case 0: RETRGB(v, q, o);
+	case 1: RETRGB(p, v, o);
+	case 2: RETRGB(o, v, q);
+	case 3: RETRGB(o, p, v);
+	case 4: RETRGB(q, o, v);
+	case 5: RETRGB(v, o, p);
 	}
-
 }
 
 unsigned int pack_hsv(float h, float s, float v)

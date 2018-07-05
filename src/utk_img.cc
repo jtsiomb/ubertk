@@ -132,6 +132,7 @@ void Image::draw() const
 		((Image*)this)->update();
 	}
 
+	gfx::color(255, 255, 255, 255);
 	gfx::image(gpos.x, gpos.y, pixels, img_w, img_h);
 }
 

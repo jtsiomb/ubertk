@@ -124,6 +124,33 @@ void Window::set_size(IVec2 sz)
 	set_size(sz.x, sz.y);
 }
 
+int Window::get_frame_width() const
+{
+	const WinFrame *frm = dynamic_cast<const WinFrame*>(get_parent());
+	if(frm) {
+		return frm->get_width();
+	}
+	return get_width();
+}
+
+int Window::get_frame_height() const
+{
+	const WinFrame *frm = dynamic_cast<const WinFrame*>(get_parent());
+	if(frm) {
+		return frm->get_height();
+	}
+	return get_height();
+}
+
+IVec2 Window::get_frame_size() const
+{
+	const WinFrame *frm = dynamic_cast<const WinFrame*>(get_parent());
+	if(frm) {
+		return frm->get_size();
+	}
+	return get_size();
+}
+
 void Window::rise()
 {
 	if(parent && dynamic_cast<WinFrame*>(parent)) {

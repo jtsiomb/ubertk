@@ -42,8 +42,10 @@ protected:
 	int sel_s, sel_v;
 
 	virtual void update();
+	virtual void update_cursors();
 
 	virtual void on_click(Event *ev);
+	virtual void on_modify(Event *ev);
 	//virtual void on_motion(int x, int y);
 	virtual void on_drag(int dx, int dy);
 public:
@@ -57,7 +59,7 @@ public:
 	void set_h(float h);
 
 	virtual void set_color(int r, int g, int b, int a = 255);
-	virtual void set_color_hsv(int h, int s, int v, int a = 255);
+	virtual void set_color_hsv(float h, float s, float v, int a = 255);
 	virtual void set_color(const Color &col);
 	virtual unsigned int get_packed_color() const;
 };

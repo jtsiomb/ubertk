@@ -461,7 +461,7 @@ static void home_click_handler(Event *event, void *data)
 #if defined(WIN32) && !(defined(GNUC) || defined(__GNUC__))
 	char	home[MAX_PATH];
 	home[0] = 0;
-	SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, home);
+	SHGetFolderPathA(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, home);
 #else
 	char	home[1024];
 	strcpy(home, getenv("HOME"));

@@ -56,6 +56,10 @@ public:
 	virtual void set_size(int w, int h);
 	virtual void set_size(IVec2 sz);
 
+	virtual int get_frame_width() const;
+	virtual int get_frame_height() const;
+	virtual IVec2 get_frame_size() const;
+
 	virtual void rise();
 	virtual void sink();
 

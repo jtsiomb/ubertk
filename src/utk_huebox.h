@@ -42,6 +42,7 @@ protected:
 	virtual void update();
 
 	virtual void on_click(Event *ev);
+	virtual void on_modify(Event *ev);
 	//virtual void on_motion(int x, int y);
 	virtual void on_drag(int dx, int dy);
 public:

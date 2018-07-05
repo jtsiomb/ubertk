@@ -57,6 +57,11 @@ void HueBox::on_click(Event *ev)
 	h = (float) sel_h / (float) (img_w - 1);
 	h = fmod(h, 1.0f);
 
+	on_modify(ev);
+}
+
+void HueBox::on_modify(Event *ev)
+{
 	callback(ev, EVENT_MODIFY);
 }
 
@@ -71,7 +76,7 @@ void HueBox::on_drag(int dx, int dy)
 	h = fmod(h, 1.0f);
 
 	utk::Event ev;
-	callback(&ev, EVENT_MODIFY);
+	on_modify(&ev);
 }
 
 HueBox::HueBox(utk::Callback cb) : Image(150, 20, cb)
@@ -92,6 +97,10 @@ float HueBox::get_h() const
 void HueBox::set_h(float h)
 {
 	this->h = h;
+	sel_h = h * (img_w - 1);
+
+	utk::Event ev;
+	on_modify(&ev);
 }
 
 HueBox *create_huebox(Widget *parent, Callback func, void *cdata)
