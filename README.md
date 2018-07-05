@@ -14,10 +14,9 @@ events.
 The set of drawing operations which must be defined by the user are:
   * set current color (RGBA) for future drawing operations.
   * set clip rectangle for future drawing operations.
-  * draw image at a certain position with a certain size, given the
-    image pixels.
+  * draw image at a certain position, given the image pixels.
   * draw rectangle.
-  * draw line with a certain width.
+  * draw line of a certain width.
   * draw a text string using a certain font size.
   * query the width of a text string at a certain font size.
   * query the amount of spacing to leave between rows of text.
