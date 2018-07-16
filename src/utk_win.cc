@@ -124,6 +124,24 @@ void Window::set_size(IVec2 sz)
 	set_size(sz.x, sz.y);
 }
 
+IVec2 Window::get_frame_pos() const
+{
+	const WinFrame *frm = dynamic_cast<const WinFrame*>(get_parent());
+	if(frm) {
+		return frm->get_pos();
+	}
+	return get_pos();
+}
+
+IVec2 Window::get_frame_global_pos() const
+{
+	const WinFrame *frm = dynamic_cast<const WinFrame*>(get_parent());
+	if(frm) {
+		return frm->get_global_pos();
+	}
+	return get_global_pos();
+}
+
 int Window::get_frame_width() const
 {
 	const WinFrame *frm = dynamic_cast<const WinFrame*>(get_parent());
