@@ -84,6 +84,7 @@ void PopupMenuItem::add_separator()
 
 Widget *PopupMenuItem::get_child_at(int x, int y)
 {
+	if(!visible) return 0;
 	return this;
 }
 

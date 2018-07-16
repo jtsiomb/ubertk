@@ -123,6 +123,7 @@ Widget *ScrollWin::handle_event(Event *event)
 
 Widget *ScrollWin::get_child_at(int x, int y)
 {
+	if(!visible) return 0;
 	if (check_hscroll_vis() && hbar->hit_test(x, y))
 		return hbar;
 	if (check_vscroll_vis() && vbar->hit_test(x, y))

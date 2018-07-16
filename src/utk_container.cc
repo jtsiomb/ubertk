@@ -105,6 +105,8 @@ bool Container::remove_child(Widget *w)
 
 Widget *Container::get_child_at(int x, int y)
 {
+	if(!visible) return 0;
+
 	iterator iter = cont.begin();
 	while (iter != cont.end()) {
 		Widget	*w = *iter++;
@@ -237,7 +239,7 @@ void Container::draw() const
 /* ---- layout function for the horizontal box container ---- */
 void HBox::layout()
 {
-	int max_y = get_size().y;
+	int max_y = 0;
 	int cur_x = padding;
 
 	const_iterator iter = begin();
@@ -263,7 +265,7 @@ void HBox::layout()
 /* ---- layout function for the vertical box container ---- */
 void VBox::layout()
 {
-	int max_x = get_size().x;
+	int max_x = 0;
 	int cur_y = padding;
 
 	const_iterator iter = begin();

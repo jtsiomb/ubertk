@@ -97,6 +97,7 @@ void Button::add_child(Widget *w)
 
 Widget *Button::get_child_at(int x, int y)
 {
+	if(!visible) return 0;
 	return this;
 }
 
