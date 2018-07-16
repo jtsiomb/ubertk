@@ -108,10 +108,11 @@ Widget *Container::get_child_at(int x, int y)
 	if(!visible) return 0;
 
 	iterator iter = cont.begin();
-	while (iter != cont.end()) {
-		Widget	*w = *iter++;
-		if (w->hit_test(x, y)) {
-			return w->get_child_at(x, y);
+	while(iter != cont.end()) {
+		Widget *w = *iter++;
+		if (w->is_visible() && w->hit_test(x, y)) {
+			Widget *c = w->get_child_at(x, y);
+			if(c) return c;
 		}
 	}
 	return this;
