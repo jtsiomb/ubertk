@@ -44,7 +44,7 @@ Image::Image(int w, int h, utk::Callback cb)
 	upd = false;
 	if (w * h > 0)
 	{
-		pixels = new unsigned int[w * h];
+		pixels = new uint32_t[w * h];
 		this->img_w = w;
 		this->img_h = h;
 	}
@@ -136,7 +136,7 @@ void Image::draw() const
 	gfx::image(gpos.x, gpos.y, pixels, img_w, img_h);
 }
 
-void Image::clear(unsigned int c)
+void Image::clear(uint32_t c)
 {
 	for (int i=0; i<img_w * img_h; i++)
 	{

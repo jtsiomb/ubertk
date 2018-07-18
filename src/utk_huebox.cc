@@ -35,7 +35,7 @@ namespace utk {
 
 void HueBox::update()
 {
-	unsigned int *dst = pixels;
+	uint32_t *dst = pixels;
 	for (int j=0; j<img_h; j++)
 	{
 		for (int i=0; i<img_w; i++)

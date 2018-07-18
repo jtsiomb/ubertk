@@ -87,7 +87,7 @@ void TrackBall::update()
 	vec3_t sph_pos = {0.0f, 0.0f, 10.5f};
 	float sph_rad = 1.0f;
 
-	unsigned int *pptr = pixels;
+	uint32_t *pptr = pixels;
 	for(int y=0; y<img_h; y++) {
 		for(int x=0; x<img_w; x++) {
 

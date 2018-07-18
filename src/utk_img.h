@@ -29,6 +29,7 @@ OF SUCH DAMAGE.
 #ifndef UTK_IMAGE_H_
 #define UTK_IMAGE_H_
 
+#include <stdint.h>
 #include <utk_config.h>
 #include <utk_drawable.h>
 #include <utk_events.h>
@@ -38,7 +39,7 @@ namespace utk {
 class UTK_API Image : public Drawable {
 protected:
 	int img_w, img_h;
-	unsigned int *pixels;
+	uint32_t *pixels;
 	bool dragging;
 	mutable bool upd;
 
@@ -55,7 +56,7 @@ public:
 	virtual void invalidate();
 
 	virtual void draw() const;
-	void clear(unsigned int c);
+	void clear(uint32_t c);
 };
 
 }

@@ -34,7 +34,7 @@ namespace utk {
 
 void ColorBox::update()
 {
-	unsigned int *dst = pixels;
+	uint32_t *dst = pixels;
 	float x, y;
 	for (int j=0; j<img_h; j++)
 	{
@@ -170,7 +170,7 @@ void ColorBox::set_color(const Color &col)
 	set_color(col.r, col.g, col.b, col.a);
 }
 
-unsigned int ColorBox::get_packed_color() const
+uint32_t ColorBox::get_packed_color() const
 {
 	return pack_hsv(h, s, v);
 }
