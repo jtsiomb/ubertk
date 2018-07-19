@@ -147,12 +147,13 @@ void event(Event *e)
 
 static Widget *deliver_event(Widget *w, Event *e)
 {
-	if (!e || !w)
-		return NULL;
-	for (e->widget=NULL; w && !e->widget; w=w->get_parent())
-	{
-		if (!registered_widget(w)) return NULL;
+	if(!e || !w) return 0;
+
+	e->widget = 0;
+	while(w && !e->widget) {
+		if(!registered_widget(w)) return 0;
 		w->handle_event(e);
+		w = w->get_parent();
 	}
 	return w;
 }
@@ -225,7 +226,7 @@ static void handle_event(Event *e)
 	MButtonEvent *bev;
 	if((bev = dynamic_cast<MButtonEvent*>(e))) {
 		receiver = mouse_grab_widget?mouse_grab_widget:root->get_child_at(bev->x, bev->y);
-		
+
 		if (current_modal_window) {
 			Window	*win = receiver->get_window();
 			if (win && win != current_modal_window) return;
@@ -253,7 +254,7 @@ static void handle_event(Event *e)
 			bev->press_x = last_press_x;
 			bev->press_y = last_press_y;
 			mouse_press_widget = 0;
-			
+
 			mouse_grab_widget = 0;	// note: grabbing is released on mouse release
 
 			// houston, we have a click!

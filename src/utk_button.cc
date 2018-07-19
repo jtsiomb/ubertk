@@ -159,7 +159,7 @@ Button *create_button(Widget *parent, const char *text, int xsz, int ysz, Callba
 
 Button *create_button(Widget *parent, Widget *child, Callback func, void *cdata)
 {
-	Button	*bn = new Button(child);
+	Button *bn = new Button(child);
 	bn->set_callback(EVENT_CLICK, func, cdata);
 	parent->add_child(bn);
 	return bn;
