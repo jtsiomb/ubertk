@@ -1,6 +1,6 @@
 /*
 ubertk is a flexible GUI toolkit targetted towards graphics applications.
-Copyright (C) 2007 - 2013 John Tsiombikas <nuclear@member.fsf.org>,
+Copyright (C) 2007 - 2018 John Tsiombikas <nuclear@member.fsf.org>,
                           Michael Georgoulopoulos <mgeorgoulopoulos@gmail.com>,
 				          Kostas Michalopoulos <badsector@slashstone.com>
 
@@ -120,7 +120,7 @@ void ComboBox::show_list()
 
 	list_popup->show();
 	list_popup->rise();
-	
+
 	((Arrow*)reveal->get_child())->set_orientation(ARROW_UP);
 }
 
@@ -137,6 +137,11 @@ void ComboBox::add_item(Widget *widget)
 void ComboBox::remove_item(int pos)
 {
 	return list->remove_item(pos);
+}
+
+void ComboBox::select(int sel)
+{
+	list->select(sel);
 }
 
 int ComboBox::get_selected() const
@@ -177,4 +182,4 @@ ComboBox *create_combobox(Widget *parent)
 	return box;
 }
 
-}
+}	// namespace utk

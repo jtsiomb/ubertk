@@ -54,17 +54,19 @@ Widget *ListBox::handle_event(Event *event)
 	if((kev = dynamic_cast<KeyboardEvent*>(event)) && kev->pressed) {
 		switch(kev->key) {
 		case KEY_UP:
+			kev->widget = this;
 			if(sel > 0) {
 				select(sel - 1);
+				callback(kev, EVENT_MODIFY);
 			}
-			kev->widget = this;
 			return this;
 
 		case KEY_DOWN:
+			kev->widget = this;
 			if(sel < (int)vbox->size() - 1) {
 				select(sel + 1);
+				callback(kev, EVENT_MODIFY);
 			}
-			kev->widget = this;
 			return this;
 		}
 
@@ -93,6 +95,7 @@ Widget *ListBox::handle_event(Event *event)
 				cev->widget = this;
 
 				callback(event, EVENT_CLICK);
+				callback(event, EVENT_MODIFY);
 				return this;
 			}
 			iter++;

@@ -60,6 +60,7 @@ public:
 	virtual void add_item(utk::Widget *widget);
 	virtual void remove_item(int pos = -1);
 
+	virtual void select(int sel);
 	virtual int get_selected() const;
 	virtual const char *get_selected_text() const;
 
