@@ -230,13 +230,14 @@ WinFrame::WinFrame(Widget *child)
 
 	if((win = dynamic_cast<Window*>(child))) {
 		// this must be called before we reparent the window
+		IVec2 wpos = win->get_pos();
 		int cbord = win->get_border();
 		win->set_pos(cbord, cbord + win->tbar_height);
 
 		add_child(child);
 		update_geometry();
 
-		set_pos(win->get_pos() - IVec2(cbord, cbord + win->tbar_height));
+		set_pos(wpos - IVec2(cbord, cbord + win->tbar_height));
 	} else {
 		utk_error("non-window widget passed as WinFrame's child\n");
 	}
