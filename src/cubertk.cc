@@ -34,6 +34,11 @@ typedef utk::Widget utk_widget;
 typedef utk::Event utk_event;
 #include "cubertk.h"
 
+#define UTK_DRAWABLE(w)	(assert(dynamic_cast<utk::Drawable*>(w)), (utk::Drawable*)(w))
+#define UTK_WINDOW(w)	(assert(dynamic_cast<utk::Window*>(w)), (utk::Window*)(w))
+#define UTK_CONTAINER(w) (assert(dynamic_cast<utk::Container*>(w)), (utk::Container*)(w))
+#define UTK_LABEL(w)	(assert(dynamic_cast<utk::Label*>(w)), (utk::Label*)(w))
+
 extern "C" {
 
 utk_widget *utk_init(int x, int y)
@@ -125,268 +130,466 @@ void utk_set_text_width_func(utk_text_width_func func)
 }
 
 /* ---- widget ---- */
-UTK_API void utk_set_name(utk_widget *w, const char *name)
+void utk_set_name(utk_widget *w, const char *name)
 {
 	w->set_name(name);
 }
 
-UTK_API const char *utk_get_name(utk_widget *w)
+const char *utk_get_name(utk_widget *w)
 {
 	return w->get_name();
 }
 
-UTK_API utk_widget *utk_find_widget(utk_widget *w, const char *name)
+utk_widget *utk_find_widget(utk_widget *w, const char *name)
 {
 	return w->find_widget(name);
 }
 
-UTK_API const char *utk_class_name(utk_widget *w)
+const char *utk_class_name(utk_widget *w)
 {
 	return w->class_name();
 }
 
-UTK_API void utk_set_pos(utk_widget *w, int x, int y)
+void utk_set_pos(utk_widget *w, int x, int y)
 {
 	w->set_pos(x, y);
 }
 
-UTK_API void utk_get_pos(utk_widget *w, int *xp, int *yp)
+void utk_get_pos(utk_widget *w, int *xp, int *yp)
 {
 	utk::IVec2 pos = w->get_pos();
 	*xp = pos.x;
 	*yp = pos.y;
 }
 
-UTK_API void utk_get_global_pos(utk_widget *w, int *xp, int *yp)
+void utk_get_global_pos(utk_widget *w, int *xp, int *yp)
 {
 	utk::IVec2 pos = w->get_global_pos();
 	*xp = pos.x;
 	*yp = pos.y;
 }
 
-UTK_API void utk_set_size(utk_widget *w, int x, int y)
+void utk_set_size(utk_widget *w, int x, int y)
 {
 	w->set_size(x, y);
 }
 
-UTK_API void utk_get_size(utk_widget *w, int *xp, int *yp)
+void utk_get_size(utk_widget *w, int *xp, int *yp)
 {
 	utk::IVec2 sz = w->get_size();
 	*xp = sz.x;
 	*yp = sz.y;
 }
 
-UTK_API int utk_get_width(utk_widget *w)
+int utk_get_width(utk_widget *w)
 {
 	return w->get_size().x;
 }
 
-UTK_API int utk_get_height(utk_widget *w)
+int utk_get_height(utk_widget *w)
 {
 	return w->get_size().y;
 }
 
-UTK_API void utk_set_min_size(utk_widget *w, int x, int y)
+void utk_set_min_size(utk_widget *w, int x, int y)
 {
 	w->set_min_size(x, y);
 }
 
-UTK_API void utk_get_min_size(utk_widget *w, int *xp, int *yp)
+void utk_get_min_size(utk_widget *w, int *xp, int *yp)
 {
 	utk::IVec2 sz = w->get_min_size();
 	*xp = sz.x;
 	*yp = sz.y;
 }
 
-UTK_API int utk_get_min_width(utk_widget *w)
+int utk_get_min_width(utk_widget *w)
 {
 	return w->get_min_size().x;
 }
 
-UTK_API int utk_get_min_height(utk_widget *w)
+int utk_get_min_height(utk_widget *w)
 {
 	return w->get_min_size().y;
 }
 
-UTK_API void utk_set_max_size(utk_widget *w, int x, int y)
+void utk_set_max_size(utk_widget *w, int x, int y)
 {
 	w->set_max_size(x, y);
 }
 
-UTK_API void utk_get_max_size(utk_widget *w, int *xp, int *yp)
+void utk_get_max_size(utk_widget *w, int *xp, int *yp)
 {
 	utk::IVec2 sz = w->get_max_size();
 	*xp = sz.x;
 	*yp = sz.y;
 }
 
-UTK_API int utk_get_max_width(utk_widget *w)
+int utk_get_max_width(utk_widget *w)
 {
 	return w->get_max_size().x;
 }
 
-UTK_API int utk_get_max_height(utk_widget *w)
+int utk_get_max_height(utk_widget *w)
 {
 	return w->get_max_size().y;
 }
 
-UTK_API void utk_set_padding(utk_widget *w, int pad)
+void utk_set_padding(utk_widget *w, int pad)
 {
 	w->set_padding(pad);
 }
 
-UTK_API int utk_get_padding(utk_widget *w)
+int utk_get_padding(utk_widget *w)
 {
 	return w->get_padding();
 }
 
-UTK_API void utk_show(utk_widget *w)
+void utk_show(utk_widget *w)
 {
 	w->show();
 }
 
-UTK_API void utk_hide(utk_widget *w)
+void utk_hide(utk_widget *w)
 {
 	w->hide();
 }
 
-UTK_API int utk_is_visible(utk_widget *w)
+int utk_is_visible(utk_widget *w)
 {
 	return w->is_visible();
 }
 
-UTK_API void utk_set_focus(utk_widget *w, int onoff)
+void utk_set_focus(utk_widget *w, int onoff)
 {
 	w->set_focus(onoff);
 }
 
-UTK_API int utk_get_focus(utk_widget *w)
+int utk_get_focus(utk_widget *w)
 {
 	return w->get_focus() ? 1 : 0;
 }
 
-UTK_API void utk_add_child(utk_widget *w, utk_widget *c)
+void utk_add_child(utk_widget *w, utk_widget *c)
 {
 	w->add_child(c);
 }
 
-UTK_API utk_widget *utk_get_child(utk_widget *w)
+utk_widget *utk_get_child(utk_widget *w)
 {
 	return w->get_child();
 }
 
-UTK_API utk_widget *utk_get_child_at(utk_widget *w, int x, int y)
+utk_widget *utk_get_child_at(utk_widget *w, int x, int y)
 {
 	return w->get_child_at(x, y);
 }
 
-UTK_API int utk_remove_child(utk_widget *w, utk_widget *c)
+int utk_remove_child(utk_widget *w, utk_widget *c)
 {
 	return w->remove_child(c) ? 0 : -1;
 }
 
-UTK_API void utk_set_parent(utk_widget *w, utk_widget *par)
+void utk_set_parent(utk_widget *w, utk_widget *par)
 {
 	w->set_parent(par);
 }
 
-UTK_API utk_widget *utk_get_parent(utk_widget *w)
+utk_widget *utk_get_parent(utk_widget *w)
 {
 	return w->get_parent();
 }
 
-UTK_API utk_widget *utk_get_window(utk_widget *w)
+utk_widget *utk_get_window(utk_widget *w)
 {
 	return w->get_window();
 }
 
-UTK_API void utk_rise(utk_widget *w)
+void utk_rise(utk_widget *w)
 {
 	w->rise();
 }
 
-UTK_API void utk_sink(utk_widget *w)
+void utk_sink(utk_widget *w)
 {
 	w->sink();
 }
 
-UTK_API utk_widget *utk_get_popup(utk_widget *w)
+utk_widget *utk_get_popup(utk_widget *w)
 {
 	return w->get_popup();
 }
 
-UTK_API void utk_set_popup(utk_widget *w, utk_widget *popup)
+void utk_set_popup(utk_widget *w, utk_widget *popup)
 {
 	assert(dynamic_cast<utk::PopupMenu*>(popup));
 	w->set_popup((utk::PopupMenu*)popup);
 }
 
-UTK_API void utk_show_popup(utk_widget *w, int x, int y)
+void utk_show_popup(utk_widget *w, int x, int y)
 {
 	w->show_popup(x, y);
 }
 
-UTK_API int utk_hit_test(utk_widget *w, int x, int y)
+int utk_hit_test(utk_widget *w, int x, int y)
 {
 	return w->hit_test(x, y);
 }
 
-UTK_API void utk_link_bool(utk_widget *w, int *ptr)
+void utk_link_bool(utk_widget *w, int *ptr)
 {
 	/* XXX dodgy */
 	w->set_link((bool*)ptr);
 }
 
-UTK_API void utk_link_int(utk_widget *w, int *ptr)
+void utk_link_int(utk_widget *w, int *ptr)
 {
 	w->set_link(ptr);
 }
 
-UTK_API void utk_link_float(utk_widget *w, float *ptr)
+void utk_link_float(utk_widget *w, float *ptr)
 {
 	w->set_link(ptr);
 }
 
-UTK_API void utk_link_str(utk_widget *w, char *ptr, int bufsz)
+void utk_link_str(utk_widget *w, char *ptr, int bufsz)
 {
 	w->set_link(ptr, bufsz);
 }
 
-UTK_API void utk_set_callback(utk_widget *w, int evtype, utk_callback_func func, void *data)
+void utk_set_callback(utk_widget *w, int evtype, utk_callback_func func, void *data)
 {
 	w->set_callback(evtype, func, data);
 }
 
-UTK_API utk_callback_func utk_get_callback(utk_widget *w, int evtype)
+utk_callback_func utk_get_callback(utk_widget *w, int evtype)
 {
 	return w->get_callback(evtype);
 }
 
-UTK_API void *utk_get_callback_data(utk_widget *w, int evtype)
+void *utk_get_callback_data(utk_widget *w, int evtype)
 {
 	return w->get_callback_data(evtype);
 }
 
-UTK_API void utk_set_widget_data(utk_widget *w, void *data)
+void utk_set_widget_data(utk_widget *w, void *data)
 {
 	w->set_user_data(data);
 }
 
-UTK_API void *utk_get_widget_data(utk_widget *w)
+void *utk_get_widget_data(utk_widget *w)
 {
 	return w->get_user_data();
 }
 
+/* drawable */
+void utk_set_color(utk_widget *w, int r, int g, int b)
+{
+	utk::Drawable *dw = UTK_DRAWABLE(w);
+	dw->set_color(r, g, b, dw->get_alpha());
+}
+
+void utk_get_color(utk_widget *w, int *r, int *g, int *b)
+{
+	utk::Drawable *dw = UTK_DRAWABLE(w);
+	const utk::Color &col = dw->get_color();
+	*r = col.r;
+	*g = col.g;
+	*b = col.b;
+}
+
+void utk_set_alpha(utk_widget *w, int a)
+{
+	utk::Drawable *dw = UTK_DRAWABLE(w);
+	dw->set_alpha(a);
+}
+
+int utk_get_alpha(utk_widget *w)
+{
+	utk::Drawable *dw = UTK_DRAWABLE(w);
+	return dw->get_alpha();
+}
+
+void utk_set_border(utk_widget *w, int border)
+{
+	utk::Drawable *dw = UTK_DRAWABLE(w);
+	dw->set_border(border);
+}
+
+int utk_get_border(utk_widget *w)
+{
+	utk::Drawable *dw = UTK_DRAWABLE(w);
+	return dw->get_border();
+}
 
 /* window */
-UTK_API utk_widget *utk_create_window(utk_widget *par, int x, int y, int w, int h, const char *title)
+utk_widget *utk_create_window(utk_widget *par, int x, int y, int w, int h, const char *title)
 {
 	return utk::create_window(par, x, y, w, h, title);
 }
 
-UTK_API void utk_destroy_window(utk_widget *w)
+void utk_destroy_window(utk_widget *w)
 {
 	utk::destroy_window(w);
+}
+
+void utk_get_frame_pos(utk_widget *w, int *x, int *y)
+{
+	utk::Window *win = UTK_WINDOW(w);
+	utk::IVec2 pos = win->get_frame_pos();
+	*x = pos.x;
+	*y = pos.y;
+}
+
+void utk_get_frame_global_pos(utk_widget *w, int *x, int *y)
+{
+	utk::Window *win = UTK_WINDOW(w);
+	utk::IVec2 pos = win->get_frame_global_pos();
+	*x = pos.x;
+	*y = pos.y;
+}
+
+void utk_get_frame_size(utk_widget *w, int *x, int *y)
+{
+	utk::Window *win = UTK_WINDOW(w);
+	utk::IVec2 sz = win->get_frame_size();
+	*x = sz.x;
+	*y = sz.y;
+}
+
+int utk_get_frame_width(utk_widget *w)
+{
+	utk::Window *win = UTK_WINDOW(w);
+	return win->get_frame_width();
+}
+
+int utk_get_frame_height(utk_widget *w)
+{
+	utk::Window *win = UTK_WINDOW(w);
+	return win->get_frame_height();
+}
+
+void utk_set_modal(utk_widget *w, int onoff)
+{
+	utk::Window *win = UTK_WINDOW(w);
+	win->set_modal(onoff);
+}
+
+/* container */
+utk_widget *utk_create_hbox(utk_widget *par, int pad, int spc)
+{
+	return utk::create_hbox(par, pad, spc);
+}
+
+utk_widget *utk_create_vbox(utk_widget *par, int pad, int spc)
+{
+	return utk::create_vbox(par, pad, spc);
+}
+
+utk_widget *utk_create_nullbox(utk_widget *par)
+{
+	return utk::create_nullbox(par);
+}
+
+void utk_raise_child(utk_widget *w, utk_widget *c)
+{
+	utk::Container *cont = UTK_CONTAINER(w);
+	cont->raise_child(c);
+}
+
+void utk_sink_child(utk_widget *w, utk_widget *c)
+{
+	utk::Container *cont = UTK_CONTAINER(w);
+	cont->sink_child(c);
+}
+
+void utk_set_spacing(utk_widget *w, int sp)
+{
+	utk::Container *cont = UTK_CONTAINER(w);
+	cont->set_spacing(sp);
+}
+
+int utk_get_spacing(utk_widget *w)
+{
+	utk::Container *cont = UTK_CONTAINER(w);
+	return cont->get_spacing();
+}
+
+utk_widget *utk_cont_child(utk_widget *w, int idx)
+{
+	utk::Container *cont = UTK_CONTAINER(w);
+	return (*cont)[idx];
+}
+
+int utk_cont_num_children(utk_widget *w)
+{
+	utk::Container *cont = UTK_CONTAINER(w);
+	return cont->size();
+}
+
+void utk_cont_clear(utk_widget *w)
+{
+	utk::Container *cont = UTK_CONTAINER(w);
+	cont->clear();
+}
+
+
+/* label */
+utk_widget *utk_create_label(utk_widget *par, const char *txt)
+{
+	return utk::create_label(par, txt);
+}
+
+void utk_set_text_color(utk_widget *w, int r, int g, int b, int a)
+{
+	utk::Label *lb = UTK_LABEL(w);
+	lb->set_text_color(r, g, b, a);
+}
+
+void utk_get_text_color(utk_widget *w, int *r, int *g, int *b, int *a)
+{
+	utk::Label *lb = UTK_LABEL(w);
+	const utk::Color &col = lb->get_text_color();
+	*r = col.r;
+	*g = col.g;
+	*b = col.b;
+	*a = col.a;
+}
+
+/* button */
+utk_widget *utk_create_button(utk_widget *par, const char *txt, int xsz, int ysz,
+		utk_callback_func cb, void *cbdata)
+{
+	if(xsz) {
+		return utk::create_button(par, txt, xsz, ysz, cb, cbdata);
+	}
+	return utk::create_button(par, txt, cb, cbdata);
+}
+
+utk_widget *utk_create_widget_button(utk_widget *par, utk_widget *child, int xsz,
+		int ysz, utk_callback_func cb, void *cbdata)
+{
+	if(xsz) {
+		return utk::create_button(par, child, xsz, ysz, cb, cbdata);
+	}
+	return utk::create_button(par, child, cb, cbdata);
+}
+
+void utk_set_flat(utk_widget *w, int onoff)
+{
+	utk::Button *bn = dynamic_cast<utk::Button*>(w);
+	if(bn) {
+		bn->set_flat(onoff);
+	}
+}
+
+int utk_is_flat(utk_widget *w)
+{
+	utk::Button *bn = dynamic_cast<utk::Button*>(w);
+	if(bn) {
+		return bn->is_flat() ? 1 : 0;
+	}
+	return 0;
 }
 
 

@@ -47,6 +47,9 @@ typedef void (*utk_text_func)(int x, int y, const char *txt, int sz);
 typedef int (*utk_text_spacing_func)(void);
 typedef int (*utk_text_width_func)(const char *txt, int sz);
 
+#define UTK_DEF_PADDING	0
+#define UTK_DEF_SPACING	4
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -60,7 +63,6 @@ UTK_API utk_widget *utk_get_root_widget(void);
 
 UTK_API unsigned int utk_get_msec(void);
 
-#define UBERTK_PRINT_ROOT ((utk_widget*)-1)
 UTK_API void utk_print_widget_tree(utk_widget *root);
 
 UTK_API void *utk_get_user_data(void);
@@ -138,9 +140,55 @@ UTK_API void *utk_get_callback_data(utk_widget *w, int evtype);
 UTK_API void utk_set_widget_data(utk_widget *w, void *data);
 UTK_API void *utk_get_widget_data(utk_widget *w);
 
+/* drawable */
+UTK_API void utk_set_color(utk_widget *w, int r, int g, int b);
+UTK_API void utk_get_color(utk_widget *w, int *r, int *g, int *b);
+UTK_API void utk_set_alpha(utk_widget *w, int a);
+UTK_API int utk_get_alpha(utk_widget *w);
+UTK_API void utk_set_border(utk_widget *w, int border);
+UTK_API int utk_get_border(utk_widget *w);
+
 /* window */
 UTK_API utk_widget *utk_create_window(utk_widget *par, int x, int y, int w, int h, const char *title);
 UTK_API void utk_destroy_window(utk_widget *w);
+
+UTK_API void utk_get_frame_pos(utk_widget *w, int *x, int *y);
+UTK_API void utk_get_frame_global_pos(utk_widget *w, int *x, int *y);
+UTK_API void utk_get_frame_size(utk_widget *w, int *x, int *y);
+UTK_API int utk_get_frame_width(utk_widget *w);
+UTK_API int utk_get_frame_height(utk_widget *w);
+UTK_API void utk_set_modal(utk_widget *w, int onoff);
+
+/* container */
+UTK_API utk_widget *utk_create_hbox(utk_widget *par, int pad, int spc);
+UTK_API utk_widget *utk_create_vbox(utk_widget *par, int pad, int spc);
+UTK_API utk_widget *utk_create_nullbox(utk_widget *par);
+
+UTK_API void utk_raise_child(utk_widget *w, utk_widget *c);
+UTK_API void utk_sink_child(utk_widget *w, utk_widget *c);
+UTK_API void utk_set_spacing(utk_widget *w, int sp);
+UTK_API int utk_get_spacing(utk_widget *w);
+
+UTK_API utk_widget *utk_cont_child(utk_widget *w, int idx);
+UTK_API int utk_cont_num_children(utk_widget *w);
+UTK_API void utk_cont_clear(utk_widget *w);
+
+/* label */
+UTK_API utk_widget *utk_create_label(utk_widget *par, const char *txt);
+UTK_API void utk_set_text_color(utk_widget *w, int r, int g, int b, int a);
+UTK_API void utk_get_text_color(utk_widget *w, int *r, int *g, int *b, int *a);
+
+/* button */
+/* - button size is automatically calculated if xsz and/or ysz are 0
+ * - the callback can be null
+ */
+UTK_API utk_widget *utk_create_button(utk_widget *par, const char *txt,
+		int xsz, int ysz, utk_callback_func cb, void *cbdata);
+UTK_API utk_widget *utk_create_widget_button(utk_widget *par, utk_widget *child,
+		int xsz, int ysz, utk_callback_func cb, void *cbdata);
+
+UTK_API void utk_set_flat(utk_widget *w, int onoff);
+UTK_API int utk_is_flat(utk_widget *w);
 
 #ifdef __cplusplus
 }
