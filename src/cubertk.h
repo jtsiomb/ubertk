@@ -236,6 +236,17 @@ UTK_API utk_widget *utk_create_widget_button(utk_widget *par, utk_widget *child,
 UTK_API void utk_set_flat(utk_widget *w, int onoff);
 UTK_API int utk_is_flat(utk_widget *w);
 
+/* checkbox */
+UTK_API utk_widget *utk_create_checkbox(utk_widget *par, const char *txt, int checked,
+		utk_callback_func cb, void *cdata);
+UTK_API utk_widget *utk_create_checkbox_link(utk_widget *par, const char *txt,
+		int checked, int *link);
+
+UTK_API void utk_check(utk_widget *w);
+UTK_API void utk_uncheck(utk_widget *w);
+UTK_API void utk_set_checked(utk_widget *w, int onoff);
+UTK_API int utk_is_checked(utk_widget *w);
+
 #ifdef __cplusplus
 }
 #endif

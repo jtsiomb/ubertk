@@ -38,6 +38,7 @@ typedef utk::Event utk_event;
 #define UTK_WINDOW(w)	(assert(dynamic_cast<utk::Window*>(w)), (utk::Window*)(w))
 #define UTK_CONTAINER(w) (assert(dynamic_cast<utk::Container*>(w)), (utk::Container*)(w))
 #define UTK_LABEL(w)	(assert(dynamic_cast<utk::Label*>(w)), (utk::Label*)(w))
+#define UTK_CHECKBOX(w)	(assert(dynamic_cast<utk::CheckBox*>(w)), (utk::CheckBox*)(w))
 
 extern "C" {
 
@@ -629,6 +630,44 @@ int utk_is_flat(utk_widget *w)
 	}
 	return 0;
 }
+
+/* checkbox */
+utk_widget *utk_create_checkbox(utk_widget *par, const char *txt, int checked,
+		utk_callback_func cb, void *cdata)
+{
+	return utk::create_checkbox(par, txt, checked, cb, cdata);
+}
+
+utk_widget *utk_create_checkbox_link(utk_widget *par, const char *txt,
+		int checked, int *link)
+{
+	return utk::create_checkbox(par, txt, checked, (bool*)link);
+}
+
+void utk_check(utk_widget *w)
+{
+	utk::CheckBox *cbox = UTK_CHECKBOX(w);
+	cbox->check();
+}
+
+void utk_uncheck(utk_widget *w)
+{
+	utk::CheckBox *cbox = UTK_CHECKBOX(w);
+	cbox->uncheck();
+}
+
+void utk_set_checked(utk_widget *w, int onoff)
+{
+	utk::CheckBox *cbox = UTK_CHECKBOX(w);
+	cbox->set_checked(onoff);
+}
+
+int utk_is_checked(utk_widget *w)
+{
+	utk::CheckBox *cbox = UTK_CHECKBOX(w);
+	return cbox->is_checked();
+}
+
 
 
 }	// extern "C"
