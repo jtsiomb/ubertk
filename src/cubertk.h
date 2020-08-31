@@ -195,7 +195,7 @@ UTK_API void utk_set_border(utk_widget *w, int border);
 UTK_API int utk_get_border(utk_widget *w);
 
 /* window */
-UTK_API utk_widget *utk_create_window(utk_widget *par, int x, int y, int w, int h, const char *title);
+UTK_API utk_widget *utk_window(utk_widget *par, int x, int y, int w, int h, const char *title);
 UTK_API void utk_destroy_window(utk_widget *w);
 
 UTK_API void utk_get_frame_pos(utk_widget *w, int *x, int *y);
@@ -206,9 +206,9 @@ UTK_API int utk_get_frame_height(utk_widget *w);
 UTK_API void utk_set_modal(utk_widget *w, int onoff);
 
 /* container */
-UTK_API utk_widget *utk_create_hbox(utk_widget *par, int pad, int spc);
-UTK_API utk_widget *utk_create_vbox(utk_widget *par, int pad, int spc);
-UTK_API utk_widget *utk_create_nullbox(utk_widget *par);
+UTK_API utk_widget *utk_hbox(utk_widget *par, int pad, int spc);
+UTK_API utk_widget *utk_vbox(utk_widget *par, int pad, int spc);
+UTK_API utk_widget *utk_nullbox(utk_widget *par);
 
 UTK_API void utk_raise_child(utk_widget *w, utk_widget *c);
 UTK_API void utk_sink_child(utk_widget *w, utk_widget *c);
@@ -220,7 +220,7 @@ UTK_API int utk_cont_num_children(utk_widget *w);
 UTK_API void utk_cont_clear(utk_widget *w);
 
 /* label */
-UTK_API utk_widget *utk_create_label(utk_widget *par, const char *txt);
+UTK_API utk_widget *utk_label(utk_widget *par, const char *txt);
 UTK_API void utk_set_text_color(utk_widget *w, int r, int g, int b, int a);
 UTK_API void utk_get_text_color(utk_widget *w, int *r, int *g, int *b, int *a);
 
@@ -228,24 +228,51 @@ UTK_API void utk_get_text_color(utk_widget *w, int *r, int *g, int *b, int *a);
 /* - button size is automatically calculated if xsz and/or ysz are 0
  * - the callback can be null
  */
-UTK_API utk_widget *utk_create_button(utk_widget *par, const char *txt,
-		int xsz, int ysz, utk_callback_func cb, void *cbdata);
-UTK_API utk_widget *utk_create_widget_button(utk_widget *par, utk_widget *child,
-		int xsz, int ysz, utk_callback_func cb, void *cbdata);
+UTK_API utk_widget *utk_button(utk_widget *par, const char *txt, int xsz, int ysz,
+		utk_callback_func cb, void *cbdata);
+UTK_API utk_widget *utk_widget_button(utk_widget *par, utk_widget *child, int xsz,
+		int ysz, utk_callback_func cb, void *cbdata);
 
 UTK_API void utk_set_flat(utk_widget *w, int onoff);
 UTK_API int utk_is_flat(utk_widget *w);
 
 /* checkbox */
-UTK_API utk_widget *utk_create_checkbox(utk_widget *par, const char *txt, int checked,
+UTK_API utk_widget *utk_checkbox(utk_widget *par, const char *txt, int checked,
 		utk_callback_func cb, void *cdata);
-UTK_API utk_widget *utk_create_checkbox_link(utk_widget *par, const char *txt,
-		int checked, int *link);
+UTK_API utk_widget *utk_checkbox_link(utk_widget *par, const char *txt, int checked,
+		int *link);
 
 UTK_API void utk_check(utk_widget *w);
 UTK_API void utk_uncheck(utk_widget *w);
 UTK_API void utk_set_checked(utk_widget *w, int onoff);
 UTK_API int utk_is_checked(utk_widget *w);
+
+/* listbox */
+UTK_API utk_widget *utk_listbox(utk_widget *par, int w, int h, utk_callback_func cb, void *cdata);
+UTK_API utk_widget *utk_listbox_items(utk_widget *par, int w, int h, const char **items,
+		int num_items, utk_callback_func cb, void *cdata);
+UTK_API utk_widget *utk_listbox_linkint(utk_widget *par, int w, int h, int *link);
+UTK_API utk_widget *utk_listbox_linkstr(utk_widget *par, int w, int h, const char *link);
+
+UTK_API void utk_add_item(utk_widget *w, utk_widget *item, int pos); /* -1 appends */
+UTK_API void utk_add_string(utk_widget *w, const char *str, int pos);  /* ditto */
+/*UTK_API void utk_remove_item(utk_widget *w, int pos);*/ /* -1 removes last */
+
+UTK_API void utk_select(utk_widget *w, int pos);
+UTK_API void utk_select_name(utk_widget *w, const char *str);
+UTK_API int utk_get_selected(utk_widget *w);
+UTK_API const char *utk_get_selected_str(utk_widget *w);
+
+/* combo box */
+UTK_API utk_widget *utk_combobox(utk_widget *par, utk_callback_func cb, void *cdata);
+UTK_API utk_widget *utk_combobox_items(utk_widget *par, const char **items,
+		int num_items, utk_callback_func cb, void *cdata);
+UTK_API utk_widget *utk_combobox_linkint(utk_widget *par, int *link);
+UTK_API utk_widget *utk_combobox_linkstr(utk_widget *par, const char *link);
+
+UTK_API void utk_show_list(utk_widget *w);
+UTK_API void utk_set_readonly(utk_widget *w, int onoff);
+UTK_API int utk_is_readonly(utk_widget *w);
 
 #ifdef __cplusplus
 }

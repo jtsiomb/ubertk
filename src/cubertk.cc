@@ -26,6 +26,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
+#include <string.h>
 #include <assert.h>
 #include "ubertk.h"
 
@@ -39,6 +40,8 @@ typedef utk::Event utk_event;
 #define UTK_CONTAINER(w) (assert(dynamic_cast<utk::Container*>(w)), (utk::Container*)(w))
 #define UTK_LABEL(w)	(assert(dynamic_cast<utk::Label*>(w)), (utk::Label*)(w))
 #define UTK_CHECKBOX(w)	(assert(dynamic_cast<utk::CheckBox*>(w)), (utk::CheckBox*)(w))
+#define UTK_LISTBOX(w)	(assert(dynamic_cast<utk::ListBox*>(w)), (utk::ListBox*)(w))
+#define UTK_COMBOBOX(w)	(assert(dynamic_cast<utk::ComboBox*>(w)), (utk::ComboBox*)(w))
 
 extern "C" {
 
@@ -462,7 +465,7 @@ int utk_get_border(utk_widget *w)
 }
 
 /* window */
-utk_widget *utk_create_window(utk_widget *par, int x, int y, int w, int h, const char *title)
+utk_widget *utk_window(utk_widget *par, int x, int y, int w, int h, const char *title)
 {
 	return utk::create_window(par, x, y, w, h, title);
 }
@@ -515,17 +518,17 @@ void utk_set_modal(utk_widget *w, int onoff)
 }
 
 /* container */
-utk_widget *utk_create_hbox(utk_widget *par, int pad, int spc)
+utk_widget *utk_hbox(utk_widget *par, int pad, int spc)
 {
 	return utk::create_hbox(par, pad, spc);
 }
 
-utk_widget *utk_create_vbox(utk_widget *par, int pad, int spc)
+utk_widget *utk_vbox(utk_widget *par, int pad, int spc)
 {
 	return utk::create_vbox(par, pad, spc);
 }
 
-utk_widget *utk_create_nullbox(utk_widget *par)
+utk_widget *utk_nullbox(utk_widget *par)
 {
 	return utk::create_nullbox(par);
 }
@@ -574,7 +577,7 @@ void utk_cont_clear(utk_widget *w)
 
 
 /* label */
-utk_widget *utk_create_label(utk_widget *par, const char *txt)
+utk_widget *utk_label(utk_widget *par, const char *txt)
 {
 	return utk::create_label(par, txt);
 }
@@ -596,7 +599,7 @@ void utk_get_text_color(utk_widget *w, int *r, int *g, int *b, int *a)
 }
 
 /* button */
-utk_widget *utk_create_button(utk_widget *par, const char *txt, int xsz, int ysz,
+utk_widget *utk_button(utk_widget *par, const char *txt, int xsz, int ysz,
 		utk_callback_func cb, void *cbdata)
 {
 	if(xsz) {
@@ -605,8 +608,8 @@ utk_widget *utk_create_button(utk_widget *par, const char *txt, int xsz, int ysz
 	return utk::create_button(par, txt, cb, cbdata);
 }
 
-utk_widget *utk_create_widget_button(utk_widget *par, utk_widget *child, int xsz,
-		int ysz, utk_callback_func cb, void *cbdata)
+utk_widget *utk_widget_button(utk_widget *par, utk_widget *child, int xsz, int ysz,
+		utk_callback_func cb, void *cbdata)
 {
 	if(xsz) {
 		return utk::create_button(par, child, xsz, ysz, cb, cbdata);
@@ -632,14 +635,13 @@ int utk_is_flat(utk_widget *w)
 }
 
 /* checkbox */
-utk_widget *utk_create_checkbox(utk_widget *par, const char *txt, int checked,
+utk_widget *utk_checkbox(utk_widget *par, const char *txt, int checked,
 		utk_callback_func cb, void *cdata)
 {
 	return utk::create_checkbox(par, txt, checked, cb, cdata);
 }
 
-utk_widget *utk_create_checkbox_link(utk_widget *par, const char *txt,
-		int checked, int *link)
+utk_widget *utk_checkbox_link(utk_widget *par, const char *txt, int checked, int *link)
 {
 	return utk::create_checkbox(par, txt, checked, (bool*)link);
 }
@@ -668,6 +670,167 @@ int utk_is_checked(utk_widget *w)
 	return cbox->is_checked();
 }
 
+/* listbox */
+utk_widget *utk_listbox(utk_widget *par, int w, int h, utk_callback_func cb, void *cdata)
+{
+	return utk::create_listbox(par, w, h, cb, cdata);
+}
+
+utk_widget *utk_listbox_items(utk_widget *par, int w, int h, const char **items,
+		int num_items, utk_callback_func cb, void *cdata)
+{
+	return utk::create_listbox(par, w, h, items, num_items, cb, cdata);
+}
+
+utk_widget *utk_listbox_linkint(utk_widget *par, int w, int h, int *link)
+{
+	return utk::create_listbox(par, w, h, link);
+}
+
+utk_widget *utk_listbox_linkstr(utk_widget *par, int w, int h, const char *link)
+{
+	return utk::create_listbox(par, w, h, link);
+}
+
+UTK_API void utk_add_item(utk_widget *w, utk_widget *item, int pos)
+{
+	utk::ListBox *list = UTK_LISTBOX(w);
+	list->add_item(item, pos);
+}
+
+UTK_API void utk_add_string(utk_widget *w, const char *str, int pos)
+{
+	utk::ListBox *list = UTK_LISTBOX(w);
+	list->add_item(str, pos);
+}
+
+UTK_API void utk_remove_item(utk_widget *w, int pos)
+{
+	utk::ListBox *list = UTK_LISTBOX(w);
+	list->remove_item(pos);
+}
+
+UTK_API void utk_select(utk_widget *w, int pos)
+{
+	utk::ListBox *list;
+	utk::ComboBox *combo;
+
+	if((list = dynamic_cast<utk::ListBox*>(w))) {
+		list->select(pos);
+	} else if((combo = dynamic_cast<utk::ComboBox*>(w))) {
+		combo->select(pos);
+	}
+}
+
+UTK_API void utk_select_name(utk_widget *w, const char *str)
+{
+	utk::ListBox *list;
+	utk::ComboBox *combo;
+
+	if((list = dynamic_cast<utk::ListBox*>(w))) {
+		list->select(str);
+	} else if((combo = dynamic_cast<utk::ComboBox*>(w))) {
+		combo->select(str);
+	}
+}
+
+UTK_API int utk_get_selected(utk_widget *w)
+{
+	utk::ListBox *list;
+	utk::ComboBox *combo;
+
+	if((list = dynamic_cast<utk::ListBox*>(w))) {
+		return list->get_selected();
+	}
+	if((combo = dynamic_cast<utk::ComboBox*>(w))) {
+		return combo->get_selected();
+	}
+	return -1;
+}
+
+UTK_API const char *utk_get_selected_str(utk_widget *w)
+{
+	utk::ListBox *list;
+	utk::ComboBox *combo;
+
+	if((list = dynamic_cast<utk::ListBox*>(w))) {
+		return list->get_selected_text();
+	}
+	if((combo = dynamic_cast<utk::ComboBox*>(w))) {
+		return combo->get_selected_text();
+	}
+	return 0;
+}
+
+/* combo box */
+UTK_API utk_widget *utk_combobox(utk_widget *par, utk_callback_func cb, void *cdata)
+{
+	utk::ComboBox *combo = utk::create_combobox(par);
+	if(cb) combo->set_callback(utk::EVENT_MODIFY, cb, cdata);
+	return combo;
+}
+
+UTK_API utk_widget *utk_combobox_items(utk_widget *par, const char **items,
+		int num_items, utk_callback_func cb, void *cdata)
+{
+	utk::ComboBox *combo = utk::create_combobox(par);
+	for(int i=0; i<num_items; i++) {
+		combo->add_item(items[i]);
+	}
+	if(cb) combo->set_callback(utk::EVENT_MODIFY, cb, cdata);
+	return combo;
+}
+
+static void combobox_link_int_handler(utk::Event *ev, void *cls)
+{
+	utk::ComboBox *combo = (utk::ComboBox*)ev->widget;
+	*(int*)cls = combo->get_selected();
+}
+
+UTK_API utk_widget *utk_combobox_linkint(utk_widget *par, int *link)
+{
+	utk::ComboBox *combo = utk::create_combobox(par);
+	if(link) {
+		combo->set_callback(utk::EVENT_MODIFY, combobox_link_int_handler, link);
+	}
+	return combo;
+}
+
+static void combobox_link_str_handler(utk::Event *ev, void *cls)
+{
+	utk::ComboBox *combo = (utk::ComboBox*)ev->widget;
+	const char *str = combo->get_selected_text();
+	if(str) {
+		strcpy((char*)cls, str);
+	}
+}
+
+UTK_API utk_widget *utk_combobox_linkstr(utk_widget *par, const char *link)
+{
+	utk::ComboBox *combo = utk::create_combobox(par);
+	if(link) {
+		combo->set_callback(utk::EVENT_MODIFY, combobox_link_str_handler, (void*)link);
+	}
+	return combo;
+}
+
+UTK_API void utk_show_list(utk_widget *w)
+{
+	utk::ComboBox *combo = UTK_COMBOBOX(w);
+	combo->show_list();
+}
+
+UTK_API void utk_set_readonly(utk_widget *w, int onoff)
+{
+	utk::ComboBox *combo = UTK_COMBOBOX(w);
+	combo->set_readonly(onoff);
+}
+
+UTK_API int utk_is_readonly(utk_widget *w)
+{
+	utk::ComboBox *combo = UTK_COMBOBOX(w);
+	return combo->is_readonly();
+}
 
 
 }	// extern "C"

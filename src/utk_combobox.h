@@ -61,6 +61,7 @@ public:
 	virtual void remove_item(int pos = -1);
 
 	virtual void select(int sel);
+	virtual void select(const char *str);
 	virtual int get_selected() const;
 	virtual const char *get_selected_text() const;
 
