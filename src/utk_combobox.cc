@@ -144,6 +144,11 @@ void ComboBox::select(int sel)
 	list->select(sel);
 }
 
+void ComboBox::select(const char *str)
+{
+	list->select(str);
+}
+
 int ComboBox::get_selected() const
 {
 	return list->get_selected();
