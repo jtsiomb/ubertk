@@ -78,7 +78,6 @@ ComboBox::ComboBox()
 
 ComboBox::~ComboBox()
 {
-	get_root_widget()->remove_child(list_popup);
 }
 
 void ComboBox::set_size(int w, int h)
