@@ -833,4 +833,79 @@ UTK_API int utk_is_readonly(utk_widget *w)
 }
 
 
+/* dialogs */
+UTK_API utk_widget *utk_message_dialog(const char *msg, unsigned int type,
+		unsigned int bnmask, utk_callback_func func, void *cdata)
+{
+	return utk::message_dialog(msg, type, bnmask, func, cdata);
+}
+
+UTK_API utk_widget *utk_input_dialog(const char *msg, const char *title,
+		const char *deftext, utk_callback_func func, void *data)
+{
+	return utk::input_dialog(msg, title, deftext, func, data);
+}
+
+static char *clean_line(char *str)
+{
+	while(isspace(*str)) str++;
+	if(!*str) return 0;
+	char *end = str + strlen(str) - 1;
+	while(isspace(*end) && end >= str) {
+		*end-- = 0;
+	}
+	return *str ? str : 0;
+}
+
+/* Jpeg (.jpg);PNG (.png) */
+UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
+		const char *filter, const char *initdir, utk_callback_func func, void *cdata)
+{
+	utk::FileDialog *dlg = utk::file_dialog(type, fname, 0, initdir, func, cdata);
+
+	if(filter) {
+		char *namebuf = new char[strlen(filter) + 1];
+		char *extbuf = new char[strlen(filter) + 1];
+		char *nptr = namebuf;
+		char *eptr = extbuf;
+		int in_name = 0;
+
+		while(*filter) {
+			char c = *filter++;
+			if(c == ';') continue;
+
+			if(in_name) {
+				if(c == '(') {
+					*nptr = 0;
+					in_name = 0;
+					continue;
+				}
+				*nptr++ = c;
+			} else {
+				if(c == ')') {
+					*eptr = 0;
+					in_name = 1;
+
+					nptr = clean_line(nptr);
+					eptr = clean_line(eptr);
+					if(nptr && eptr) {
+						utk::FileDialogExtFilter *extf = new utk::FileDialogExtFilter(nptr, eptr);
+						dlg->add_filter(extf);
+					}
+
+					nptr = namebuf;
+					eptr = extbuf;
+					continue;
+				}
+				*eptr++ = c;
+			}
+		}
+
+		delete [] namebuf;
+		delete [] extbuf;
+	}
+
+	return dlg;
+}
+
 }	// extern "C"

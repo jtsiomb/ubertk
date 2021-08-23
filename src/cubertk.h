@@ -74,6 +74,24 @@ enum {
 
 enum { UTK_FOCUS_POINT, UTK_FOCUS_CLICK };
 
+enum {
+	UTK_MSG_BN_OK			= 0x01,
+	UTK_MSG_BN_CANCEL		= 0x02,
+	UTK_MSG_BN_OK_CANCEL	= 0x03,
+	UTK_MSG_BN_YES			= 0x04,
+	UTK_MSG_BN_NO			= 0x08,
+	UTK_MSG_BN_YES_NO		= 0x0c
+};
+enum {
+	UTK_MSG_TYPE_QUESTION,
+	UTK_MSG_TYPE_INFO,
+	UTK_MSG_TYPE_WARNING,
+	UTK_MSG_TYPE_ERROR
+};
+enum { UTK_FILE_DIALOG_OPEN, UTK_FILE_DIALOG_SAVE };
+enum { UTK_DLG_MODAL = 0x8000 };
+
+
 typedef void (*utk_callback_func)(utk_event *ev, void *data);
 
 typedef void (*utk_color_func)(int r, int g, int b, int a);
@@ -273,6 +291,14 @@ UTK_API utk_widget *utk_combobox_linkstr(utk_widget *par, const char *link);
 UTK_API void utk_show_list(utk_widget *w);
 UTK_API void utk_set_readonly(utk_widget *w, int onoff);
 UTK_API int utk_is_readonly(utk_widget *w);
+
+/* dialogs */
+UTK_API utk_widget *utk_message_dialog(const char *msg, unsigned int type,
+		unsigned int bnmask, utk_callback_func func, void *cdata);
+UTK_API utk_widget *utk_input_dialog(const char *msg, const char *title,
+		const char *deftext, utk_callback_func func, void *data);
+UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
+		const char *filter, const char *initdir, utk_callback_func func, void *cdata);
 
 #ifdef __cplusplus
 }
