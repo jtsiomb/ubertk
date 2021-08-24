@@ -397,11 +397,11 @@ const char *FileDialog::get_filename()
 	if (tmppath[0] && (dc == '/' || dc == '\\')) tmppath[strlen(tmppath) - 1] = 0;
 
 #ifdef WIN32
-	sprintf(ffn, "%s\\%s",
+	sprintf(ffn, "%s\\%s", tmppath, filename->get_text());
 #else
-	sprintf(ffn, "%s/%s",
+	sprintf(ffn, "%s/%s", tmppath, filename->get_text());
 #endif
-		tmppath, filename->get_text());
+
 	free(tmppath);
 	if (full_filename)
 		free(full_filename);
@@ -411,8 +411,13 @@ const char *FileDialog::get_filename()
 
 void FileDialog::add_filter(FileDialogFilter *filter)
 {
+	bool wasempty = filters.empty();
 	filters.push_back(filter);
 	filterbox->add_item(filter->get_name());
+
+	if(wasempty) {
+		filterbox->select(0);
+	}
 }
 
 void FileDialog::refresh()

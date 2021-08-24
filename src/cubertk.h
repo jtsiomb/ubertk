@@ -299,6 +299,7 @@ UTK_API utk_widget *utk_input_dialog(const char *msg, const char *title,
 		const char *deftext, utk_callback_func func, void *data);
 UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 		const char *filter, const char *initdir, utk_callback_func func, void *cdata);
+UTK_API int utk_is_dialog(utk_widget *w);
 
 #ifdef __cplusplus
 }

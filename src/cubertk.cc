@@ -868,7 +868,7 @@ UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 		char *extbuf = new char[strlen(filter) + 1];
 		char *nptr = namebuf;
 		char *eptr = extbuf;
-		int in_name = 0;
+		int in_name = 1;
 
 		while(*filter) {
 			char c = *filter++;
@@ -886,8 +886,8 @@ UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 					*eptr = 0;
 					in_name = 1;
 
-					nptr = clean_line(nptr);
-					eptr = clean_line(eptr);
+					nptr = clean_line(namebuf);
+					eptr = clean_line(extbuf);
 					if(nptr && eptr) {
 						utk::FileDialogExtFilter *extf = new utk::FileDialogExtFilter(nptr, eptr);
 						dlg->add_filter(extf);
@@ -906,6 +906,14 @@ UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 	}
 
 	return dlg;
+}
+
+UTK_API int utk_is_dialog(utk_widget *w)
+{
+	if(dynamic_cast<utk::Dialog*>(w)) {
+		return 1;
+	}
+	return 0;
 }
 
 }	// extern "C"
