@@ -162,6 +162,7 @@ int ListBox::get_selected() const
 const char *ListBox::get_selected_text() const
 {
 	Drawable *w;
+	if(sel < 0) return 0;
 	if((w = dynamic_cast<Drawable*>((*vbox)[sel]))) {
 		return w->get_text();
 	}
