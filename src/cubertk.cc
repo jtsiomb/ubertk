@@ -171,6 +171,17 @@ void utk_keyboard_event(int key, int press)
 	utk::event(&ev);
 }
 
+/* UTK events */
+int utk_event_type(utk_event *ev)
+{
+	return ev->get_event_id();
+}
+
+utk_widget *utk_event_widget(utk_event *ev)
+{
+	return ev->widget;
+}
+
 /* ---- widget ---- */
 void utk_set_name(utk_widget *w, const char *name)
 {
@@ -692,25 +703,25 @@ utk_widget *utk_listbox_linkstr(utk_widget *par, int w, int h, const char *link)
 	return utk::create_listbox(par, w, h, link);
 }
 
-UTK_API void utk_add_item(utk_widget *w, utk_widget *item, int pos)
+void utk_add_item(utk_widget *w, utk_widget *item, int pos)
 {
 	utk::ListBox *list = UTK_LISTBOX(w);
 	list->add_item(item, pos);
 }
 
-UTK_API void utk_add_string(utk_widget *w, const char *str, int pos)
+void utk_add_string(utk_widget *w, const char *str, int pos)
 {
 	utk::ListBox *list = UTK_LISTBOX(w);
 	list->add_item(str, pos);
 }
 
-UTK_API void utk_remove_item(utk_widget *w, int pos)
+void utk_remove_item(utk_widget *w, int pos)
 {
 	utk::ListBox *list = UTK_LISTBOX(w);
 	list->remove_item(pos);
 }
 
-UTK_API void utk_select(utk_widget *w, int pos)
+void utk_select(utk_widget *w, int pos)
 {
 	utk::ListBox *list;
 	utk::ComboBox *combo;
@@ -722,7 +733,7 @@ UTK_API void utk_select(utk_widget *w, int pos)
 	}
 }
 
-UTK_API void utk_select_name(utk_widget *w, const char *str)
+void utk_select_name(utk_widget *w, const char *str)
 {
 	utk::ListBox *list;
 	utk::ComboBox *combo;
@@ -734,7 +745,7 @@ UTK_API void utk_select_name(utk_widget *w, const char *str)
 	}
 }
 
-UTK_API int utk_get_selected(utk_widget *w)
+int utk_get_selected(utk_widget *w)
 {
 	utk::ListBox *list;
 	utk::ComboBox *combo;
@@ -748,7 +759,7 @@ UTK_API int utk_get_selected(utk_widget *w)
 	return -1;
 }
 
-UTK_API const char *utk_get_selected_str(utk_widget *w)
+const char *utk_get_selected_str(utk_widget *w)
 {
 	utk::ListBox *list;
 	utk::ComboBox *combo;
@@ -763,14 +774,14 @@ UTK_API const char *utk_get_selected_str(utk_widget *w)
 }
 
 /* combo box */
-UTK_API utk_widget *utk_combobox(utk_widget *par, utk_callback_func cb, void *cdata)
+utk_widget *utk_combobox(utk_widget *par, utk_callback_func cb, void *cdata)
 {
 	utk::ComboBox *combo = utk::create_combobox(par);
 	if(cb) combo->set_callback(utk::EVENT_MODIFY, cb, cdata);
 	return combo;
 }
 
-UTK_API utk_widget *utk_combobox_items(utk_widget *par, const char **items,
+utk_widget *utk_combobox_items(utk_widget *par, const char **items,
 		int num_items, utk_callback_func cb, void *cdata)
 {
 	utk::ComboBox *combo = utk::create_combobox(par);
@@ -787,7 +798,7 @@ static void combobox_link_int_handler(utk::Event *ev, void *cls)
 	*(int*)cls = combo->get_selected();
 }
 
-UTK_API utk_widget *utk_combobox_linkint(utk_widget *par, int *link)
+utk_widget *utk_combobox_linkint(utk_widget *par, int *link)
 {
 	utk::ComboBox *combo = utk::create_combobox(par);
 	if(link) {
@@ -805,7 +816,7 @@ static void combobox_link_str_handler(utk::Event *ev, void *cls)
 	}
 }
 
-UTK_API utk_widget *utk_combobox_linkstr(utk_widget *par, const char *link)
+utk_widget *utk_combobox_linkstr(utk_widget *par, const char *link)
 {
 	utk::ComboBox *combo = utk::create_combobox(par);
 	if(link) {
@@ -814,19 +825,19 @@ UTK_API utk_widget *utk_combobox_linkstr(utk_widget *par, const char *link)
 	return combo;
 }
 
-UTK_API void utk_show_list(utk_widget *w)
+void utk_show_list(utk_widget *w)
 {
 	utk::ComboBox *combo = UTK_COMBOBOX(w);
 	combo->show_list();
 }
 
-UTK_API void utk_set_readonly(utk_widget *w, int onoff)
+void utk_set_readonly(utk_widget *w, int onoff)
 {
 	utk::ComboBox *combo = UTK_COMBOBOX(w);
 	combo->set_readonly(onoff);
 }
 
-UTK_API int utk_is_readonly(utk_widget *w)
+int utk_is_readonly(utk_widget *w)
 {
 	utk::ComboBox *combo = UTK_COMBOBOX(w);
 	return combo->is_readonly();
@@ -834,13 +845,13 @@ UTK_API int utk_is_readonly(utk_widget *w)
 
 
 /* dialogs */
-UTK_API utk_widget *utk_message_dialog(const char *msg, unsigned int type,
+utk_widget *utk_message_dialog(const char *msg, unsigned int type,
 		unsigned int bnmask, utk_callback_func func, void *cdata)
 {
 	return utk::message_dialog(msg, type, bnmask, func, cdata);
 }
 
-UTK_API utk_widget *utk_input_dialog(const char *msg, const char *title,
+utk_widget *utk_input_dialog(const char *msg, const char *title,
 		const char *deftext, utk_callback_func func, void *data)
 {
 	return utk::input_dialog(msg, title, deftext, func, data);
@@ -858,7 +869,7 @@ static char *clean_line(char *str)
 }
 
 /* Jpeg (.jpg);PNG (.png) */
-UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
+utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 		const char *filter, const char *initdir, utk_callback_func func, void *cdata)
 {
 	utk::FileDialog *dlg = utk::file_dialog(type, fname, 0, initdir, func, cdata);
@@ -875,14 +886,14 @@ UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 			if(c == ';') continue;
 
 			if(in_name) {
-				if(c == '(') {
+				if(c == '[') {
 					*nptr = 0;
 					in_name = 0;
 					continue;
 				}
 				*nptr++ = c;
 			} else {
-				if(c == ')') {
+				if(c == ']') {
 					*eptr = 0;
 					in_name = 1;
 
@@ -908,12 +919,29 @@ UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 	return dlg;
 }
 
-UTK_API int utk_is_dialog(utk_widget *w)
+int utk_is_dialog(utk_widget *w)
 {
 	if(dynamic_cast<utk::Dialog*>(w)) {
 		return 1;
 	}
 	return 0;
+}
+
+const char *utk_file_dialog_dir(utk_widget *w)
+{
+	return ((utk::FileDialog*)w)->get_path();
+}
+
+const char *utk_file_dialog_file(utk_widget *w)
+{
+	utk::FileDialog *fdlg = (utk::FileDialog*)w;
+
+	return fdlg->get_filename() + strlen(fdlg->get_path());
+}
+
+const char *utk_file_dialog_path(utk_widget *w)
+{
+	return ((utk::FileDialog*)w)->get_filename();
 }
 
 }	// extern "C"

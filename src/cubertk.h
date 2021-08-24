@@ -142,6 +142,10 @@ UTK_API void utk_mmotion_event(int x, int y);
 UTK_API void utk_mbutton_event(int bn, int press, int x, int y);
 UTK_API void utk_keyboard_event(int key, int press);
 
+/* UTK events */
+UTK_API int utk_event_type(utk_event *ev);
+UTK_API utk_widget *utk_event_widget(utk_event *ev);
+
 /* widget */
 UTK_API void utk_set_name(utk_widget *w, const char *name);
 UTK_API const char *utk_get_name(utk_widget *w);
@@ -300,6 +304,10 @@ UTK_API utk_widget *utk_input_dialog(const char *msg, const char *title,
 UTK_API utk_widget *utk_file_dialog(unsigned int type, const char *fname,
 		const char *filter, const char *initdir, utk_callback_func func, void *cdata);
 UTK_API int utk_is_dialog(utk_widget *w);
+
+UTK_API const char *utk_file_dialog_dir(utk_widget *w);
+UTK_API const char *utk_file_dialog_file(utk_widget *w);
+UTK_API const char *utk_file_dialog_path(utk_widget *w);
 
 #ifdef __cplusplus
 }
