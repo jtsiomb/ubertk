@@ -74,6 +74,7 @@ int Entry::cursor_from_x(int x) const
 
 int Entry::x_from_cursor(int c) const
 {
+	if(text.empty()) return 0;
 	if (c < 0 || c > (int)text.length()) return 0;
 
 	return gfx::text_width(text.substr(0, c).c_str(), 18) - vscroll;
