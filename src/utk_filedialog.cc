@@ -230,7 +230,12 @@ void FileDialog::select_button_handler(Event *event, void *data)
 	}
 
 	// a file in the directory shown? call EVENT_NOTIFY
-	FILE *f = fopen(dlg->get_filename(), "wb");
+	FILE *f = fopen(dlg->get_filename(), "rb");
+	if(!f && dlg->dlgtype == FILE_DIALOG_SAVE) {
+		if((f = fopen(dlg->get_filename(), "wb"))) {
+			remove(dlg->get_filename());
+		}
+	}
 	if(f) {
 		fclose(f);
 		Event ev;
@@ -264,6 +269,7 @@ void FileDialog::listb_click_handler(Event *event, void *data)
 
 FileDialog::FileDialog(const char *title)
 {
+	dlgtype = FILE_DIALOG_OPEN;
 	visible = false;
 
 	set_text(title);
@@ -534,6 +540,7 @@ FileDialog *file_dialog(unsigned int type, const char *fname, FileDialogFilter *
 	int y = (root->get_size().y - height) / 2;
 
 	FileDialog *dlg = new FileDialog;
+	dlg->dlgtype = type;
 	dlg->set_pos(x, y);
 	dlg->set_size(width, height);
 	dlg->set_text(type == FILE_DIALOG_OPEN ? "open file" : "save file");

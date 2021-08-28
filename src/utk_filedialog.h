@@ -102,6 +102,8 @@ class UTK_API FileDialog : public Dialog {
 	static void listb_click_handler(Event *event, void *data);
 
 public:
+	int dlgtype;
+
 	FileDialog(const char *title="Select file");
 	virtual ~FileDialog();
 

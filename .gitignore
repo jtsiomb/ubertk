@@ -5,3 +5,4 @@ test
 *.so.*
 *.so
 *.a
+Makefile
