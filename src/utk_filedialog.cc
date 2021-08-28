@@ -230,7 +230,7 @@ void FileDialog::select_button_handler(Event *event, void *data)
 	}
 
 	// a file in the directory shown? call EVENT_NOTIFY
-	FILE *f = fopen(dlg->get_filename(), "rb");
+	FILE *f = fopen(dlg->get_filename(), "wb");
 	if(f) {
 		fclose(f);
 		Event ev;
