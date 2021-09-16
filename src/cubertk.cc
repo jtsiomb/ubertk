@@ -40,6 +40,7 @@ typedef utk::Event utk_event;
 #define UTK_CONTAINER(w) (assert(dynamic_cast<utk::Container*>(w)), (utk::Container*)(w))
 #define UTK_LABEL(w)	(assert(dynamic_cast<utk::Label*>(w)), (utk::Label*)(w))
 #define UTK_CHECKBOX(w)	(assert(dynamic_cast<utk::CheckBox*>(w)), (utk::CheckBox*)(w))
+#define UTK_RADIOBOX(w)	(assert(dynamic_cast<utk::RadioBox*>(w)), (utk::RadioBox*)(w))
 #define UTK_LISTBOX(w)	(assert(dynamic_cast<utk::ListBox*>(w)), (utk::ListBox*)(w))
 #define UTK_COMBOBOX(w)	(assert(dynamic_cast<utk::ComboBox*>(w)), (utk::ComboBox*)(w))
 

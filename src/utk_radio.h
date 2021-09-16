@@ -32,24 +32,24 @@ OF SUCH DAMAGE.
 #include <utk_config.h>
 #include <utk_drawable.h>
 #include <utk_events.h>
+#include <utk_chkbox.h>
 
 namespace utk {
 
-class UTK_API RadioBox : public Drawable {
-protected:
-	bool checked;
+class UTK_API RadioBox : public utk::CheckBox {
 public:
 	RadioBox(const char *text = 0, utk::Callback cb = 0);
-	virtual ~RadioBox();
 
 	virtual Widget *handle_event(Event *event);
 
 	virtual void draw() const;
 
-	void check();
-	bool is_checked() const;
+	virtual void check();
+	virtual void uncheck();
+	virtual void set_checked(bool checked);
+	virtual bool is_checked() const;
 
-	void on_modify(Event *ev);
+	virtual void on_modify(Event *ev);
 };
 
 UTK_API RadioBox *create_radiobox(Widget *parent, const char *text, bool selected, Callback cb = 0, void *udata = 0);

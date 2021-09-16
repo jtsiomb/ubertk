@@ -37,22 +37,11 @@ OF SUCH DAMAGE.
 namespace utk {
 
 RadioBox::RadioBox(const char *text, utk::Callback cb)
+	: CheckBox(text)
 {
-	this->text = text;
-	if (this->text.size())
-	{
-		this->size.x = gfx::text_width(text, 18) + gfx::text_spacing();
-		this->size.y = gfx::text_spacing();
+	if(cb) {
+		set_callback(EVENT_MODIFY, cb, 0);
 	}
-	else
-	{
-		size.x = size.y = gfx::text_spacing();
-	}
-	checked = false;
-}
-RadioBox::~RadioBox()
-{
-
 }
 
 Widget *RadioBox::handle_event(Event *event)
@@ -99,6 +88,8 @@ void RadioBox::draw() const
 
 void RadioBox::check()
 {
+	if(checked) return;
+
 	IVec2 pos = get_global_pos();
 	MButtonEvent fakeev(0, pos.x + 1, pos.y + 1);
 
@@ -106,15 +97,28 @@ void RadioBox::check()
 	if(cont_par) {
 		for(unsigned int i=0; i<cont_par->size(); i++) {
 			RadioBox *rb = dynamic_cast<RadioBox*> ((*cont_par)[i]);
-			if(rb) {
+			if(rb && rb->checked) {
 				rb->checked = false;
+				fakeev.widget = rb;
 				rb->on_modify(&fakeev);
 			}
 		}
 	}
 
 	checked = true;
+	fakeev.widget = this;
 	on_modify(&fakeev);
+}
+
+void RadioBox::uncheck()
+{
+}
+
+void RadioBox::set_checked(bool checked)
+{
+	if(checked) {
+		check();
+	}
 }
 
 bool RadioBox::is_checked() const
