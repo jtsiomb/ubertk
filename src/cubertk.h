@@ -269,6 +269,12 @@ UTK_API void utk_uncheck(utk_widget *w);
 UTK_API void utk_set_checked(utk_widget *w, int onoff);
 UTK_API int utk_is_checked(utk_widget *w);
 
+/* radiobox */
+UTK_API utk_widget *utk_radiobox(utk_widget *par, const char *txt, int checked,
+		utk_callback_func cb, void *cdata);
+UTK_API utk_widget *utk_radiobox_link(utk_widget *par, const char *txt, int checked,
+		int *link);
+
 /* listbox */
 UTK_API utk_widget *utk_listbox(utk_widget *par, int w, int h, utk_callback_func cb, void *cdata);
 UTK_API utk_widget *utk_listbox_items(utk_widget *par, int w, int h, const char **items,

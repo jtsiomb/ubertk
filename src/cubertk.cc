@@ -681,6 +681,19 @@ int utk_is_checked(utk_widget *w)
 	return cbox->is_checked();
 }
 
+/* radiobox */
+utk_widget *utk_radiobox(utk_widget *par, const char *txt, int checked,
+		utk_callback_func cb, void *cdata)
+{
+	return utk::create_radiobox(par, txt, checked, cb, cdata);
+}
+
+utk_widget *utk_radiobox_link(utk_widget *par, const char *txt, int checked, int *link)
+{
+	return utk::create_radiobox(par, txt, checked, (bool*)link);
+}
+
+
 /* listbox */
 utk_widget *utk_listbox(utk_widget *par, int w, int h, utk_callback_func cb, void *cdata)
 {
